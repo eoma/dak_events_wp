@@ -1,0 +1,14 @@
+.dew_eventToggled {
+	background-color: #ff5c54;
+	/*background-color: #FF6600;*/
+}
+
+.dew_eventElem {
+	border-left: 1px solid #ff5c54;
+	border-right: 1px solid #ff5c54;
+	border-bottom: 1px solid #ff5c54;
+}
+
+.dew_hide {
+	display: none;
+}
