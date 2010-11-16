@@ -51,7 +51,6 @@ class DEW_Calendar {
 		$output = '<ul id="' . $id_base . '-dak-events-wp-list">';
 
 		//var_dump($events);
-
 		foreach($events->data as $event) {
 			$splitDate = explode("-", $event->startDate);
 			$month = $splitDate[1];
@@ -66,7 +65,7 @@ class DEW_Calendar {
 				$min = '00';
 			}
 			
-			$startTimeStp = mktime(0, $min,  $hour, $month, $day, $year);
+			$startTimeStp = mktime($hour, $min, 0, $month, $day, $year);
 			
 			$splitDate = explode("-", $event->endDate);
 			$month = $splitDate[1];
@@ -81,7 +80,7 @@ class DEW_Calendar {
 				$min = '00';
 			}
 			
-			$endTimeStp = mktime(0, $min,  $hour, $month, $day, $year);
+			$endTimeStp = mktime($hour, $min, 0, $month, $day, $year);
 			
 			$startDate = date("$format", $startTimeStp );
 			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimeStp )));
