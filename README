@@ -1,0 +1,5 @@
+This is an event viewer for WordPress, where the event 
+backend is based on our (Det Akademiske Kvarter) own kind own server.
+See https://github.com/eoma/kvarteret_symfony_events/
+
+It draws it's inspiration from the WordPress Events Calendar project
