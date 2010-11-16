@@ -101,7 +101,7 @@ class DEW_Calendar {
 			
 			$output .= '<div class="dew_eventElem dew_hide">';
 			
-			$output .= '<div class="dew_content">' . $event->description . '</div>';
+			$output .= '<div class="dew_content">' . $event->leadParagraph . '</div>';
 			$output .= '<div class="dew_data">';
 			$output .= '<strong>Starts</strong> ' . $startDayName .' ' . $startDate . ' ' . date($timeFormat, $startTimeStp) . '<br />';
 			$output .= '<strong>Ends</strong> ' . $endDayName .' ' . $endDate . ' ' . date($timeFormat, $endTimeStp) . '<br />';
