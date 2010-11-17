@@ -10,6 +10,7 @@ define('DEW_URL',  WP_PLUGIN_URL . '/dak_events_wp');
 
 // Include the client library for our remote events
 require_once( DEW_PREFIX . '/eventsCalendarClient.php' );
+require_once( DEW_PREFIX . '/dew_tools.php' );
 require_once( DEW_PREFIX . '/dew_widget.php' );
 require_once( DEW_PREFIX . '/dew_management.php' );
 require_once( DEW_PREFIX . '/dew_calendar.php' );
