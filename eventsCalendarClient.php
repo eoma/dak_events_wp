@@ -37,9 +37,10 @@ class eventsCalendarClient {
 	 * @param string $action At what action should the query be used on
 	 * @param array $arguments Arguments used in the query
 	 * @param bool $rawString Whether the function should return the result via json_decode() or not (raw string)
+	 * @param bool $enableCache Whether the function should use or not use cache, if cache is turned on.
 	 * @return mixed
 	 */
-	private function getData ($action, array $arguments, $rawString = false) {
+	private function getData ($action, array $arguments, $rawString = false, $enableCache = true) {
 		$query_args = '?';
 
 		// Putting together the query string
@@ -59,7 +60,7 @@ class eventsCalendarClient {
 
 		//echo $urlComplete . "\n";
 
-		if ($this->enableCache) {
+		if ($this->enableCache && $enableCache) {
 			// if we've enabled the cache, we check if the key exists for this query.
 			$cache_key = md5($urlComplete);
 			$cache_data = apc_fetch($cache_key, $cache_success);
