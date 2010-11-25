@@ -21,7 +21,9 @@ class DEW_tools {
 			list($year, $month, $day) = explode('-', $event->startDate);
 			$startTimestamp = mktime(0, 0, 0, $month, $day, $year);
 
-			$dateArray[ strval($startTimestamp) ] = $event;
+			$dateArray[ strval($startTimestamp) ][] = $event;
 		}
+
+		return $dateArray;
 	}
 }
