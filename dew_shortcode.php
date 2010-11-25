@@ -22,10 +22,15 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 	$timeFormat = $options['timeFormat'];
 
 	if (!isset($atts['id'])) {
-		return "<span>No event id specified</span>";
+		return "<p>No event id specified</p>";
 	}
 	
 	$result = $client->event($atts['id']);
+
+	if ($result->totalCount == 0) {
+		return "<p>No event found with specified id " . $atts['id'] . "</p>";
+	}
+
 	$event = $result->data[0];
 
 	$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
