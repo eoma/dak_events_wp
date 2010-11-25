@@ -26,4 +26,27 @@ class DEW_tools {
 
 		return $dateArray;
 	}
+
+	static public function stringToIntArray($string, $separator = ',') {
+		$array = explode($separator, $string);
+		return array_map(create_function('$value', 'return (int)$value;'), $array);
+	}
+
+	static public function dateStringToTime ($stringDate, $stringTime) {
+		$dateArr = explode('-', $stringDate);
+		list($year, $month, $day) = $dateArr;
+
+		$timeArr = explode(':', $stringTime);	
+		list($hour, $minute, $second) = $timeArr;
+
+		return mktime($hour, $minute, $second, $month, $day, $year);
+	}
+
+	static public function getLocationFromEvent(stdClass $event) {
+		if (empty($event->location_id) || ($event->location_id == 0)) {
+			return $event->customLocation;
+		} else {
+			return $event->recurringLocation->name;
+		}
+	}
 }
