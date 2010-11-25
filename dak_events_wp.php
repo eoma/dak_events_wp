@@ -14,6 +14,7 @@ require_once( DEW_PREFIX . '/dew_tools.php' );
 require_once( DEW_PREFIX . '/dew_widget.php' );
 require_once( DEW_PREFIX . '/dew_management.php' );
 require_once( DEW_PREFIX . '/dew_calendar.php' );
+require_once( DEW_PREFIX . '/dew_shortcode.php' );
 
 function DakEventsWpInit () {
 	wp_enqueue_style('dew_mainStyle', DEW_URL . '/css/main.css');
@@ -37,4 +38,5 @@ add_action('widgets_init', create_function('', 'return register_widget("DEW_Widg
 add_action('admin_head', 'DakEventsWpAdminHeaderScript');
 add_action('admin_menu', 'DakEventsWpAdminMenu');
 
-
+add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
+add_shortcode('dew_event_detailbox', 'dew_event_detailbox_shortcode_handler');
