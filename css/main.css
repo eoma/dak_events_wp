@@ -1,6 +1,11 @@
 .dew_eventToggled {
 	background-color: #ff5c54;
 	/*background-color: #FF6600;*/
+	color: #000000;
+}
+
+.dew_showEvent {
+	padding: 0.4em;
 }
 
 .dew_eventElem {
@@ -8,6 +13,25 @@
 	border-right: 1px solid #ff5c54;
 	border-bottom: 1px solid #ff5c54;
 	padding: 0.4em;
+}
+
+ul.dew_eventList {
+	list-style-type: none !important;
+	margin-left: 0 !important;
+	padding-left: 0 !important;
+	/*text-indent: -1em;*/
+}
+
+ul.dew_eventList > li {
+	padding-left: 0 !important;
+}
+
+ul.dew_eventList > li.dew_event .dew_showEvent {
+	border-top: 1px dashed #000000;
+}
+
+ul.dew_eventList > li.dew_event .dew_eventToggled {
+	border-top: none;
 }
 
 .dew_hide {
