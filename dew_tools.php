@@ -32,12 +32,18 @@ class DEW_tools {
 		return array_map(create_function('$value', 'return (int)$value;'), $array);
 	}
 
-	static public function dateStringToTime ($stringDate, $stringTime) {
+	static public function dateStringToTime ($stringDate, $stringTime = '') {
 		$dateArr = explode('-', $stringDate);
 		list($year, $month, $day) = $dateArr;
 
-		$timeArr = explode(':', $stringTime);	
-		list($hour, $minute, $second) = $timeArr;
+		$timeArr = ( ! empty($stringTime) ) ? explode(':', $stringTime) : array();
+		if (count($timeArr) == 3) {
+			list($hour, $minute, $second) = $timeArr;
+		} else {
+			$hour = 0;
+			$minute = 0;
+			$second = 0;
+		}
 
 		return mktime($hour, $minute, $second, $month, $day, $year);
 	}
