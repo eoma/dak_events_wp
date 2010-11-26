@@ -1,6 +1,7 @@
 <?php
 if(!class_exists("DEW_Calendar")) :
 require_once(DEW_PREFIX . '/eventsCalendarClient.php');
+require_once(DEW_PREFIX . '/dew_tools.php');
 
 /**
  * Displays the events list and the calendars
@@ -34,7 +35,7 @@ class DEW_Calendar {
 		$client = new eventsCalendarClient($this->eventServerUrl);
 		
 		$options = get_option('optionsDakEventsWp');
-		$format = $options['dateFormat'];
+		$dateFormat = $options['dateFormat'];
 		$timeFormat = $options['timeFormat'];
 
 		if ( isset($filter) && is_array($filter) 
@@ -48,75 +49,60 @@ class DEW_Calendar {
 			$events = $client->upcomingEvents($num);
 		}
 
-		$output = '<ul id="' . $id_base . '-dak-events-wp-list">';
+		$output = '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list">';
 
-		//var_dump($events);
+		$startDateTimestamp = 0;
 		foreach($events->data as $event) {
-			$splitDate = explode("-", $event->startDate);
-			$month = $splitDate[1];
-			$day = $splitDate[2];
-			$year = $splitDate[0];
-			if ($event->startTime != '') {
-				$splitTime = explode(':', $event->startTime);
-				$hour = $splitTime[0];
-				$min = $splitTime[1];
-			} else {
-				$hour = '00';
-				$min = '00';
-			}
-			
-			$startTimeStp = mktime($hour, $min, 0, $month, $day, $year);
-			
-			$splitDate = explode("-", $event->endDate);
-			$month = $splitDate[1];
-			$day = $splitDate[2];
-			$year = $splitDate[0];
-			if ($event->endTime != '') {
-				$splitTime = explode(':', $event->endTime);
-				$hour = $splitTime[0];
-				$min = $splitTime[1];
-			} else {
-				$hour = '00';
-				$min = '00';
-			}
-			
-			$endTimeStp = mktime($hour, $min, 0, $month, $day, $year);
-			
-			$startDate = date("$format", $startTimeStp );
-			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimeStp )));
-			
-			$endDate = date("$format", $endTimeStp );
-			$endDayName = ucfirst($this->locale->get_weekday(date('w', $startTimeStp )));
-				
-			$titlinked = '<strong>' . $startDayName . ' ' . $startDate . '</strong>: ' . $event->title;
+			$startDateTimestampTmp = DEW_tools::dateStringToTime($event->startDate);
 
-			// don't send T\'itles 
-			if (false !== strpos($titlinked, "\'"))
-				$titlinked = stripslashes($titlinked);
+			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
+			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 
-			//$startDate = $startDate < date("$format") ? date("$format") : $startDate;
-			$output .= '<li id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
-			$output .= '<div class="dew_showEvent">' . $titlinked . '</div>';
-			
-			$output .= '<div class="dew_eventElem dew_hide">';
-			
-			$output .= '<div class="dew_content">' . $event->leadParagraph . '</div>';
-			$output .= '<div class="dew_data">';
-			$output .= '<strong>Starts</strong> ' . $startDayName .' ' . $startDate . ' ' . date($timeFormat, $startTimeStp) . '<br />';
-			$output .= '<strong>Ends</strong> ' . $endDayName .' ' . $endDate . ' ' . date($timeFormat, $endTimeStp) . '<br />';
-			$output .= '<strong>Where?</strong> ';
-			if ($event->location_id > 0) {
-				$output .= $event->recurringLocation->name;
-			} else {
-				$output .= $event->customLocation;
+			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimestamp )));
+			$endDayName = ucfirst($this->locale->get_weekday(date('w', $endTimestamp )));
+						
+			if ($startDateTimestamp != $startDateTimestampTmp) {
+				$startDateTimestamp = $startDateTimestampTmp;
+				$output .= '<li class="dew_eventList_date"><strong>' . $startDayName . ' ' . date($dateFormat, $startTimestamp) . '</strong></li>' ;
 			}
-			$output .= '<br />';
-			$output .= '<strong>Who?</strong> ' . $event->arranger->name . '<br />';
-			$output .= '<strong>What?</strong> ' . $event->category->name . '<br />';
-			$output .= '</div>';
-			
-			$output .= '</div>';
-			
+
+			$location = DEW_tools::getLocationFromEvent($event);
+
+			if ($event->startDate == $event->endDate) {
+				$renderedDate = $startDayName . ' ' . date($dateFormat, $startTimestamp)
+				              . ' from ' . date($timeFormat, $startTimestamp) . ' to '
+				              . date($timeFormat, $endTimestamp);
+			} else {
+				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' to '
+				              . $endDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $endTimestamp);
+			}
+
+			$renderedEvent = <<<EOT
+<div class="dew_showEvent">%(title)s</div>
+<div class="dew_eventElem dew_hide">
+  <div class="dew_content">
+    %(leadParagraph)s
+  </div>
+  <div class="dew_data">
+    <strong>When?</strong> %(renderedDate)s<br />
+    <strong>Where?</strong> %(location)s<br />
+    <strong>Arranger?</strong> %(arranger)s<br />
+    <strong>Category?</strong> %(category)s<br />
+  </div>
+</div>
+EOT;
+
+			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
+
+			$output .= DEW_tools::sprintfn($renderedEvent, array(
+				'title' => $event->title,
+				'leadParagraph' => $event->leadParagraph,
+				'renderedDate' => $renderedDate,
+				'location' => $location,
+				'arranger' => $event->arranger->name,
+				'category' => $event->category->name,
+			));
+
 			$output .= '</li>' . "\n";
 		}
 
