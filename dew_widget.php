@@ -237,6 +237,10 @@ class DEW_Widget extends WP_Widget {
 
 		$calendar = new DEW_Calendar();
 
+		if ( is_active_widget(false, false, $this->id_base, true) ) {
+			wp_enqueue_script('dew_js_events', DEW_URL . '/js/events.js', array('jquery'));
+		}
+
 		if (isset($instance['title']) && !empty($instance['title'])) {
 			echo $before_title . $instance['title'] . $after_title;
 		}

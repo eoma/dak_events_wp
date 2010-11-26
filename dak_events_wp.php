@@ -18,7 +18,6 @@ require_once( DEW_PREFIX . '/dew_shortcode.php' );
 
 function DakEventsWpInit () {
 	wp_enqueue_style('dew_mainStyle', DEW_URL . '/css/main.css');
-	wp_enqueue_script('dew_js_events', DEW_URL . '/js/events.js', array('jquery'));
 }
 
 function DakEventsWpAdminMenu () {
