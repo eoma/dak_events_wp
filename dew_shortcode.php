@@ -6,6 +6,7 @@
 
 require_once( DEW_PREFIX . '/eventsCalendarClient.php' );
 require_once( DEW_PREFIX . '/dew_tools.php' );
+require_once( DEW_PREFIX . '/dew_format.php' );
 
 function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
 	
@@ -51,14 +52,13 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 
 	$location = DEW_tools::getLocationFromEvent($event);
 
-	$output = <<<EOT
-<p>
-<strong>When:</strong> {$date} <br />
-<strong>Location:</strong> {$location} <br />
-<strong>Arranger:</strong> {$event->arranger->name}<br />
-<strong>Category:</strong> {$event->category->name}
-</p>
-EOT;
+	$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), array(
+		'title' => $event->title,
+		'date' => $date,
+		'location' => $location,
+		'arranger' => $event->arranger->name,
+		'category' => $event->category->name,
+	));
 
 	return $output;
 }
@@ -100,6 +100,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	$results = $client->filteredEventsList($queryArgs);
 
 	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data);
+
+	$eventFormat = DEW_format::fullEvent();
 	
 	$output = "<div class='dew_agenda'>\n";
 
@@ -112,26 +114,28 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 
-			$output .= "<h3>" . $event->title . "</h3>\n";
-			$output .= $event->leadParagraph . "\n";
-			$output .= $event->description . "\n";
-
-			$output .= "<p>\n";
-
 			if ($event->startDate == $event->endDate) {
-				$output .= '<strong>When?</strong> ' . date($dateFormat, $startTimestamp) 
-				        . ' from ' . date($timeFormat, $startTimestamp) . ' to ' 
-				        . date($timeFormat, $endTimestamp) . '<br />';
+				$renderedDate = date($dateFormat, $startTimestamp)
+				          . ' from ' . date($timeFormat, $startTimestamp) . ' to '
+				          . date($timeFormat, $endTimestamp);
 			} else {
-				$output .= '<strong>When?</strong> ' . date($dateFormat, $startTimestamp) 
-				        . ' from ' . date($timeFormat, $startTimestamp) . ' to ' 
-				        . date($dateFormat, $endTimestamp) . ' ' .  date($timeFormat, $endTimestamp) . '<br />';
+				$renderedDate = date($dateFormat, $startTimestamp) 
+				        . ' from ' . date($timeFormat, $startTimestamp) . ' to '
+				        . date($dateFormat, $endTimestamp) . ' ' .  date($timeFormat, $endTimestamp);
 			}
-			$output .= '<strong>Where?</strong> ' . DEW_tools::getLocationFromEvent($event) . '<br />' . "\n";
-			$output .= '<strong>Who?</strong> ' . $event->arranger->name . '<br />' . "\n";
-			$output .= '<strong>What?</strong> ' . $event->category->name . "\n";
 
-			$output .= "</p>\n";
+			$location = DEW_tools::getLocationFromEvent($event);
+
+			$output .= DEW_tools::sprintfn($eventFormat, array(
+				'title' => $event->title,
+				'leadParagraph' => $event->leadParagraph,
+				'description' => $event->description,
+				'renderedDate' => $renderedDate,
+				'location' => $location,
+				'arranger' => $event->arranger->name,
+				'category' => $event->category->name,
+			));
+
 		}
 
 	}

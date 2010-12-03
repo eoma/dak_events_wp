@@ -2,6 +2,7 @@
 if(!class_exists("DEW_Calendar")) :
 require_once(DEW_PREFIX . '/eventsCalendarClient.php');
 require_once(DEW_PREFIX . '/dew_tools.php');
+require_once(DEW_PREFIX . '/dew_format.php');
 
 /**
  * Displays the events list and the calendars
@@ -51,6 +52,8 @@ class DEW_Calendar {
 
 		$output = '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list">';
 
+		$eventFormat = DEW_format::eventInList();
+
 		$startDateTimestamp = 0;
 		foreach($events->data as $event) {
 			$startDateTimestampTmp = DEW_tools::dateStringToTime($event->startDate);
@@ -77,24 +80,9 @@ class DEW_Calendar {
 				              . $endDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $endTimestamp);
 			}
 
-			$renderedEvent = <<<EOT
-<div class="dew_showEvent">%(title)s</div>
-<div class="dew_eventElem dew_hide">
-  <div class="dew_content">
-    %(leadParagraph)s
-  </div>
-  <div class="dew_data">
-    <strong>When?</strong> %(renderedDate)s<br />
-    <strong>Where?</strong> %(location)s<br />
-    <strong>Arranger?</strong> %(arranger)s<br />
-    <strong>Category?</strong> %(category)s<br />
-  </div>
-</div>
-EOT;
-
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
-			$output .= DEW_tools::sprintfn($renderedEvent, array(
+			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
 				'renderedDate' => $renderedDate,
