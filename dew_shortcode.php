@@ -14,7 +14,7 @@ function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
 
 function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
 	$options = get_option('optionsDakEventsWp');
-	$client = new eventsCalendarClient ($options['eventServerUrl']);
+	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache']);
 	$locale = new WP_Locale();
 
 	$queryArgs = array();
@@ -76,7 +76,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 * )
 	 */
 	$options = get_option('optionsDakEventsWp');
-	$client = new eventsCalendarClient ($options['eventServerUrl']);
+	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache']);
 	$locale = new WP_Locale();
 
 	$queryArgs = array();

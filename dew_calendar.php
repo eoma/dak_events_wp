@@ -17,13 +17,14 @@ class DEW_Calendar {
 	private $locale;
 
 	private $eventServerUrl;
+	private $options;
 
 	/**
 	 * Constructor.
 	 */
 	function __construct() {
-		$options = get_option('optionsDakEventsWp');
-		$this->eventServerUrl = $options['eventServerUrl'];
+		$this->options = get_option('optionsDakEventsWp');
+		$this->eventServerUrl = $this->options['eventServerUrl'];
 		$this->locale = new WP_Locale();
 	}
 	
@@ -33,7 +34,7 @@ class DEW_Calendar {
 	 * @param int $num   number of events to list
 	 */
 	function displayEventList($num, $filter = null, $id_base = null) {
-		$client = new eventsCalendarClient($this->eventServerUrl);
+		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache']);
 		
 		$options = get_option('optionsDakEventsWp');
 		$dateFormat = $options['dateFormat'];

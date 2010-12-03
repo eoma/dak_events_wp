@@ -11,10 +11,11 @@ require_once(DEW_PREFIX . '/eventsCalendarClient.php');
 class DEW_Widget extends WP_Widget {
 
 	public $eventServerURL;
+	private $options;
 
 	function __construct() {
-		$options = get_option('optionsDakEventsWp');
-		$this->eventServerUrl = $options['eventServerUrl'];
+		$this->options = get_option('optionsDakEventsWp');
+		$this->eventServerUrl = $this->options['eventServerUrl'];
 		parent::__construct(false, 'DAK Events');
 	}
 
@@ -47,7 +48,7 @@ class DEW_Widget extends WP_Widget {
 		if (empty($instance['filter']['location_id'])) $instance['filter']['location_id'] = array();
 		if (empty($instance['filter']['category_id'])) $instance['filter']['category_id'] = array();
 
-		$client = new eventsCalendarClient($this->eventServerUrl);
+		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache']);
 
 		$arrangerList = $client->arrangerList()->data;
 		$locationList = $client->locationList()->data;
