@@ -96,7 +96,7 @@ class DEW_Calendar {
 
 		$output .= "</ul>";
 		
-		if ($output == '<ul id="' . $id_base . '-dak-events-wp-list"></ul>') {
+		if ($output == '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list"></ul>') {
 			echo '<ul><li id="no-events-in-list"><strong>Events are coming soon, stay tuned!</strong></li></ul>' ."\n";
 		} else {
 
