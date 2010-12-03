@@ -21,12 +21,19 @@ class DEW_Management {
 			$options['eventServerUrl'] = '';
 			$options['dateFormat'] = 'Y-m-d';
 			$options['timeFormat'] = 'H:i';
+			$options['cache'] = 0;
 		}
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
 			$options['eventServerUrl'] = !empty($_POST['eventServerUrl']) ? trim($_POST['eventServerUrl']) : '';
 			$options['dateFormat'] = !empty($_POST['dateFormat']) ? trim($_POST['dateFormat']) : 'Y-m-d';
 			$options['timeFormat'] = !empty($_POST['timeFormat']) ? trim($_POST['timeFormat']) : 'H:i';
+
+			if (!empty($_POST['cache']) && ($_POST['cache'] == 'on')) {
+				$options['cache'] = 1;
+			} else {
+				$options['cache'] = 0;
+			}
 
 			update_option('optionsDakEventsWp', $options);
 		}
@@ -40,16 +47,20 @@ class DEW_Management {
       </p>
       <table>
         <tr>
-          <th>URL to event server:</th>
-          <td><input type="text" name="eventServerUrl" size="64" value="<?php echo $options['eventServerUrl'] ?>" /></td>
+          <th><label for="dew_eventServerUrl">URL to event server</label></th>
+          <td><input type="text" id="dew_eventServerUrl" name="eventServerUrl" size="64" value="<?php echo $options['eventServerUrl'] ?>" /></td>
         </tr>
         <tr>
-          <th>Date format</th>
-          <td><input type="text" name="dateFormat" size="10" value="<?php echo $options['dateFormat'] ?>" /> <small>(see <a href="http://php.net/date">php date()</a></small></td>
+          <th><label for="dew_dateFormat">Date format</label></th>
+          <td><input type="text" id="dew_dateFormat" name="dateFormat" size="10" value="<?php echo $options['dateFormat'] ?>" /> <small>(see <a href="http://php.net/date">php date()</a></small></td>
         </tr>
         <tr>
-          <th>Time format</th>
-          <td><input type="text" name="timeFormat" size="10" value="<?php echo $options['timeFormat'] ?>" /> <small>(see <a href="http://php.net/date">php date()</a></small></td>
+          <th><label for="dew_timeFormat">Time format</label></th>
+          <td><input type="text" id="dew_timeFormat" name="timeFormat" size="10" value="<?php echo $options['timeFormat'] ?>" /> <small>(see <a href="http://php.net/date">php date()</a></small></td>
+        </tr>
+        <tr>
+          <th><label for="dew_cache">Use cache?</label></th>
+          <td><input id="dew_cache" type="checkbox" name="cache" <?php if ($options['cache'] == 1) echo 'checked="checked"' ?> /></td>
         </tr>
       </table>
       <input type="hidden" name="optionsDakEventsWpSubmitted" value="1" />
