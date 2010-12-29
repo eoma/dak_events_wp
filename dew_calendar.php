@@ -52,7 +52,7 @@ class DEW_Calendar {
 		}
 
 		$output = '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list">';
-
+		
 		$eventFormat = DEW_format::eventInList();
 
 		$startDateTimestamp = 0;
@@ -64,7 +64,7 @@ class DEW_Calendar {
 
 			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimestamp )));
 			$endDayName = ucfirst($this->locale->get_weekday(date('w', $endTimestamp )));
-						
+			
 			if ($startDateTimestamp != $startDateTimestampTmp) {
 				$startDateTimestamp = $startDateTimestampTmp;
 				$output .= '<li class="dew_eventList_date">' . $startDayName . ' ' . date($dateFormat, $startTimestamp) . '</li>' ;
@@ -94,8 +94,8 @@ class DEW_Calendar {
 
 			$output .= '</li>' . "\n";
 		}
-
-		$output .= "</ul>";
+		$output .= '</li>' . "\n";
+		$output .= '</ul>' . "\n";
 		
 		if ($output == '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list"></ul>') {
 			echo '<ul><li id="no-events-in-list"><strong>Events are coming soon, stay tuned!</strong></li></ul>' ."\n";

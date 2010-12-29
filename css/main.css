@@ -1,13 +1,13 @@
 .dew_eventToggled {
-	background-color: #ff5c54;
-	/*background-color: #FF6600;*/
+	background-color: #e44b44;
 	color: #000000;
 }
 
 .dew_showEvent {
-	padding: 0.4em;
 	clear: both;
 	overflow: hidden;
+  padding: 2px;
+	
 }
 
 .dew_showEvent span.event_name {
@@ -22,26 +22,17 @@
 }
 
 .dew_eventElem {
-	border-left: 1px solid #ff5c54;
-	border-right: 1px solid #ff5c54;
-	border-bottom: 1px solid #ff5c54;
-	padding: 0.4em;
+
 }
 
 ul.dew_eventList {
 	list-style-type: none !important;
 	margin-left: 0 !important;
 	padding-left: 0 !important;
-	/*text-indent: -1em;*/
 	margin-bottom: 20px;
 }
 
-ul.dew_eventList > li {
-	padding-left: 0 !important;
-}
-
 ul.dew_eventList > li.dew_event .dew_showEvent {
-	border-top: 1px dashed #000000;
 	cursor: pointer;
 }
 
@@ -54,5 +45,16 @@ ul.dew_eventList > li.dew_event .dew_eventToggled {
 }
 
 li.dew_eventList_date {
-  font-size: 1.1em;
+  font-weight: bold;
+  background-color: #E5190F;
+  color: #fff;
+  padding-left: 5px;
+  letter-spacing: 0.3em;
+  text-shadow: 0 -1px 0 #4c9021;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
