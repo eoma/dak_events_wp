@@ -37,3 +37,7 @@ ul.dew_eventList > li.dew_event .dew_eventToggled {
 .dew_hide {
 	display: none;
 }
+
+li.dew_eventList_date {
+  font-size: 1.1em;
+}

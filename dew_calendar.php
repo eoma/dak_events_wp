@@ -67,7 +67,7 @@ class DEW_Calendar {
 						
 			if ($startDateTimestamp != $startDateTimestampTmp) {
 				$startDateTimestamp = $startDateTimestampTmp;
-				$output .= '<li class="dew_eventList_date"><strong>' . $startDayName . ' ' . date($dateFormat, $startTimestamp) . '</strong></li>' ;
+				$output .= '<li class="dew_eventList_date">' . $startDayName . ' ' . date($dateFormat, $startTimestamp) . '</li>' ;
 			}
 
 			$location = DEW_tools::getLocationFromEvent($event);
