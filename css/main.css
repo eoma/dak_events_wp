@@ -6,6 +6,19 @@
 
 .dew_showEvent {
 	padding: 0.4em;
+	clear: both;
+	overflow: hidden;
+}
+
+.dew_showEvent span.event_name {
+  width: 200px;
+  float: left;
+}
+.dew_showEvent span.location_name {
+  float: right;
+  text-align: right;
+  font-size: 0.9em;
+  width: 110px;
 }
 
 .dew_eventElem {
@@ -20,6 +33,7 @@ ul.dew_eventList {
 	margin-left: 0 !important;
 	padding-left: 0 !important;
 	/*text-indent: -1em;*/
+	margin-bottom: 20px;
 }
 
 ul.dew_eventList > li {
@@ -28,6 +42,7 @@ ul.dew_eventList > li {
 
 ul.dew_eventList > li.dew_event .dew_showEvent {
 	border-top: 1px dashed #000000;
+	cursor: pointer;
 }
 
 ul.dew_eventList > li.dew_event .dew_eventToggled {

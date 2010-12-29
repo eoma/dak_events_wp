@@ -5,7 +5,7 @@ class DEW_format {
 	static public function eventInList() {
 		// All named arguments are required in the format
 		$format = <<<EOT
-<div class="dew_showEvent">%(title)s</div>
+<div class="dew_showEvent"><span class="event_name">%(title)s</span>  <span class="location_name">%(location)s</span></div>
 <div class="dew_eventElem dew_hide">
   <div class="dew_content">
     %(leadParagraph)s
