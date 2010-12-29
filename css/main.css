@@ -1,6 +1,7 @@
 .dew_eventToggled {
-	background-color: #e44b44;
+	background-color: #f5c2bf;
 	color: #000000;
+	border-bottom: 1px solid #f5c2bf;
 }
 
 .dew_showEvent {
@@ -25,6 +26,9 @@
 
 .dew_eventElem {
   padding-bottom: 5px;
+  background-color: #f8ccca;
+	color: #000000;
+	border-bottom: 3px solid #f7b5b2;
 }
 
 ul.dew_eventList {
