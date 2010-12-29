@@ -52,12 +52,18 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 
 	$location = DEW_tools::getLocationFromEvent($event);
 
+	$categories = '';
+	foreach ($event->categories as $c) {
+		$categories .= $c->name . ', ';
+	}
+	$categories = substr($categories, 0, -2);
+
 	$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), array(
 		'title' => $event->title,
 		'date' => $date,
 		'location' => $location,
 		'arranger' => $event->arranger->name,
-		'category' => $event->category->name,
+		'category' => $categories,
 	));
 
 	return $output;
@@ -126,6 +132,12 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 			$location = DEW_tools::getLocationFromEvent($event);
 
+			$categories = '';
+			foreach ($event->categories as $c) {
+				$categories .= $c->name . ', ';
+			}
+			$categories = substr($categories, 0, -2);
+
 			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
@@ -133,7 +145,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'renderedDate' => $renderedDate,
 				'location' => $location,
 				'arranger' => $event->arranger->name,
-				'category' => $event->category->name,
+				'category' => $categories,
 			));
 
 		}
