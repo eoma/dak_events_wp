@@ -54,7 +54,7 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 
 	$categories = '';
 	foreach ($event->categories as $c) {
-		$catgegories .= $c->name . ', ';
+		$categories .= $c->name . ', ';
 	}
 
 	$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), array(
@@ -133,7 +133,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 			$categories = '';
 			foreach ($event->categories as $c) {
-				$catgegories .= $c->name . ', ';
+				$categories .= $c->name . ', ';
 			}
 
 			$output .= DEW_tools::sprintfn($eventFormat, array(

@@ -85,7 +85,7 @@ class DEW_Calendar {
 
 			$categories = '';
                         foreach ($event->categories as $c) {
-				$catgegories .= $c->name . ', ';
+				$categories .= $c->name . ', ';
 			}
 			$categories = substr($categories, 0, -2);
 
