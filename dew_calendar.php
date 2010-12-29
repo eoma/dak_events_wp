@@ -83,13 +83,19 @@ class DEW_Calendar {
 
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
+			$categories = '';
+                        foreach ($event->categories as $c) {
+				$catgegories .= $c->name . ', ';
+			}
+			$categories = substr($categories, 0, -2);
+
 			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
 				'renderedDate' => $renderedDate,
 				'location' => $location,
 				'arranger' => $event->arranger->name,
-				'category' => $event->category->name,
+				'category' => $categories,
 			));
 
 			$output .= '</li>' . "\n";
