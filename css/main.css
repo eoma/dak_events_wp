@@ -7,7 +7,9 @@
 	clear: both;
 	overflow: hidden;
   padding: 2px;
-	
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
 
 .dew_showEvent span.event_name {
@@ -22,7 +24,7 @@
 }
 
 .dew_eventElem {
-
+  padding-bottom: 5px;
 }
 
 ul.dew_eventList {
@@ -57,4 +59,12 @@ li.dew_eventList_date {
   -webkit-border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
+}
+
+.dew_content {
+  padding: 3px;
+}
+
+.dew_data {
+  padding: 3px;
 }

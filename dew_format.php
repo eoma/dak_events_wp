@@ -11,10 +11,10 @@ class DEW_format {
     %(leadParagraph)s
   </div>
   <div class="dew_data">
-    <strong>When?</strong> %(renderedDate)s<br />
-    <strong>Where?</strong> %(location)s<br />
-    <strong>Arranger?</strong> %(arranger)s<br />
-    <strong>Category?</strong> %(category)s<br />
+    <strong>Når:</strong> %(renderedDate)s<br />
+    <strong>Hvor:</strong> %(location)s<br />
+    <strong>Arrangør:</strong> %(arranger)s<br />
+    <strong>Type:</strong> %(category)s<br />
   </div>
 </div>
 EOT;
