@@ -163,6 +163,17 @@ class eventsCalendarClient {
 		$args['id'] = intval($id);
 		return $this->getData('event/get', $args);
 	}
+
+	/**
+	 * Returns a specific festival with id $id
+	 * @param integer $id Festival id
+	 * @param array $args Other arguments
+	 * @return array
+	 */
+	public function festival($id, array $args = array()) {
+		$args['id'] = intval($id);
+		return $this->getData('festival/get', $args);
+	}
 }
 
 //$eventsCalendar = new eventsCalendarClient($url, null, 0);
