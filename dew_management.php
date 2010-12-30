@@ -26,6 +26,22 @@ class DEW_Management {
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
 			$options['eventServerUrl'] = !empty($_POST['eventServerUrl']) ? trim($_POST['eventServerUrl']) : '';
+
+			if ( ! empty($_POST['eventServerUrl']) ) {
+				$url = trim(strval($_POST['eventServerUrl']));
+
+				// We'll only accept root application url.
+				if (substr($usrl, -8) == 'api/json') {
+					$_POST['eventServerUrl'] = substr($url, 0, -8);
+				} else if (substr($url, -9) == 'api/json/') {
+					$_POST['eventServerUrl'] = substr($url, 0, -9);
+				} else {
+					$_POST['eventServerUrl'] = $url;
+				}
+			} else {
+				$options['eventServerUrl'] = '';
+			}
+
 			$options['dateFormat'] = !empty($_POST['dateFormat']) ? trim($_POST['dateFormat']) : 'Y-m-d';
 			$options['timeFormat'] = !empty($_POST['timeFormat']) ? trim($_POST['timeFormat']) : 'H:i';
 
