@@ -24,7 +24,7 @@ class eventsCalendarClient {
 	private $apiKey;
 
 	public function __construct ($url, $apiKey = null, $enableCache = 1, $cacheTime = 5) {
-		$this->url = strval($url);
+		$this->url = strval($url) . 'api/json/';
 		$this->apiKey = $apiKey;
 		$this->cacheTime = intval($cacheTime);
 		$this->enableCache = intval($enableCache);
