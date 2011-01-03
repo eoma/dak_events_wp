@@ -29,10 +29,10 @@ EOT;
 %(leadParagraph)s
 %(description)s
 <p>
-  <strong>When?</strong> %(renderedDate)s<br />
-  <strong>Where?</strong> %(location)s<br />
-  <strong>Arranger?</strong> %(arranger)s<br />
-  <string>Category?</strong> %(category)s
+  <strong>Når:</strong> %(renderedDate)s<br />
+  <strong>Hvor:</strong> %(location)s<br />
+  <strong>Arrangør:</strong> %(arranger)s<br />
+  <strong>Type:</strong> %(category)s<br />
 </p>
 EOT;
 
@@ -43,11 +43,11 @@ EOT;
 		// All named arguments are required in the format
 		$format = <<<EOT
 <p>
-  <strong>What?</strong> %(title)s<br />
-  <strong>When?</strong> %(date)s<br />
-  <strong>Location?</strong> %(location)s<br />
-  <strong>Arranger?</strong> %(arranger)s<br />
-  <strong>Category?</strong> %(category)s
+  <strong>Tittel:</strong> %(title)s<br />
+  <strong>Når:</strong> %(renderedDate)s<br />
+  <strong>Hvor:</strong> %(location)s<br />
+  <strong>Arrangør:</strong> %(arranger)s<br />
+  <strong>Type:</strong> %(category)s<br />
 </p>
 EOT;
 

@@ -77,3 +77,15 @@ li.dew_eventList_date {
 .event_date_list {
   display: none;
 }
+
+.dew_agenda h2 {
+  background-color: #E5190F;
+  margin-bottom: 10px;
+  color: #fff;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.event_date_list {
+  padding: 5px;
+}
