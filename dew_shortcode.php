@@ -155,7 +155,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
     $output .= "</div>\n";
 	}
 
-	$output .= '<button type="button" class="dew_agenda_loadExtra">Load more</button>';
+	//$output .= '<button type="button" class="dew_agenda_loadExtra">Load more</button>';
 
 	$output .= "</div>\n";
 
