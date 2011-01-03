@@ -116,6 +116,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 		
 		$output .= "<h2>" . $startDayName . ' ' . date($dateFormat, $timestamp) . "</h2>\n";
 
+    $output .= "<div class='event_date_list'>\n";
+
 		foreach($events as $event) {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
@@ -149,7 +151,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			));
 
 		}
-
+    
+    $output .= "</div>\n";
 	}
 
 	$output .= '<button type="button" class="dew_agenda_loadExtra">Load more</button>';

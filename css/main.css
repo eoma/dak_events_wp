@@ -1,5 +1,5 @@
 .dew_eventToggled {
-	background-color: #f5c2bf;
+	background-color: #D5E1DD;
 	color: #000000;
 	border-bottom: 1px solid #f5c2bf;
 }
@@ -26,7 +26,7 @@
 
 .dew_eventElem {
   padding-bottom: 5px;
-  background-color: #f8ccca;
+  background-color: #F7F3E8;
 	color: #000000;
 	border-bottom: 3px solid #f7b5b2;
 }
@@ -54,7 +54,8 @@ li.dew_eventList_date {
   font-weight: bold;
   background-color: #E5190F;
   color: #fff;
-  padding-left: 5px;
+  padding: 5px;
+  padding-bottom: 3px;
   letter-spacing: 0.3em;
   text-shadow: 0 -1px 0 #4c9021;
   -moz-border-radius-topright: 3px;

@@ -6,4 +6,9 @@ jQuery(document).ready(function(){
     jQuery(this).toggleClass('dew_eventToggled');
     jQuery(this).parent().children('.dew_eventElem').slideToggle('fast');
   });
+  
+  jQuery('.event_date_list').hide();
+  jQuery('.dew_agenda h2').click(function(){
+    jQuery(this).next('.event_date_list').slideToggle('fast');
+  })
 });
