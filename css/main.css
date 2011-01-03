@@ -73,3 +73,7 @@ li.dew_eventList_date {
 .dew_data {
   padding: 3px;
 }
+
+.event_date_list {
+  display: none;
+}
