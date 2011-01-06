@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
     jQuery(this).parent().children('.dew_eventElem').slideToggle('fast');
   });
   
-  jQuery('.dew_agenda h2').click(function(){
-    jQuery(this).next('.event_date_list').slideToggle('fast');
+  jQuery('.dew_agenda .agenda_read_more').click(function(){
+    jQuery(this).next('.agenda_description').slideToggle('slow');
   })
 });

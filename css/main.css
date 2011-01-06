@@ -133,7 +133,8 @@ li.dew_eventList_date {
 .event_date_list {
   padding: 5px;
   float: left;
-  width: 400px;
+  width: 450px;
+  margin-bottom: 15px;
 }
 
 .agenda_day_name {
@@ -164,4 +165,22 @@ li.dew_eventList_date {
 
 p.agenda_data {
   font-weight: bold;
+}
+
+.agenda_description {
+  display: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.agenda_read_more {
+  background-color: #eee;
+  display: block;
+  padding: 3px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  padding-left: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  margin-bottom: 10px;
 }

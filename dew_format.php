@@ -34,7 +34,12 @@ EOT;
   Arrangør: %(arranger)s
 </p>
 %(leadParagraph)s
-%(description)s
+<span class="agenda_read_more">
+  Les mer
+</span>
+<div class="agenda_description">
+  %(description)s
+</div>
 EOT;
 
 		return $format;
