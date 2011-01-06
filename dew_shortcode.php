@@ -114,7 +114,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	foreach ($dateSortedEvents as $timestamp => $events) {
 		$startDayName = ucfirst($locale->get_weekday(date('w', $timestamp )));
 		
-		$output .= "<h2>" . $startDayName . ' ' . date($dateFormat, $timestamp) . "</h2>\n";
+		$output .= "<h2><span class='agenda_day_name'>" . $startDayName . "</span> <span class='agenda_day_number'>" . date('j', $timestamp) . "</span><span class='agenda_month_name'>" . date('F', $timestamp) . "</span></h2>\n";
 
     $output .= "<div class='event_date_list'>\n";
 

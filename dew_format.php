@@ -29,14 +29,12 @@ EOT;
 		// All named arguments are required in the format
 		$format = <<<EOT
 <h3>%(title)s</h3>
+<p class="agenda_data">
+  %(category)s i %(location)s<br />
+  Arrangør: %(arranger)s
+</p>
 %(leadParagraph)s
 %(description)s
-<p>
-  <strong>Når:</strong> %(renderedDate)s<br />
-  <strong>Hvor:</strong> %(location)s<br />
-  <strong>Arrangør:</strong> %(arranger)s<br />
-  <strong>Type:</strong> %(category)s<br />
-</p>
 EOT;
 
 		return $format;
