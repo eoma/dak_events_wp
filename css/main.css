@@ -122,12 +122,14 @@ li.dew_eventList_date {
   background-color: #eee;
   text-align: center;
   margin-right: 10px;
+  font-size: 0.9em;
 }
 
 .dew_agenda h3 {
   padding-bottom: 5px;
   color: #444;
   font-size: 1.3em;
+  margin-top: 0;
 }
 
 .event_date_list {
