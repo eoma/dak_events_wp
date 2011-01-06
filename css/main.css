@@ -50,9 +50,7 @@ span.event_time {
 
 .dew_eventElem {
   padding-bottom: 5px;
-  background-color: #F7F3E8;
 	color: #000000;
-	border-bottom: 3px solid #f7b5b2;
 }
 
 ul.dew_eventList {
@@ -97,6 +95,10 @@ li.dew_eventList_date {
 
 .dew_eventToggled .location_name {
   color: #fff;
+}
+
+.dew_eventToggled .event_name {
+  border-bottom: 1px solid #999;
 }
 
 .dew_content {
