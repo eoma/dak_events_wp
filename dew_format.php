@@ -28,9 +28,11 @@ EOT;
 	static public function fullEvent() {
 		// All named arguments are required in the format
 		$format = <<<EOT
+<div class="agenda_event_wrapper">
 <h3>%(title)s</h3>
 <p class="agenda_data">
   %(category)s i %(location)s<br />
+  Starter: %(startTime)s<br />
   Arrangør: %(arranger)s
 </p>
 %(leadParagraph)s
@@ -39,6 +41,7 @@ EOT;
 </span>
 <div class="agenda_description">
   %(description)s
+</div>
 </div>
 EOT;
 

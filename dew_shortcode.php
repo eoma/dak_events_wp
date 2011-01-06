@@ -148,6 +148,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'location' => $location,
 				'arranger' => $event->arranger->name,
 				'category' => $categories,
+				'startTime' => date($timeFormat, $startTimestamp)
 			));
 
 		}

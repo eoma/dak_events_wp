@@ -184,3 +184,7 @@ p.agenda_data {
   cursor: pointer;
   margin-bottom: 10px;
 }
+
+.agenda_event_wrapper {
+  margin-bottom: 20px;
+}
