@@ -80,11 +80,10 @@ class DEW_Calendar {
 				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' to '
 				              . $endDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $endTimestamp);
 			}
-
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
 			$categories = '';
-                        foreach ($event->categories as $c) {
+      foreach ($event->categories as $c) {
 				$categories .= $c->name . ', ';
 			}
 			$categories = substr($categories, 0, -2);
@@ -93,11 +92,11 @@ class DEW_Calendar {
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
 				'renderedDate' => $renderedDate,
+				'renderedTime' => date($timeFormat, $startTimestamp),
 				'location' => $location,
 				'arranger' => $event->arranger->name,
 				'category' => $categories,
 			));
-
 			$output .= '</li>' . "\n";
 		}
 		$output .= '</li>' . "\n";

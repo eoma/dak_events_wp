@@ -1,3 +1,10 @@
+h3.widget-title {
+  color: #990000;
+  text-align: center;
+  font-size: 1.45em;
+  padding-bottom: 5px;
+}
+
 .dew_eventToggled {
 	background-color: #D5E1DD;
 	color: #000000;
@@ -7,21 +14,38 @@
 .dew_showEvent {
 	clear: both;
 	overflow: hidden;
-  padding: 2px;
+	padding: 5px;
+  padding-left: 10px;
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;
+  background-image: url('../images/event-gradient.png');
+  background-position: bottom;
+  background-repeat: repeat-x;
+  height: 45px;
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #eee;
 }
 
-.dew_showEvent span.event_name {
-  width: 200px;
+span.event_name {
+  width: 300px;
   float: left;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+  font-size: 1.05em;
 }
-.dew_showEvent span.location_name {
-  float: right;
-  text-align: right;
+span.location_name {
+  float: left;
   font-size: 0.9em;
-  width: 110px;
+  color: #666;
+  width: 300px;
+  padding-top: 3px;
+}
+
+span.event_time {
+  text-align: right;
+  float: right;
 }
 
 .dew_eventElem {
@@ -52,18 +76,27 @@ ul.dew_eventList > li.dew_event .dew_eventToggled {
 
 li.dew_eventList_date {
   font-weight: bold;
-  background-color: #E5190F;
+  background-color: #000;
   color: #fff;
-  padding: 5px;
-  padding-bottom: 3px;
+  line-height: 32px;
+  padding-left: 10px;
   letter-spacing: 0.3em;
   text-shadow: 0 -1px 0 #4c9021;
-  -moz-border-radius-topright: 3px;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-right-radius: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
+  margin-top: 10px;
+  background-image: url('../images/event-date-gradient.png');
+  background-repeat: repeat-x;
+  height: 32px;
+}
+
+.dew_eventToggled {
+  background-image: url('../images/event-open-gradient.png');
+  background-position: bottom;
+  background-repeat: repeat-x;
+  color: #fff;
+}
+
+.dew_eventToggled .location_name {
+  color: #fff;
 }
 
 .dew_content {
