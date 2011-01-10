@@ -31,7 +31,7 @@ class DEW_Management {
 				$url = trim(strval($_POST['eventServerUrl']));
 
 				// We'll only accept root application url.
-				if (substr($usrl, -8) == 'api/json') {
+				if (substr($url, -8) == 'api/json') {
 					$url = substr($url, 0, -8);
 				} else if (substr($url, -9) == 'api/json/') {
 					$url = substr($url, 0, -9);
