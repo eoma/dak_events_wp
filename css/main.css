@@ -35,6 +35,9 @@ span.event_name {
   border-bottom: 1px solid #ccc;
   padding-bottom: 3px;
   font-size: 1.05em;
+  background-image: url('../images/arrow-closed.png');
+  background-position: right;
+  background-repeat: no-repeat;
 }
 span.location_name {
   float: left;
@@ -100,6 +103,9 @@ li.dew_eventList_date {
 
 .dew_eventToggled .event_name {
   border-bottom: 1px solid red;
+  background-image: url('../images/arrow-open.png');
+  background-position: right;
+  background-repeat: no-repeat;
 }
 
 .dew_content {
