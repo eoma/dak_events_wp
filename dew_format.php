@@ -6,7 +6,7 @@ class DEW_format {
 		$format = <<<EOT
 <div class="dew_showEvent">
   <span class="event_name">%(title)s</span>
-  <span class="location_name">%(category)s i %(location)s <span class="event_time">%(renderedTime)s</span></span>
+  <span class="location_name">%(category)s - %(location)s <span class="event_time">%(renderedTime)s</span></span>
 </div>
 <div class="dew_eventElem dew_hide">
   <div class="dew_content">
@@ -61,5 +61,4 @@ EOT;
 
 		return $format;
 	}
-
 }

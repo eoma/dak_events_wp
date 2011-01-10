@@ -72,11 +72,11 @@ class DEW_Calendar {
 
 			if ($event->startDate == $event->endDate) {
 				$renderedDate = $startDayName . ' ' . date($dateFormat, $startTimestamp)
-				              . ' from ' . date($timeFormat, $startTimestamp) . ' to '
+				              . ' fra ' . date($timeFormat, $startTimestamp) . ' til '
 				              . date($timeFormat, $endTimestamp);
 			} else {
-				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' to '
-				              . $endDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $endTimestamp);
+				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' til '
+				              . strftime("%R", $endTimestamp);
 			}
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
