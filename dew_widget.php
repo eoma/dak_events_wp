@@ -9,7 +9,7 @@ require_once(DEW_PREFIX . '/eventsCalendarClient.php');
  * depending on the widget control option.
  */
 class DEW_Widget extends WP_Widget {
-
+  
 	public $eventServerURL;
 	private $options;
 

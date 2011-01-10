@@ -35,7 +35,6 @@ class DEW_Calendar {
 	 */
 	function displayEventList($num, $filter = null, $id_base = null) {
 		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache']);
-		
 		$options = get_option('optionsDakEventsWp');
 		$dateFormat = $options['dateFormat'];
 		$timeFormat = $options['timeFormat'];
@@ -58,7 +57,6 @@ class DEW_Calendar {
 		$startDateTimestamp = 0;
 		foreach($events->data as $event) {
 			$startDateTimestampTmp = DEW_tools::dateStringToTime($event->startDate);
-
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 

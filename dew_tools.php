@@ -52,7 +52,7 @@ class DEW_tools {
 		if (empty($event->location_id) || ($event->location_id == 0)) {
 			return $event->customLocation;
 		} else {
-			return $event->recurringLocation->name;
+			return $event->commonLocation->name;
 		}
 	}
 

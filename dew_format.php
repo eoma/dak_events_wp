@@ -1,5 +1,4 @@
 <?php
-
 class DEW_format {
 
 	static public function eventInList() {
