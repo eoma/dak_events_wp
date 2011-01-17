@@ -105,7 +105,7 @@ class DEW_Calendar {
 		$output .= '</ul>' . "\n";
 		
 		if ($output == '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list"></ul>') {
-			echo '<ul><li id="no-events-in-list"><strong>Det er for øyeblikket ingen arrangement lagt til.</strong></li></ul>' ."\n";
+			echo '<ul><li id="no-events-in-list"><strong>' . __('No arrangements at the moment.', 'dak_events_wp') . '</strong></li></ul>' ."\n";
 		} else {
 
 			if (false !== strpos($output, "\'")) {

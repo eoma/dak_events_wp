@@ -93,40 +93,40 @@ class DEW_Widget extends WP_Widget {
 		?>
  <input type="hidden" id="<?php echo $base_id ?>" value="<?php echo $baseName ?>" />
  <p>
-  <label for="<?php echo $title_id; ?>">Title:
+  <label for="<?php echo $title_id; ?>"><?php _e('Title:', 'dak_events_wp') ?>
    <input type='text' id='<?php echo $title_id; ?>' name='<?php echo $titleName; ?>' value='<?php echo $title; ?>'/>
   </label>
  </p>
  <p style="text-align:center;">
   <label for="<?php echo $type_id; ?>">
-   Calendar Type:
+   <?php _e('Calendar Type:', 'dak_events_wp') ?>
    <select class="dew_type" name="<?php echo $typeName; ?>" id="<?php echo $type_id; ?>">
-    <option value="calendar">Calendar</option>
-    <option value="list" <?php if ( isset($instance['type']) && 'list' == $instance['type'] ) echo 'selected="selected"'; ?>>Event List</option>
+    <option value="calendar"><?php _e('Calendar', 'dak_events_wp') ?></option>
+    <option value="list" <?php if ( isset($instance['type']) && 'list' == $instance['type'] ) echo 'selected="selected"'; ?>><?php _e('Event List', 'dak_events_wp') ?></option>
    </select>
   </label>
  </p>
  <div id="<?php echo $eventListOptions_id; ?>" style="<?php if ( 'list' != $instance['type'] ) echo 'display: none;'; ?>">
   <p>
-   <span style="font-weight: bold">Event List options</span>
+   <span style="font-weight: bold"><?php _e('Event List options', 'dak_events_wp') ?></span>
   </p>
   <p>
    <label for="<?php echo $listCount_id; ?>">
-    Number of events:
+    <?php _e('Number of events:', 'dak_events_wp') ?>
     <input style="width: 30px;" type="text" id="<?php echo $listCount_id; ?>" name="<?php echo $listCountName; ?>" value="<?php echo $instance['listCount']; ?>" />
    </label>
   </p>
   <p>
    <label for="<?php echo $daysInFuture_id; ?>">
-    How many days into the future shall it display (if 0, infinite days, only limited by number of events):
+    <?php _e('How many days into the future shall it display (if 0, infinite days, only limited by number of events):', 'dak_events_wp') ?>
     <input style="width: 30px;" type="text" id="<?php echo $daysInfuture_id; ?>" name="<?php echo $daysInFutureName; ?>" value="<?php echo $instance['filter']['daysInFuture']; ?>" />
    </label>
   </p>
  </div>
- <span>Requires events to be</span>
+ <span><?php _e('Requires events to be', 'dak_events_wp') ?></span>
 <!-- Arrangers -->
  <div style="margin-top: 0.2em;">
-  <span style="font-weight: bold">arranged by</span>
+  <span style="font-weight: bold"><?php _e('arranged by', 'dak_events_wp') ?></span>
   <div id="<?php echo $chosenArrangerList_id; ?>">
   <?php
   		if (count($instance['filter']['arranger_id']) > 0) {
@@ -135,7 +135,7 @@ class DEW_Widget extends WP_Widget {
 					echo '<div id="' . $chosenArrangerList_id . '-' . $a->id . '">';
 					echo '<input type="hidden" name="' . $arranger_idName . '" value="' . $a->id . '"/>';
 					echo '<span>' . $a->name . ' </span>';
-					echo '<button class="dew_deleteElement" type="button"><small>Delete</small></button>';
+					echo '<button class="dew_deleteElement" type="button"><small>' . __('Delete', 'dak_events_wp') . '</small></button>';
 					echo '</div>';
 				}
 			}
@@ -145,11 +145,11 @@ class DEW_Widget extends WP_Widget {
   <select id="<?php echo $arrangerList_id; ?>">
    <?php echo $this->makeSelectOption($arrangerList, 'id', 'name'); ?>
   </select>
-  <button class="dew_addArrangerButton" id="<?php echo $addArrangerButton_id; ?>" type="button">Add arranger</button>
+  <button class="dew_addArrangerButton" id="<?php echo $addArrangerButton_id; ?>" type="button"><?php _e('Add arranger', 'dak_events_wp') ?></button>
  </div>
 <!-- Locations -->
  <div style="margin-top: 0.2em;">
-  <span style="font-weight: bold">located at</span>
+  <span style="font-weight: bold"><?php _e('located at', 'dak_events_wp') ?></span>
   <div id="<?php echo $chosenLocationList_id; ?>">
   <?php
   		if (count($instance['filter']['location_id']) > 0) {
@@ -158,7 +158,7 @@ class DEW_Widget extends WP_Widget {
 					echo '<div id="' . $chosenLocationList_id . '-' . $a->id . '">';
 					echo '<input type="hidden" name="' . $location_idName . '" value="' . $a->id . '"/>';
 					echo '<span>' . $a->name . ' </span>';
-					echo '<button class="dew_deleteElement" type="button"><small>Delete</small></button>';
+					echo '<button class="dew_deleteElement" type="button"><small>' . __('Delete', 'dak_events_wp') . '</small></button>';
 					echo '</div>';
 				}
 			}
@@ -168,11 +168,11 @@ class DEW_Widget extends WP_Widget {
   <select id="<?php echo $locationList_id; ?>">
    <?php echo $this->makeSelectOption($locationList, 'id', 'name'); ?>
   </select>
-  <button class="dew_addLocationButton" id="<?php echo $addLocationButton_id; ?>" type="button">Add Location</button>
+  <button class="dew_addLocationButton" id="<?php echo $addLocationButton_id; ?>" type="button"><?php _e('Add Location', 'dak_events_wp') ?></button>
  </div>
 <!-- Categories -->
  <div style="margin-top: 0.2em;">
-  <span style="font-weight: bold">categorized as</span>
+  <span style="font-weight: bold"><?php _e('categorized as', 'dak_events_wp') ?></span>
   <div id="<?php echo $chosenCategoryList_id; ?>">
   <?php
   		if (count($instance['filter']['category_id']) > 0) {
@@ -181,7 +181,7 @@ class DEW_Widget extends WP_Widget {
 					echo '<div id="' . $chosenCategoryList_id . '-' . $a->id . '">';
 					echo '<input type="hidden" name="' . $category_idName . '" value="' . $a->id . '"/>';
 					echo '<span>' . $a->name . ' </span>';
-					echo '<button class="dew_deleteElement" type="button"><small>Delete</small></button>';
+					echo '<button class="dew_deleteElement" type="button"><small>' . __('Delete', 'dak_events_wo') . '</small></button>';
 					echo '</div>';
 				}
 			}
@@ -191,7 +191,7 @@ class DEW_Widget extends WP_Widget {
   <select id="<?php echo $categoryList_id; ?>">
    <?php echo $this->makeSelectOption($categoryList, 'id', 'name'); ?>
   </select>
-  <button class="dew_addCategoryButton" id="<?php echo $addCategoryButton_id; ?>" type="button">Add Category</button>
+  <button class="dew_addCategoryButton" id="<?php echo $addCategoryButton_id; ?>" type="button"><?php _e('Add Category', 'dak_events_wp') ?></button>
  </div>
 		<?php
 	}

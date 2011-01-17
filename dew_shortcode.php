@@ -23,13 +23,13 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 	$timeFormat = $options['timeFormat'];
 
 	if (!isset($atts['id'])) {
-		return "<p>No event id specified</p>";
+		return "<p>" . __('No event id specified', 'dak_events_wp') . "</p>";
 	}
 	
 	$result = $client->event($atts['id']);
 
 	if ($result->totalCount == 0) {
-		return "<p>No event found with specified id " . $atts['id'] . "</p>";
+		return "<p>" . sprintf(__('No event found with specified id %d.', 'dak_events_wp'), $atts['id']) . "</p>";
 	}
 
 	$event = $result->data[0];
@@ -39,15 +39,23 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 
 	if ($event->startDate == $event->endDate) {
 		$day = ucfirst($locale->get_weekday(date('w', $startTimestamp )));
-		$date = date($dateFormat, $startTimestamp) 
-		        . ' from ' . date($timeFormat, $startTimestamp) . ' to ' 
-		        . date($timeFormat, $endTimestamp);
+		$date = sprintf(__('%s %s from %s to %s', 'dak_events_wp'),
+			$day,
+			date($dateFormat, $startTimestamp),
+			date($timeFormat, $startTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
 	} else {
 		$startDay = ucfirst($locale->get_weekday(date('w', $startTimestamp )));
 		$endDay = ucfirst($locale->get_weekday(date('w', $endTimestamp )));
-		$date = $startDay . ' ' . date($dateFormat, $startTimestamp) 
-		        . ' from ' . date($timeFormat, $startTimestamp) . ' to ' 
-		        . $endDay . ' ' . date($dateFormat, $endTimestamp) . ' ' .  date($timeFormat, $endTimestamp);
+		$date = sprintf(__('%s %s %s from %s to %s %s %s', 'dak_events_wp'),
+			$startDay,
+			date($dateFormat, $startTimestamp),
+		        date($timeFormat, $startTimestamp),
+		        $endDay,
+			date($dateFormat, $endTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
 	}
 
 	$location = DEW_tools::getLocationFromEvent($event);
@@ -123,13 +131,18 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 
 			if ($event->startDate == $event->endDate) {
-				$renderedDate = date($dateFormat, $startTimestamp)
-				          . ' from ' . date($timeFormat, $startTimestamp) . ' to '
-				          . date($timeFormat, $endTimestamp);
+				$renderedData = sprintf(__('%s from %s to %s', 'dak_events_wp'),
+					date($dateFormat, $startTimestamp),
+					date($timeFormat, $startTimestamp),
+					date($timeFormat, $endTimestamp)
+				);
 			} else {
-				$renderedDate = date($dateFormat, $startTimestamp) 
-				        . ' from ' . date($timeFormat, $startTimestamp) . ' to '
-				        . date($dateFormat, $endTimestamp) . ' ' .  date($timeFormat, $endTimestamp);
+				$renderedDate = sprintf(__('%s from %s to %s %s', 'dak_events_wp'),
+					date($dateFormat, $startTimestamp),
+					date($timeFormat, $startTimestamp),
+					date($dateFormat, $endTimestamp),
+					date($timeFormat, $endTimestamp)
+				);
 			}
 
 			$location = DEW_tools::getLocationFromEvent($event);

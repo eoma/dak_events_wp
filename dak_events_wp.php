@@ -16,14 +16,16 @@ require_once( DEW_PREFIX . '/dew_management.php' );
 require_once( DEW_PREFIX . '/dew_calendar.php' );
 require_once( DEW_PREFIX . '/dew_shortcode.php' );
 
+
 function DakEventsWpInit () {
 	wp_enqueue_script('dew_js_events', DEW_URL . '/js/events.js', array('jquery'));
 	wp_enqueue_style('dew_mainStyle', DEW_URL . '/css/main.css');
+	load_plugin_textdomain('dak_events_wp', false, dirname(plugin_basename(__FILE__)) . '/i18n');
 }
 
 function DakEventsWpAdminMenu () {
         $management = new DEW_Management();
-	add_menu_page('DAK Events Calendar','DAK Events Calendar', 'activate_plugins', 'dak-events-calendar', array(&$management, 'options'));
+	add_menu_page(__('DAK Events Calendar', 'dew'),__('DAK Events Calendar', 'dew'), 'activate_plugins', 'dak-events-calendar', array(&$management, 'options'));
 }
 
 function DakEventsWpAdminHeaderScript () {
