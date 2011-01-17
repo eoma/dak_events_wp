@@ -1,0 +1,160 @@
+# Copyright (C) 2010 Det Akademiske Kvarter (DAK) Events WordPress plugin
+# This file is distributed under the same license as the Det Akademiske Kvarter (DAK) Events WordPress plugin package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin "
+"0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
+"POT-Creation-Date: 2011-01-17 11:20:59+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: dew_widget.php:96 dew_format.php:52
+msgid "Title:"
+msgstr ""
+
+#: dew_widget.php:102
+msgid "Calendar Type:"
+msgstr ""
+
+#: dew_widget.php:104
+msgid "Calendar"
+msgstr ""
+
+#: dew_widget.php:105
+msgid "Event List"
+msgstr ""
+
+#: dew_widget.php:111
+msgid "Event List options"
+msgstr ""
+
+#: dew_widget.php:115
+msgid "Number of events:"
+msgstr ""
+
+#: dew_widget.php:121
+msgid ""
+"How many days into the future shall it display (if 0, infinite days, only "
+"limited by number of events):"
+msgstr ""
+
+#: dew_widget.php:126
+msgid "Require events to be"
+msgstr ""
+
+#: dew_widget.php:129
+msgid "arranged by"
+msgstr ""
+
+#: dew_widget.php:138 dew_widget.php:161 dew_widget.php:184
+msgid "Delete"
+msgstr ""
+
+#: dew_widget.php:148
+msgid "Add arranger"
+msgstr ""
+
+#: dew_widget.php:152
+msgid "located at"
+msgstr ""
+
+#: dew_widget.php:171
+msgid "Add Location"
+msgstr ""
+
+#: dew_widget.php:175
+msgid "categorized as"
+msgstr ""
+
+#: dew_widget.php:194
+msgid "Add Category"
+msgstr ""
+
+#: dak_events_wp.php:29
+msgid "DAK Events Calendar"
+msgstr ""
+
+#: dew_shortcode.php:26
+msgid "No event id specified"
+msgstr ""
+
+#: dew_shortcode.php:32
+msgid "No event found with specified id %d."
+msgstr ""
+
+#: dew_shortcode.php:42 dew_shortcode.php:131 dew_calendar.php:78
+msgid "%s %s from %s to %s"
+msgstr ""
+
+#: dew_shortcode.php:51 dew_shortcode.php:138 dew_calendar.php:85
+msgid "%s %s to %s"
+msgstr ""
+
+#: dew_calendar.php:114
+msgid "No arrangements at the moment."
+msgstr ""
+
+#: dew_format.php:16 dew_format.php:53
+msgid "When:"
+msgstr ""
+
+#: dew_format.php:17 dew_format.php:54
+msgid "Where:"
+msgstr ""
+
+#: dew_format.php:18 dew_format.php:34 dew_format.php:55
+msgid "Arranger:"
+msgstr ""
+
+#: dew_format.php:19 dew_format.php:56
+msgid "Type:"
+msgstr ""
+
+#: dew_format.php:32
+msgid "%s in %s"
+msgstr ""
+
+#: dew_format.php:33
+msgid "Starts:"
+msgstr ""
+
+#: dew_format.php:38
+msgid "Read more"
+msgstr ""
+
+#: dew_management.php:62
+msgid "Events Calendar Options"
+msgstr ""
+
+#: dew_management.php:70
+msgid "URL to event server"
+msgstr ""
+
+#: dew_management.php:74
+msgid "Date format"
+msgstr ""
+
+#: dew_management.php:75 dew_management.php:79
+msgid "(see %s)"
+msgstr ""
+
+#: dew_management.php:78
+msgid "Time format"
+msgstr ""
+
+#: dew_management.php:82
+msgid "Use cache?"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Det Akademiske Kvarter (DAK) Events WordPress plugin"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "DAK's plugin for showing evens from DAK's event repository"
+msgstr ""

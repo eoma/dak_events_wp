@@ -1,0 +1,166 @@
+# Copyright (C) 2010 Det Akademiske Kvarter (DAK) Events WordPress plugin
+# This file is distributed under the same license as the Det Akademiske Kvarter (DAK) Events WordPress plugin package.
+# Endre Oma <eom081@klientdrift.uib.no>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin "
+"0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
+"POT-Creation-Date: 2011-01-17 11:00:23+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2011-01-17 12:19+0100\n"
+"Last-Translator: Endre Oma <eom081@klientdrift.uib.no>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: dew_widget.php:96 dew_format.php:52
+msgid "Title:"
+msgstr "Tittel:"
+
+#: dew_widget.php:102
+msgid "Calendar Type:"
+msgstr "Kalendertype:"
+
+#: dew_widget.php:104
+msgid "Calendar"
+msgstr "Kalender"
+
+#: dew_widget.php:105
+msgid "Event List"
+msgstr "Eventliste"
+
+#: dew_widget.php:111
+msgid "Event List options"
+msgstr "Eventslistevalg"
+
+#: dew_widget.php:115
+msgid "Number of events:"
+msgstr "Antall events:"
+
+#: dew_widget.php:121
+msgid ""
+"How many days into the future shall it display (if 0, infinite days, only "
+"limited by number of events):"
+msgstr ""
+"Hvor mange dager inn i fremtiden skal den vise (hvis 0, uendelige dager, "
+"begrenset av max antall event):amuio"
+
+#: dew_widget.php:126
+msgid "Require events to be"
+msgstr "Krev events å være"
+
+#: dew_widget.php:129
+msgid "arranged by"
+msgstr "arrangert av"
+
+#: dew_widget.php:138 dew_widget.php:161 dew_widget.php:184
+msgid "Delete"
+msgstr "Slett"
+
+#: dew_widget.php:148
+msgid "Add arranger"
+msgstr "Legg til arrangør"
+
+#: dew_widget.php:152
+msgid "located at"
+msgstr "skjer på stedet"
+
+#: dew_widget.php:171
+msgid "Add Location"
+msgstr "Legg til sted"
+
+#: dew_widget.php:175
+msgid "categorized as"
+msgstr "kategorisert some"
+
+#: dew_widget.php:194
+msgid "Add Category"
+msgstr "Legg til kategori"
+
+#: dak_events_wp.php:29
+msgid "DAK Events Calendar"
+msgstr "DAK Event Kalender"
+
+#: dew_shortcode.php:26
+msgid "No event id specified"
+msgstr "Ingen eventid spesifisertpti"
+
+#: dew_shortcode.php:32
+msgid "No event found with specified id %d."
+msgstr "Ingen event funnet med id %id."
+
+#: dew_shortcode.php:42 dew_shortcode.php:131 dew_calendar.php:78
+msgid "%s %s from %s to %s"
+msgstr "%s %s fra %s til %s"
+
+#: dew_shortcode.php:51 dew_shortcode.php:138 dew_calendar.php:85
+msgid "%s %s to %s"
+msgstr "%s %s til %s"
+
+#: dew_calendar.php:114
+msgid "No arrangements at the moment."
+msgstr "Ingen arrangementer for øyeblikket"
+
+#: dew_format.php:16 dew_format.php:53
+msgid "When:"
+msgstr "Når:"
+
+#: dew_format.php:17 dew_format.php:54
+msgid "Where:"
+msgstr "Hvor:"
+
+#: dew_format.php:18 dew_format.php:34 dew_format.php:55
+msgid "Arranger:"
+msgstr "Arrangør:"
+
+#: dew_format.php:19 dew_format.php:56
+msgid "Type:"
+msgstr "Type:"
+
+#: dew_format.php:32
+msgid "%s in %s"
+msgstr "%s i %s"
+
+#: dew_format.php:33
+msgid "Starts:"
+msgstr "Starter:"
+
+#: dew_format.php:38
+msgid "Read more"
+msgstr "Les mer"
+
+#: dew_management.php:62
+msgid "Events Calendar Options"
+msgstr "Eventkalendervalg "
+
+#: dew_management.php:70
+msgid "URL to event server"
+msgstr "URL til eventtjener"
+
+#: dew_management.php:74
+msgid "Date format"
+msgstr "Datoformat"
+
+#: dew_management.php:75 dew_management.php:79
+msgid "(see %s)"
+msgstr "(se %s)"
+
+#: dew_management.php:78
+msgid "Time format"
+msgstr "Tidsformat"
+
+#: dew_management.php:82
+msgid "Use cache?"
+msgstr "Bruke cache?"
+
+#. Plugin Name of the plugin/theme
+msgid "Det Akademiske Kvarter (DAK) Events WordPress plugin"
+msgstr "Det Akademiske Kvarter (DAK) Events WordPress Plugin"
+
+#. Description of the plugin/theme
+msgid "DAK's plugin for showing evens from DAK's event repository"
+msgstr "DAKs plugginn for å vise events fra DAK's eventkalender"
+
