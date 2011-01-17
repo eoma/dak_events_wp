@@ -49,7 +49,7 @@ class DEW_Calendar {
 				$filter['endDate'] = date('Y-m-d', time() + $filter['daysInFuture'] * 86400);
 				unset($filter['daysInFuture']);
 			}
-			$events = $client->filteredEventsList($filter, $num);
+			$events = $client->filteredEventsList($filter + array('limit' => $num));
 		} else {
 			$events = $client->upcomingEvents($num);
 		}
