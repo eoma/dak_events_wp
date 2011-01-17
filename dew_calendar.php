@@ -40,11 +40,15 @@ class DEW_Calendar {
 		$timeFormat = $options['timeFormat'];
 
 		if ( isset($filter) && is_array($filter) 
-		     && (!empty($filter['arranger_id']) || !empty($filter['location_id']) || !empty($filter['category_id'])) ) {
+		     && (!empty($filter['arranger_id']) || !empty($filter['location_id']) || !empty($filter['category_id'])) || !empty($filter['daysInFuture'])) {
 			if (isset($filter['endDate'])) unset($filter['endDate']);
 			if (isset($filter['startDate'])) unset($filter['startDate']);
-			$filter['startDate'] = date('Y-m-d');
-			//$filter['endDate'] = date('Y-m-d');
+			// If no startDate specified, events will be selected that start or ends on the current date
+			//$filter['startDate'] = date('Y-m-d');
+			if (isset($filter['daysInFuture']) && ($filter['daysInFuture'] > 0)) {
+				$filter['endDate'] = date('Y-m-d', time() + $filter['daysInFuture'] * 86400);
+				unset($filter['daysInFuture']);
+			}
 			$events = $client->filteredEventsList($filter, $num);
 		} else {
 			$events = $client->upcomingEvents($num);

@@ -42,8 +42,11 @@ class DEW_Widget extends WP_Widget {
 		if (empty($instance)) $instance = array();
 		if (empty($instance['title'])) $instance['title'] = 'DAK Events Calendar';
 		if (empty($instance['type'])) $instance['type'] = 'list';
-		if (empty($instance['listCount'])) $instance['listCount'] = 5;
+		if (empty($instance['listCount'])) $instance['listCount'] = 10;
+		// $instance['daysInFuture'] describes how many days into the future it shall display, limited by listCount.
+		// If 0, infite days, until maximum number of events defined in listCount is 
 		if (empty($instance['filter'])) $instance['filter'] = array();
+		if (empty($instance['filter']['daysInFuture']))  $instance['filter']['daysInFuture'] = 0;
 		if (empty($instance['filter']['arranger_id'])) $instance['filter']['arranger_id'] = array();
 		if (empty($instance['filter']['location_id'])) $instance['filter']['location_id'] = array();
 		if (empty($instance['filter']['category_id'])) $instance['filter']['category_id'] = array();
@@ -63,6 +66,9 @@ class DEW_Widget extends WP_Widget {
 
 		$listCountName = $this->get_field_name('listCount');
 		$listCount_id = $this->get_field_id('listCount');
+
+		$daysInFutureName = $this->get_field_name('filter][daysInFuture');
+		$daysInFuture_id = $this->get_field_id('daysInFuture');
 		
 		$baseName = $this->get_field_name('');
 		$base_id = $this->get_field_id('base');
@@ -108,6 +114,12 @@ class DEW_Widget extends WP_Widget {
    <label for="<?php echo $listCount_id; ?>">
     Number of events:
     <input style="width: 30px;" type="text" id="<?php echo $listCount_id; ?>" name="<?php echo $listCountName; ?>" value="<?php echo $instance['listCount']; ?>" />
+   </label>
+  </p>
+  <p>
+   <label for="<?php echo $daysInFuture_id; ?>">
+    How many days into the future shall it display (if 0, infinite days, only limited by number of events):
+    <input style="width: 30px;" type="text" id="<?php echo $daysInfuture_id; ?>" name="<?php echo $daysInFutureName; ?>" value="<?php echo $instance['filter']['daysInFuture']; ?>" />
    </label>
   </p>
  </div>
@@ -195,6 +207,11 @@ class DEW_Widget extends WP_Widget {
 				$instance = array();
 			}
 
+			if (!isset($new_instance['filter']['daysInFuture'])) {
+				$new_instance['filter']['daysInFuture'] = 0;
+			}
+			$instance['filter']['daysInFuture'] =  intval( $new_instance['filter']['daysInFuture'] );
+
 			if (isset($new_instance['filter']['arranger_id'])) {
 				foreach ($new_instance['filter']['arranger_id'] as &$a) {
 					$a = intval($a);
@@ -223,6 +240,7 @@ class DEW_Widget extends WP_Widget {
 			$instance['filter']['category_id'] = $new_instance['filter']['category_id'];
 		} else {
 			$instance['filter'] = array(
+				'daysInFuture' => 0,
 				'arranger_id' => array(),
 				'location_id' => array(),
 				'category_id' => array(),
@@ -252,7 +270,7 @@ class DEW_Widget extends WP_Widget {
 			
 		//} else {
 			if (!isset($instance['listCount'])) {
-				$calendar->displayEventList(5, $instance['filter'], $this->id_base );
+				$calendar->displayEventList(10, $instance['filter'], $this->id_base);
 			} else {
 				$calendar->displayEventList($instance['listCount'], $instance['filter'], $this->id_base);
 			}
