@@ -21,8 +21,9 @@ class DEW_Management {
 			$options['eventServerUrl'] = '';
 			$options['dateFormat'] = 'Y-m-d';
 			$options['timeFormat'] = 'H:i';
-			$options['cache'] = 0;
+			$options['cache'] = evensCalendarClient::CACHE_WP;
 		}
+		$options['cache'] = intval($options['cache']);
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
 			$options['eventServerUrl'] = !empty($_POST['eventServerUrl']) ? trim($_POST['eventServerUrl']) : '';
@@ -49,10 +50,10 @@ class DEW_Management {
 			$options['dateFormat'] = !empty($_POST['dateFormat']) ? trim($_POST['dateFormat']) : 'Y-m-d';
 			$options['timeFormat'] = !empty($_POST['timeFormat']) ? trim($_POST['timeFormat']) : 'H:i';
 
-			if (!empty($_POST['cache']) && ($_POST['cache'] == 'on')) {
-				$options['cache'] = 1;
+			if (isset($_POST['cache']) && in_array(intval($_POST['cache']), array(0,1,2))) {
+				$options['cache'] = intval($_POST['cache']);
 			} else {
-				$options['cache'] = 0;
+				$options['cache'] = eventsCalendarClient::CACHE_WP;
 			}
 
 			update_option('optionsDakEventsWp', $options);
@@ -80,7 +81,13 @@ class DEW_Management {
         </tr>
         <tr>
           <th><label for="dew_cache"><?php _e('Use cache?', 'dak_events_wp') ?></label></th>
-          <td><input id="dew_cache" type="checkbox" name="cache" <?php if ($options['cache'] == 1) echo 'checked="checked"' ?> /></td>
+          <td>
+	    <select name="cache" id="dew_cache">
+	      <option value="0" <?php if ($options['cache'] == 0) echo 'selected="selected"' ?>> <?php _e('None', 'dak_events_wp') ?></option>
+	      <option value="1" <?php if ($options['cache'] == 1) echo 'selected="selected"' ?>> <?php _e('APC (directly)', 'dak_events_wp') ?></option>
+	      <option value="2" <?php if ($options['cache'] == 2) echo 'selected="selected"'?>> <?php _e('WordPress own cache', 'dak_events_wp') ?></option>
+	    </select>
+	  </td>
         </tr>
       </table>
       <input type="hidden" name="optionsDakEventsWpSubmitted" value="1" />
