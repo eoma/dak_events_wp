@@ -8,9 +8,13 @@ class eventsCalendarClient {
 	private $url;
 
 	/**
-	 * Whether or not to enable cache (apc)
+	 * Whether or not to enable cache (apc or wordpress transients)
 	 */
 	private $enableCache;
+
+	const CACHE_NONE = 0;
+	const CACHE_APC = 1;
+	const CACHE_WP = 2;
 
 	/**
 	 * If cache is enabled, for how long should it stay?
@@ -23,7 +27,7 @@ class eventsCalendarClient {
 	 */
 	private $apiKey;
 
-	public function __construct ($url, $apiKey = null, $enableCache = 1, $cacheTime = 5) {
+	public function __construct ($url, $apiKey = null, $enableCache = self::CACHE_APC, $cacheTime = 5) {
 		$this->url = strval($url) . 'api/json/';
 		$this->apiKey = $apiKey;
 		$this->cacheTime = intval($cacheTime);
@@ -53,7 +57,7 @@ class eventsCalendarClient {
 				$query_args .= $k . '=' . $v . '&';
 			}
 		}
-
+		
 		$query_args = substr($query_args, 0, -1);
 
 		$urlComplete = $this->url . $action .  $query_args;
@@ -62,13 +66,22 @@ class eventsCalendarClient {
 
 		if ($this->enableCache && $enableCache) {
 			// if we've enabled the cache, we check if the key exists for this query.
-			$cache_key = md5($urlComplete);
-			$cache_data = apc_fetch($cache_key, $cache_success);
+			$cache_key = 'eventCalendarClient_' . md5($urlComplete);
 
-			if ( ! $cache_success ) {
-				$cache_data = file_get_contents($urlComplete);
-				apc_store($cache_key, $cache_data, $this->cacheTime);
+			if ($this->enableCache == self::CACHE_APC) {
+				$cache_data = apc_fetch($cache_key, $cache_success);
+			
+				if ( ! $cache_success ) {
+					$cache_data = file_get_contents($urlComplete);
+					apc_store($cache_key, $cache_data, $this->cacheTime);
+				}
+			} else if ($this->enableCache == self::CACHE_WP) {
+				if (false === ($cache_data = get_transient($cache_key))) {
+					$cache_data = file_get_contents($urlComplete);
+					set_transient($cache_key, $cache_data, $this->cacheTime);
+				}
 			}
+
 		} else {
 			$cache_data = file_get_contents($urlComplete);
 		}
