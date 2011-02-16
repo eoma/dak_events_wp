@@ -72,9 +72,7 @@ ul.dew_eventList > li.dew_event .dew_eventToggled {
 	border-top: none;
 }
 
-.dew_hide {
-	display: none;
-}
+
 
 li.dew_eventList_date {
   font-weight: bold;
@@ -176,7 +174,6 @@ p.agenda_data {
 }
 
 .agenda_description {
-  display: none;
   padding-top: 0;
   margin-top: 0;
 }
