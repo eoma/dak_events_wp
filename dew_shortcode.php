@@ -131,7 +131,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 
 			if ($event->startDate == $event->endDate) {
-				$renderedData = sprintf(__('%s from %s to %s', 'dak_events_wp'),
+				$renderedDate = sprintf(__('%s from %s to %s', 'dak_events_wp'),
 					date($dateFormat, $startTimestamp),
 					date($timeFormat, $startTimestamp),
 					date($timeFormat, $endTimestamp)
