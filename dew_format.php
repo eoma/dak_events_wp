@@ -23,7 +23,7 @@ class DEW_format {
 		return $format;
 	}
 
-	static public function fullEvent() {
+	static public function agendaFullEvent() {
 		// All named arguments are required in the format
 		$format = "
 <div class=\"agenda_event_wrapper\">
@@ -40,6 +40,23 @@ class DEW_format {
 <div class=\"agenda_description\">
   %(description)s
 </div>
+</div>";
+
+		return $format;
+	}
+
+	static public function fullEvent() {
+		// All named arguments are required in the format
+		$format = "
+<div class=\"agenda_event_wrapper\">
+  <h2>%(title)s</h2>
+  <p class=\"agenda_data\">
+    " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
+    " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
+    " . __('Arranger:', 'dak_events_wp') . " %(arranger)s
+  </p>
+  <p>%(leadParagraph)s</p>
+  %(description)s
 </div>";
 
 		return $format;
