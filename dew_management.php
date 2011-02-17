@@ -21,7 +21,7 @@ class DEW_Management {
 			$options['eventServerUrl'] = '';
 			$options['dateFormat'] = 'Y-m-d';
 			$options['timeFormat'] = 'H:i';
-			$options['cache'] = evensCalendarClient::CACHE_WP;
+			$options['cache'] = eventsCalendarClient::CACHE_WP;
 		}
 		$options['cache'] = intval($options['cache']);
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
