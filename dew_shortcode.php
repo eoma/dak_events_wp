@@ -115,7 +115,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data);
 
-	$eventFormat = DEW_format::fullEvent();
+	$eventFormat = DEW_format::agendaFullEvent();
 	
 	$output = "<div class='dew_agenda'>\n";
 
@@ -124,7 +124,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 		
 		$output .= "<h2><span class='agenda_day_name'>" . $startDayName . "</span> <span class='agenda_day_number'>" . date('j', $timestamp) . "</span><span class='agenda_month_name'>" . date('F', $timestamp) . "</span></h2>\n";
 
-    $output .= "<div class='event_date_list'>\n";
+		$output .= "<div class='event_date_list'>\n";
 
 		foreach($events as $event) {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
@@ -165,8 +165,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			));
 
 		}
-    
-    $output .= "</div>\n";
+
+		$output .= "</div>\n";
 	}
 
 	//$output .= '<button type="button" class="dew_agenda_loadExtra">Load more</button>';
@@ -174,4 +174,90 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	$output .= "</div>\n";
 
 	return $output;
+}
+
+function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
+	/**
+	 * $atts can contain
+	 * array(
+	 *       'event_id' => '1',
+	 * )
+	 */
+
+	$options = get_option('optionsDakEventsWp');
+
+	$dateFormat = $options['dateFormat'];
+	$timeFormat = $options['timeFormat'];
+
+	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache']);
+	$locale = new WP_Locale();
+
+	$eventResult = $client->event($atts['event_id']);
+	$event = $eventResult->data[0];
+
+	$eventFormat = DEW_format::fullEvent();
+
+	//var_dump($event);
+
+	$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
+	$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
+
+	if ($event->startDate == $event->endDate) {
+		$renderedDate = sprintf(__('%s from %s to %s', 'dak_events_wp'),
+			date($dateFormat, $startTimestamp),
+			date($timeFormat, $startTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
+	} else {
+		$renderedDate = sprintf(__('%s from %s to %s %s', 'dak_events_wp'),
+			date($dateFormat, $startTimestamp),
+			date($timeFormat, $startTimestamp),
+			date($dateFormat, $endTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
+	}
+
+	$location = DEW_tools::getLocationFromEvent($event);
+
+	$categories = '';
+	foreach ($event->categories as $c) {
+		$categories .= $c->name . ', ';
+	}
+	$categories = substr($categories, 0, -2);
+
+	$allowedHtml = array(
+		'a' => array('href'),
+		'p' => array(),
+		'span' => array(),
+		'b' => array(),
+		'strong' => array(),
+		'em' => array(),
+		'i' => array(),
+		'blockquote' => array(),
+		'ul' => array(),
+		'ol' => array(),
+		'li' => array(),
+		'br' => array(),
+	);
+
+	$output = DEW_tools::sprintfn($eventFormat, array(
+		'title' => $event->title,
+		'leadParagraph' => $event->leadParagraph,
+		'description' => wp_kses($event->description, $allowedHtml),
+		'renderedDate' => $renderedDate,
+		'location' => $location,
+		'arranger' => $event->arranger->name,
+		'category' => $categories,
+		'startTime' => date($timeFormat, $startTimestamp)
+	));
+
+	return $output;
+}
+
+function dew_agenda_or_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
+	if (!empty($_GET['event'])) {
+		return dew_fullevent_shortcode_handler (array('event_id' => intval($_GET['event'])), $content, $code);
+	} else {
+		return dew_agenda_shortcode_handler ($atts, $content, $code);
+	}
 }
