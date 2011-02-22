@@ -18,11 +18,22 @@ class DEW_Management {
 		$options = get_option('optionsDakEventsWp');
 		if(!is_array($options)) {
 			$options = array();
-			$options['eventServerUrl'] = '';
-			$options['dateFormat'] = 'Y-m-d';
-			$options['timeFormat'] = 'H:i';
-			$options['cache'] = eventsCalendarClient::CACHE_WP;
 		}
+		
+		if (!isset($options['eventServerUrl']))
+			$options['eventServerUrl'] = '';
+
+		if (!isset($options['dateFormat']))
+			$options['dateFormat'] = 'Y-m-d';
+		if (!isset($options['timeFormat']))
+			$options['timeFormat'] = 'H:i';
+		
+		if (!isset($options['cache']))
+			$options['cache'] = eventsCalendarClient::CACHE_WP;
+		
+		if (!isset($options['eventPageId'])) 
+			$options['eventPageId'] = null; // Page id (integer)
+
 		$options['cache'] = intval($options['cache']);
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
@@ -56,6 +67,9 @@ class DEW_Management {
 				$options['cache'] = eventsCalendarClient::CACHE_WP;
 			}
 
+			if (isset($_POST['eventPageId'])) 
+				$options['eventPageId'] = intval($_POST['eventPageId']);
+
 			update_option('optionsDakEventsWp', $options);
 		}
 ?>
@@ -88,6 +102,27 @@ class DEW_Management {
 	      <option value="2" <?php if ($options['cache'] == 2) echo 'selected="selected"'?>> <?php _e('WordPress own cache', 'dak_events_wp') ?></option>
 	    </select>
 	  </td>
+        </tr>
+        <tr>
+          <th><label for="dew_eventPageId"><?php _e('At which page shall events in lists link to?', 'dak_events_wp') ?></label></th>
+          <td>
+            <select name="eventPageId" id="dew_eventPageId">
+              <option value="" <?php if ($options['eventPageId'] == 0) echo 'seleted="selected"' ?>>
+                -- <?php _e("Don't link to any internal page", 'dak_events_wp') ?> --
+              </option>
+              <?php foreach (get_pages() as $p) {
+                $selected = '';
+                
+                if ($options['eventPageId'] == $p->ID) {
+                  $selected = 'selected="selected"';
+				}
+                
+				echo "<option value='{$p->ID}' {$selected}>";
+				echo $p->post_title;
+				echo "</option>\n";
+              } ?>
+            </select>
+          </td>
         </tr>
       </table>
       <input type="hidden" name="optionsDakEventsWpSubmitted" value="1" />
