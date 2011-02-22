@@ -17,6 +17,7 @@ class DEW_format {
     <strong>" . __('Where:', 'dak_events_wp') . "</strong> %(location)s<br />
     <strong>" . __('Arranger:', 'dak_events_wp') . "</strong> %(arranger)s<br />
     <strong>" . __('Type:', 'dak_events_wp') . "</strong> %(category)s<br />
+    %(extra)s
   </div>
 </div>";
 
@@ -57,6 +58,7 @@ class DEW_format {
   </p>
   <p>%(leadParagraph)s</p>
   %(description)s
+  <p><small><a href='%(urlOriginal)s'>" . __('Orginal event', 'dak_events_wp') . "</a></small></p>
 </div>";
 
 		return $format;
