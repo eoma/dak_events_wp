@@ -248,7 +248,8 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'location' => $location,
 		'arranger' => $event->arranger->name,
 		'category' => $categories,
-		'startTime' => date($timeFormat, $startTimestamp)
+		'startTime' => date($timeFormat, $startTimestamp),
+		'urlOriginal' => $event->url,
 	));
 
 	return $output;
