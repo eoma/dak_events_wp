@@ -85,7 +85,7 @@ class DEW_Calendar {
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
 			$categories = '';
-      foreach ($event->categories as $c) {
+			foreach ($event->categories as $c) {
 				$categories .= $c->name . ', ';
 			}
 			$categories = substr($categories, 0, -2);
