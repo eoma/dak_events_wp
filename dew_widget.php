@@ -51,7 +51,8 @@ class DEW_Widget extends WP_Widget {
 		if (empty($instance['filter']['location_id'])) $instance['filter']['location_id'] = array();
 		if (empty($instance['filter']['category_id'])) $instance['filter']['category_id'] = array();
 
-		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache']);
+		// No cache for event calendar client when setting up widgets
+		$client = new eventsCalendarClient($this->eventServerUrl, null, eventsCalendarClient::CACHE_NONE);
 
 		$arrangerList = $client->arrangerList()->data;
 		$locationList = $client->locationList()->data;

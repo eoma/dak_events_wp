@@ -34,7 +34,7 @@ class DEW_Calendar {
 	 * @param int $num   number of events to list
 	 */
 	function displayEventList($num, $filter = null, $id_base = null) {
-		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache']);
+		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache'], $this->options['cacheTime']);
 		$options = get_option('optionsDakEventsWp');
 		$dateFormat = $options['dateFormat'];
 		$timeFormat = $options['timeFormat'];
