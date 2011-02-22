@@ -16,9 +16,8 @@ class DEW_Management {
 	 */
 	function options() {
 		$options = get_option('optionsDakEventsWp');
-		if(!is_array($options)) {
+		if(!is_array($options))
 			$options = array();
-		}
 		
 		if (!isset($options['eventServerUrl']))
 			$options['eventServerUrl'] = '';
@@ -30,6 +29,9 @@ class DEW_Management {
 		
 		if (!isset($options['cache']))
 			$options['cache'] = eventsCalendarClient::CACHE_WP;
+
+		if (!isset($options['cacheTime']))
+			$options['cacheTime'] = 5;
 		
 		if (!isset($options['eventPageId'])) 
 			$options['eventPageId'] = null; // Page id (integer)
@@ -102,6 +104,12 @@ class DEW_Management {
 	      <option value="2" <?php if ($options['cache'] == 2) echo 'selected="selected"'?>> <?php _e('WordPress own cache', 'dak_events_wp') ?></option>
 	    </select>
 	  </td>
+        </tr>
+        <tr>
+          <th><label for="dew_cacheTime"><?php _e('Default cache time (minutes)', 'dak_Events_wp') ?></label></th>
+          <td>
+            <input type="text" name="cacheTime" id="dew_cacheTime" value="<?php echo $options['cacheTime'] ?>" />
+          </td>
         </tr>
         <tr>
           <th><label for="dew_eventPageId"><?php _e('At which page shall events in lists link to?', 'dak_events_wp') ?></label></th>
