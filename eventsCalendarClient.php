@@ -122,7 +122,14 @@ class eventsCalendarClient {
 
 			if ($cache_data === false) {
 				$cache_data = file_get_contents($urlComplete);
-				$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
+
+				if ($cache_data !== false) {
+					$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
+					// This entry is for backup if the backend doesn't respond. Store forever.
+					$this->setCache($cache_key . '_backup', $cache_data, 0);
+				} else {
+					$cache_data = $this->getCache($cache_key . '_backup');
+				}
 			}
 		} else {
 			$cache_data = file_get_contents($urlComplete);
