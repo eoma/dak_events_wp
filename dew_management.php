@@ -31,7 +31,7 @@ class DEW_Management {
 			$options['cache'] = eventsCalendarClient::CACHE_WP;
 
 		if (!isset($options['cacheTime']))
-			$options['cacheTime'] = 5;
+			$options['cacheTime'] = 600;
 		
 		if (!isset($options['eventPageId'])) 
 			$options['eventPageId'] = null; // Page id (integer)
@@ -72,6 +72,13 @@ class DEW_Management {
 			if (isset($_POST['eventPageId'])) 
 				$options['eventPageId'] = intval($_POST['eventPageId']);
 
+			if (isset($_POST['cacheTime'])) {
+				if (intval($_POST['cacheTime']) >= 1) {
+					// Convert to seconds
+					$options['cacheTime'] = intval(round($_POST['cacheTime'])) * 60;
+				}
+			}
+
 			update_option('optionsDakEventsWp', $options);
 		}
 ?>
@@ -108,7 +115,7 @@ class DEW_Management {
         <tr>
           <th><label for="dew_cacheTime"><?php _e('Default cache time (minutes)', 'dak_Events_wp') ?></label></th>
           <td>
-            <input type="text" name="cacheTime" id="dew_cacheTime" value="<?php echo $options['cacheTime'] ?>" />
+            <input type="text" name="cacheTime" id="dew_cacheTime" value="<?php echo intval(round($options['cacheTime'] / 60)) ?>" />
           </td>
         </tr>
         <tr>
