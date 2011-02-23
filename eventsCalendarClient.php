@@ -35,6 +35,55 @@ class eventsCalendarClient {
 	}
 
 	/**
+	 * Will set an entry  with value $value in a cache identified by the key $key
+	 * with cache lifetime $cacheTime.
+	 * You should not store pure bools in this one, convert to integer or pack it
+	 * in object or array.
+	 *
+	 * @param string $key identifier
+	 * @param mixed $value the value to be stored
+	 * @param $cacheTime integer lifetime
+	 * @return bool
+	 */
+	public function setCache ($key, $value, $cacheTime = null) {
+		if (is_null($cacheTime)) {
+			$cacheTime = $this->cacheTime;
+		}
+
+		if ($this->enableCache == self::CACHE_APC) {
+			return apc_store($key, $value, $cacheTime);
+		} else if ($this->enableCache == self::CACHE_WP) {
+			return set_transient($key, $value, $cacheTime);
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Looks up cache entry with identifier $key
+	 * returns data upon success
+	 * returns bool false if not found
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getCache ($key) {
+		if ($this->enableCache == self::CACHE_APC) {
+			$data = apc_fetch($key, $success);
+
+			if ( ! $success ) {
+				return false;
+			} else {
+				return $data;
+			}
+		} else if ($this->enableCache == self::CACHE_WP) {
+			return get_transient($key);
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * This function will get the data from the server
 	 * and cache it for a period, say 5 seconds.
 	 * It will handle the data as json.
@@ -42,9 +91,10 @@ class eventsCalendarClient {
 	 * @param array $arguments Arguments used in the query
 	 * @param bool $rawString Whether the function should return the result via json_decode() or not (raw string)
 	 * @param bool $enableCache Whether the function should use or not use cache, if cache is turned on.
+	 * @param integer $cacheTime if this particular request should have a different cache lifetime than ordinary.
 	 * @return mixed
 	 */
-	private function getData ($action, array $arguments, $rawString = false, $enableCache = true) {
+	private function getData ($action, array $arguments, $rawString = false, $enableCache = true, $cacheTime = null) {
 		$query_args = '?';
 
 		// Putting together the query string
@@ -68,20 +118,12 @@ class eventsCalendarClient {
 			// if we've enabled the cache, we check if the key exists for this query.
 			$cache_key = 'eventCalendarClient_' . md5($urlComplete);
 
-			if ($this->enableCache == self::CACHE_APC) {
-				$cache_data = apc_fetch($cache_key, $cache_success);
-			
-				if ( ! $cache_success ) {
-					$cache_data = file_get_contents($urlComplete);
-					apc_store($cache_key, $cache_data, $this->cacheTime);
-				}
-			} else if ($this->enableCache == self::CACHE_WP) {
-				if (false === ($cache_data = get_transient($cache_key))) {
-					$cache_data = file_get_contents($urlComplete);
-					set_transient($cache_key, $cache_data, $this->cacheTime);
-				}
-			}
+			$cache_data = $this->getCache($cache_key);
 
+			if ($cache_data === false) {
+				$cache_data = file_get_contents($urlComplete);
+				$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
+			}
 		} else {
 			$cache_data = file_get_contents($urlComplete);
 		}
