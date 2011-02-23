@@ -27,11 +27,62 @@ class eventsCalendarClient {
 	 */
 	private $apiKey;
 
+	/**
+	 * Will hold all used cache keys.
+	 * Useful if you want to erase certain or all elements 
+	 * used in this 
+	 */
+	static private $keyCollection = null;
+	static private $keyCollectionChanged = false;
+	static private $keyCollectionInstances = 0;
+
 	public function __construct ($url, $apiKey = null, $enableCache = self::CACHE_APC, $cacheTime = 5) {
 		$this->url = strval($url) . 'api/json/';
 		$this->apiKey = $apiKey;
 		$this->cacheTime = intval($cacheTime);
 		$this->enableCache = intval($enableCache);
+
+		self::$keyCollectionInstances++;
+	}
+
+	public function __destruct () {
+		$this->saveCacheKeyCollection();
+		self::$keyCollectionInstances--;
+	}
+
+	/**
+	 * Records a cache key if it doesn't exist
+	 */
+	protected function setCacheKey ($key) {
+		if (is_null(self::$keyCollection)) {
+			self::$keyCollection = $this->getCache('eventsCalendarClient_keyCollection');
+			if (!is_array(self::$keyCollection)) {
+				self::$keyCollection = array();
+				self::$keyCollectionChanged = true;
+			}
+		}
+
+		if ( ! in_array($key, self::$keyCollection) ) {
+			self::$keyCollection[] = $key;
+			self::$keyCollectionChanged = true;
+		}
+	}
+
+	/**
+	 * Saves a cache key collection if this is the last instance to be "alive"
+	 */
+	private function saveCacheKeyCollection () {
+		if ( ! is_null(self::$keyCollection) && (self::$keyCollectionInstances == 1)) {
+			$this->setCache('eventsCalendarClient_keyCollection', self::$keyCollection, 0);
+		}
+	}
+
+	public function getCacheKeyCollection () {
+		if (is_null(self::$keyCollection)) {
+			self::$keyCollection = $this->getCache('eventsCalendarClient_keyCollection');
+		}
+
+		return self::$keyCollection;
 	}
 
 	/**
@@ -116,7 +167,7 @@ class eventsCalendarClient {
 
 		if ($this->enableCache && $enableCache) {
 			// if we've enabled the cache, we check if the key exists for this query.
-			$cache_key = 'eventCalendarClient_' . md5($urlComplete);
+			$cache_key = 'eventsCalendarClient_' . md5($urlComplete);
 
 			$cache_data = $this->getCache($cache_key);
 
@@ -127,6 +178,9 @@ class eventsCalendarClient {
 					$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
 					// This entry is for backup if the backend doesn't respond. Store forever.
 					$this->setCache($cache_key . '_backup', $cache_data, 0);
+
+					$this->setCacheKey($cache_key);
+					$this->setCacheKey($cache_key . '_backup');
 				} else {
 					$cache_data = $this->getCache($cache_key . '_backup');
 				}
