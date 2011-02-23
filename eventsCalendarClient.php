@@ -17,7 +17,7 @@ class eventsCalendarClient {
 	const CACHE_WP = 2;
 
 	/**
-	 * If cache is enabled, for how long should it stay?
+	 * If cache is enabled, for how long should it stay? Seconds
 	 */
 	private $cacheTime;
 
@@ -42,7 +42,7 @@ class eventsCalendarClient {
 	 *
 	 * @param string $key identifier
 	 * @param mixed $value the value to be stored
-	 * @param $cacheTime integer lifetime
+	 * @param $cacheTime integer lifetime, seconds
 	 * @return bool
 	 */
 	public function setCache ($key, $value, $cacheTime = null) {
@@ -91,7 +91,7 @@ class eventsCalendarClient {
 	 * @param array $arguments Arguments used in the query
 	 * @param bool $rawString Whether the function should return the result via json_decode() or not (raw string)
 	 * @param bool $enableCache Whether the function should use or not use cache, if cache is turned on.
-	 * @param integer $cacheTime if this particular request should have a different cache lifetime than ordinary.
+	 * @param integer $cacheTime seconds, if this particular request should have a different cache lifetime than ordinary.
 	 * @return mixed
 	 */
 	private function getData ($action, array $arguments, $rawString = false, $enableCache = true, $cacheTime = null) {
