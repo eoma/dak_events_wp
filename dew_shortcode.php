@@ -226,7 +226,9 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	$categories = substr($categories, 0, -2);
 
 	$allowedHtml = array(
-		'a' => array('href'),
+		'a' => array(
+			'href' => array(),
+		),
 		'p' => array(),
 		'span' => array(),
 		'b' => array(),
