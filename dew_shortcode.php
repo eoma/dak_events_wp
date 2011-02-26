@@ -72,6 +72,7 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 		'location' => $location,
 		'arranger' => $event->arranger->name,
 		'category' => $categories,
+		'iCalUrl' => $event->ical,
 	));
 
 	return $output;
@@ -161,7 +162,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'location' => $location,
 				'arranger' => $event->arranger->name,
 				'category' => $categories,
-				'startTime' => date($timeFormat, $startTimestamp)
+				'startTime' => date($timeFormat, $startTimestamp),
+				'iCalUrl' => $event->ical,
 			));
 
 		}
@@ -252,6 +254,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'category' => $categories,
 		'startTime' => date($timeFormat, $startTimestamp),
 		'urlOriginal' => $event->url,
+		'iCalUrl' => $event->ical,
 	));
 
 	return $output;

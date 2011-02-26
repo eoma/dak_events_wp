@@ -32,9 +32,10 @@ class DEW_format {
 <p class=\"agenda_data\">
   " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
   " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
-  " . __('Arranger:', 'dak_events_wp') . " %(arranger)s
+  " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
+  <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
 </p>
-%(leadParagraph)s
+<p>%(leadParagraph)s</p>
 <span class=\"agenda_read_more\">
   " . __('Read more', 'dak_events_wp') . "
 </span>
@@ -54,7 +55,8 @@ class DEW_format {
   <p class=\"agenda_data\">
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
-    " . __('Arranger:', 'dak_events_wp') . " %(arranger)s
+    " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
+    <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
   %(description)s
@@ -73,6 +75,7 @@ class DEW_format {
   <strong>" . __('Where:', 'dak_events_wp') . "</strong> %(location)s<br />
   <strong>" . __('Arranger:', 'dak_events_wp') . "</strong> %(arranger)s<br />
   <strong>" . __('Type:', 'dak_events_wp') . "</strong> %(category)s<br />
+  <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
 </p>";
 
 		return $format;
