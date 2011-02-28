@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin "
 "0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
-"POT-Creation-Date: 2011-01-17 11:20:59+00:00\n"
+"POT-Creation-Date: 2011-02-28 15:25:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,70 +13,166 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: dew_widget.php:96 dew_format.php:52
+#: dak_events_wp.php:29
+msgid "DAK Events Calendar"
+msgstr ""
+
+#: dew_format.php:16 dew_format.php:71
+msgid "When:"
+msgstr ""
+
+#: dew_format.php:17 dew_format.php:72
+msgid "Where:"
+msgstr ""
+
+#: dew_format.php:18 dew_format.php:35 dew_format.php:55 dew_format.php:73
+msgid "Arranger:"
+msgstr ""
+
+#: dew_format.php:19 dew_format.php:74
+msgid "Type:"
+msgstr ""
+
+#: dew_format.php:33 dew_format.php:53
+msgid "%s in %s"
+msgstr ""
+
+#: dew_format.php:34 dew_format.php:54
+msgid "Starts:"
+msgstr ""
+
+#: dew_format.php:36 dew_format.php:56 dew_format.php:75
+msgid "Add event to your calendar"
+msgstr ""
+
+#: dew_format.php:40 dew_calendar.php:95
+msgid "Read more"
+msgstr ""
+
+#: dew_format.php:60
+msgid "Orginal event"
+msgstr ""
+
+#: dew_format.php:70 dew_widget.php:97
 msgid "Title:"
 msgstr ""
 
-#: dew_widget.php:102
+#: dew_management.php:94
+msgid "Events Calendar Options"
+msgstr ""
+
+#: dew_management.php:98
+msgid "Clear cache"
+msgstr ""
+
+#: dew_management.php:107
+msgid "URL to event server"
+msgstr ""
+
+#: dew_management.php:111
+msgid "Date format"
+msgstr ""
+
+#: dew_management.php:112 dew_management.php:116
+msgid "(see %s)"
+msgstr ""
+
+#: dew_management.php:115
+msgid "Time format"
+msgstr ""
+
+#: dew_management.php:119
+msgid "Use cache?"
+msgstr ""
+
+#: dew_management.php:122
+msgid "None"
+msgstr ""
+
+#: dew_management.php:123
+msgid "APC (directly)"
+msgstr ""
+
+#: dew_management.php:124
+msgid "WordPress own cache"
+msgstr ""
+
+#: dew_management.php:129
+msgid "Default cache time (minutes)"
+msgstr ""
+
+#: dew_management.php:135
+msgid "At which page shall events in lists link to?"
+msgstr ""
+
+#: dew_management.php:139
+msgid "Don't link to any internal page"
+msgstr ""
+
+#: dew_management.php:158
+msgid "Update Options"
+msgstr ""
+
+#: dew_calendar.php:113
+msgid "No arrangements at the moment."
+msgstr ""
+
+#: dew_widget.php:103
 msgid "Calendar Type:"
 msgstr ""
 
-#: dew_widget.php:104
+#: dew_widget.php:105
 msgid "Calendar"
 msgstr ""
 
-#: dew_widget.php:105
+#: dew_widget.php:106
 msgid "Event List"
 msgstr ""
 
-#: dew_widget.php:111
+#: dew_widget.php:112
 msgid "Event List options"
 msgstr ""
 
-#: dew_widget.php:115
+#: dew_widget.php:116
 msgid "Number of events:"
 msgstr ""
 
-#: dew_widget.php:121
+#: dew_widget.php:122
 msgid ""
 "How many days into the future shall it display (if 0, infinite days, only "
 "limited by number of events):"
 msgstr ""
 
-#: dew_widget.php:126
-msgid "Require events to be"
+#: dew_widget.php:127
+msgid "Requires events to be"
 msgstr ""
 
-#: dew_widget.php:129
+#: dew_widget.php:130
 msgid "arranged by"
 msgstr ""
 
-#: dew_widget.php:138 dew_widget.php:161 dew_widget.php:184
+#: dew_widget.php:139 dew_widget.php:162 dew_widget.php:185
 msgid "Delete"
 msgstr ""
 
-#: dew_widget.php:148
+#: dew_widget.php:149
 msgid "Add arranger"
 msgstr ""
 
-#: dew_widget.php:152
+#: dew_widget.php:153
 msgid "located at"
 msgstr ""
 
-#: dew_widget.php:171
+#: dew_widget.php:172
 msgid "Add Location"
 msgstr ""
 
-#: dew_widget.php:175
+#: dew_widget.php:176
 msgid "categorized as"
 msgstr ""
 
-#: dew_widget.php:194
+#: dew_widget.php:195
 msgid "Add Category"
-msgstr ""
-
-#: dak_events_wp.php:29
-msgid "DAK Events Calendar"
 msgstr ""
 
 #: dew_shortcode.php:26
@@ -87,68 +183,20 @@ msgstr ""
 msgid "No event found with specified id %d."
 msgstr ""
 
-#: dew_shortcode.php:42 dew_shortcode.php:131 dew_calendar.php:78
+#: dew_shortcode.php:42
 msgid "%s %s from %s to %s"
 msgstr ""
 
-#: dew_shortcode.php:51 dew_shortcode.php:138 dew_calendar.php:85
-msgid "%s %s to %s"
+#: dew_shortcode.php:51
+msgid "%s %s %s from %s to %s %s %s"
 msgstr ""
 
-#: dew_calendar.php:114
-msgid "No arrangements at the moment."
+#: dew_shortcode.php:135 dew_shortcode.php:209
+msgid "%s from %s to %s"
 msgstr ""
 
-#: dew_format.php:16 dew_format.php:53
-msgid "When:"
-msgstr ""
-
-#: dew_format.php:17 dew_format.php:54
-msgid "Where:"
-msgstr ""
-
-#: dew_format.php:18 dew_format.php:34 dew_format.php:55
-msgid "Arranger:"
-msgstr ""
-
-#: dew_format.php:19 dew_format.php:56
-msgid "Type:"
-msgstr ""
-
-#: dew_format.php:32
-msgid "%s in %s"
-msgstr ""
-
-#: dew_format.php:33
-msgid "Starts:"
-msgstr ""
-
-#: dew_format.php:38
-msgid "Read more"
-msgstr ""
-
-#: dew_management.php:62
-msgid "Events Calendar Options"
-msgstr ""
-
-#: dew_management.php:70
-msgid "URL to event server"
-msgstr ""
-
-#: dew_management.php:74
-msgid "Date format"
-msgstr ""
-
-#: dew_management.php:75 dew_management.php:79
-msgid "(see %s)"
-msgstr ""
-
-#: dew_management.php:78
-msgid "Time format"
-msgstr ""
-
-#: dew_management.php:82
-msgid "Use cache?"
+#: dew_shortcode.php:141 dew_shortcode.php:215
+msgid "%s from %s to %s %s"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
