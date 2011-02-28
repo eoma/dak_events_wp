@@ -164,6 +164,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'category' => $categories,
 				'startTime' => date($timeFormat, $startTimestamp),
 				'iCalUrl' => $event->ical,
+				'readMore' => DEW_tools::generateLinkToEvent($event),
 			));
 
 		}
