@@ -46,8 +46,7 @@ class DEW_Calendar {
 			// If no startDate specified, events will be selected that start or ends on the current date
 			//$filter['startDate'] = date('Y-m-d');
 			if (isset($filter['daysInFuture']) && ($filter['daysInFuture'] > 0)) {
-				$filter['endDate'] = date('Y-m-d', time() + $filter['daysInFuture'] * 86400);
-				unset($filter['daysInFuture']);
+				$filter['dayspan'] = intval($filter['daysInFuture']);
 			}
 			$events = $client->filteredEventsList($filter + array('limit' => $num));
 		} else {
