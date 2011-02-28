@@ -134,6 +134,32 @@ class eventsCalendarClient {
 		}
 	}
 
+	public function clearCache () {
+		if ($this->enableCache == self::CACHE_NONE) {
+			return false;
+		}
+
+		$this->getCacheKeyCollection();
+
+		if ($this->enableCache == self::CACHE_APC) {
+
+			foreach (self::$keyCollection as $k) {
+				apc_delete($k);
+			}
+
+		} else if ($this->enableCache == self::CACHE_WP) {
+
+			foreach (self::$keyCollection as $k) {
+				delete_transient($k);
+			}
+
+		}
+
+		self::$keyCollection = array();
+
+		$this->saveCacheKeyCollection();
+	}
+
 	/**
 	 * This function will get the data from the server
 	 * and cache it for a period, say 5 seconds.

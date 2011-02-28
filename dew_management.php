@@ -81,10 +81,21 @@ class DEW_Management {
 
 			update_option('optionsDakEventsWp', $options);
 		}
+
+		if (isset($_GET['clearCache']) && ($_GET['clearCache'] == 1)) {
+			$eventsCalendarClient = new eventsCalendarClient($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
+			$eventsCalendarClient->clearCache();
+			$eventsCalendarClient = null;
+                }
 ?>
     <div class="wrap">
       <h2><?php _e('Events Calendar Options', 'dak_events_wp') ?></h2>
     </div>
+    <?php if ($options['cache'] > 0): ?>
+    <p>
+      <a href="?page=dak-events-calendar&amp;clearCache=1" class="button"><?php _e('Clear cache', 'dak_event_wp') ?></a>
+    </p>
+    <?php endif ?>
     <form name="optionsDakEventsWp" method="post" action="?page=dak-events-calendar">
       <p class="submit">
         <input type="submit" name="submit" value="Update Options &raquo;">
