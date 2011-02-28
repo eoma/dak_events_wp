@@ -73,6 +73,12 @@ class DEW_tools {
 		$pageLink = get_page_link(self::$options['eventPageId']);
 
 		if ($wp_rewrite->using_permalinks()) {
+
+			if (strrpos($pageLink, '/') < (strlen($pageLink) - 1)) {
+				// Append forwardslash if it's not the at end of the link
+				$pageLink .= '/';
+			}
+
 			$pageLink .= $event->id;
 		} else {
 			if (strpos($pageLink, '?') === false) {
