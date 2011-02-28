@@ -54,7 +54,7 @@ class DEW_format {
   <h2>%(title)s</h2>
   <p class=\"agenda_data\">
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
-    " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
+    " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
   </p>
