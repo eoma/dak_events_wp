@@ -261,8 +261,11 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 }
 
 function dew_agenda_or_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
-	if (!empty($_GET['event'])) {
-		return dew_fullevent_shortcode_handler (array('event_id' => intval($_GET['event'])), $content, $code);
+	global $wp_query;
+
+	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
+		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
+		return dew_fullevent_shortcode_handler (array('event_id' => intval($event_id)), $content, $code);
 	} else {
 		return dew_agenda_shortcode_handler ($atts, $content, $code);
 	}

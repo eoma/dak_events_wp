@@ -80,6 +80,8 @@ class DEW_Management {
 			}
 
 			update_option('optionsDakEventsWp', $options);
+
+			dew_flushRules();
 		}
 
 		if (isset($_GET['clearCache']) && ($_GET['clearCache'] == 1)) {

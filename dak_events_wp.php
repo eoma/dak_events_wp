@@ -36,10 +36,49 @@ if ( is_admin() ) {
 	wp_enqueue_script("dew_js_widgetadmin", DEW_URL . '/js/widgetAdmin.js', array('jquery'));
 }
 
+// Remember to flush_rules() when adding rules
+function dew_flushRules(){
+	global $wp_rewrite;
+	$wp_rewrite->flush_rules();
+}
+
+// Adding a new rule
+function dew_insertMyRewriteRules($rules)
+{
+	$newrules = array();
+	$options = get_option('optionsDakEventsWp');
+
+	if (isset($options['rewriteEventUrlRegex'])) {
+		unset($rules[$options['rewriteEventUrlRegex']]);
+	}
+
+	if (isset($options['eventPageId']) && ($options['eventPageId'] > 0)) {
+		$page = get_page($options['eventPageId']);
+		$options['rewriteEventUrlRegex'] = '(' . $page->post_name . ')/(\d+)$';
+		$newrules[$options['rewriteEventUrlRegex']] = 'index.php?pagename=$matches[1]&event_id=$matches[2]';
+	}
+
+	update_option('optionsDakEventsWp', $options);
+
+	return $newrules + $rules;
+}
+
+// Adding the event_id var so that WP recognizes it
+function dew_insertMyRewriteQueryVars($vars)
+{
+	if (!in_array('event_id', $vars)) {
+		$vars[] = 'event_id';
+	}
+	return $vars;
+}
+
 add_action('init', 'DakEventsWpInit');
 add_action('widgets_init', create_function('', 'return register_widget("DEW_Widget");') );
 add_action('admin_head', 'DakEventsWpAdminHeaderScript');
 add_action('admin_menu', 'DakEventsWpAdminMenu');
+
+add_filter('rewrite_rules_array','dew_insertMyRewriteRules');
+add_filter('query_vars','dew_insertMyRewriteQueryVars');
 
 add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
 add_shortcode('dew_fullevent', 'dew_fullevent_shortcode_handler');

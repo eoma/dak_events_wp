@@ -92,18 +92,7 @@ class DEW_Calendar {
 			$extra = "";
 
 			// Adds link to either internal event or external
-			if ($options['eventPageId'] > 0) {
-				$pageLink = get_page_link($options['eventPageId']);
-				if (strpos($pageLink, '?') === false)
-					$pageLink .= '?';
-
-				if (strpos($pageLink, '?') < (strlen($pageLink) - 1))
-					$pageLink .= '&amp;';
-				
-				$extra .= '<a href="' . $pageLink . 'event='. $event->id .'">'. __('Read more', 'dak_events_wp') .'</a>';
-			} else {
-				$extra .= '<a href="' . $event->url . '">'. __('Read more', 'dak_events_wp') .'</a>';
-			}
+			$extra .= '<a href="' . DEW_tools::generateLinkToEvent($event) .'">'. __('Read more', 'dak_events_wp') .'</a>';
 
 			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,

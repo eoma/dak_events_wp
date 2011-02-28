@@ -6,6 +6,8 @@
 
 class DEW_tools {
 
+	static private $options = null;
+
 	/**
 	 * Will return associative array where events are sorted by start date
 	 * Index key will be timestamp of date. The value related to the key will be
@@ -54,6 +56,37 @@ class DEW_tools {
 		} else {
 			return $event->commonLocation->name;
 		}
+	}
+
+	static public function generateLinkToEvent ($event) {
+		global $wp_rewrite;
+
+		if (is_null(self::$options)) {
+			self::$options = get_option('optionsDakEventsWp');
+		}
+
+		if (self::$options['eventPageId'] <= 0) {
+			// Don't construct any links if it's not an existing page
+			return $event->url;
+		}
+
+		$pageLink = get_page_link(self::$options['eventPageId']);
+
+		if ($wp_rewrite->using_permalinks()) {
+			$pageLink .= $event->id;
+		} else {
+			if (strpos($pageLink, '?') === false) {
+				$pageLink .= '?';
+			}
+
+			if (strpos($pageLink, '?') < (strlen($pageLink) - 1)) {
+				$pageLink .= '&amp;';
+			}
+
+			$pageLink .= 'event=' . $event->id;
+		}
+
+		return $pageLink;
 	}
 
 	/**
