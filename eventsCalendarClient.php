@@ -55,7 +55,7 @@ class eventsCalendarClient {
 	 */
 	protected function setCacheKey ($key) {
 		if (is_null(self::$keyCollection)) {
-			self::$keyCollection = $this->getCache('eventsCalendarClient_keyCollection');
+			self::$keyCollection = $this->getCache('eCC_keyCollection'); // eCC is an abbreviation of eventsCalendarClient
 			if (!is_array(self::$keyCollection)) {
 				self::$keyCollection = array();
 				self::$keyCollectionChanged = true;
@@ -73,13 +73,13 @@ class eventsCalendarClient {
 	 */
 	private function saveCacheKeyCollection () {
 		if ( ! is_null(self::$keyCollection) && (self::$keyCollectionInstances == 1)) {
-			$this->setCache('eventsCalendarClient_keyCollection', self::$keyCollection, 0);
+			$this->setCache('eCC_keyCollection', self::$keyCollection, 0);
 		}
 	}
 
 	public function getCacheKeyCollection () {
 		if (is_null(self::$keyCollection)) {
-			self::$keyCollection = $this->getCache('eventsCalendarClient_keyCollection');
+			self::$keyCollection = $this->getCache('eCC_keyCollection');
 		}
 
 		return self::$keyCollection;
@@ -193,7 +193,7 @@ class eventsCalendarClient {
 
 		if ($this->enableCache && $enableCache) {
 			// if we've enabled the cache, we check if the key exists for this query.
-			$cache_key = 'eventsCalendarClient_' . md5($urlComplete);
+			$cache_key = 'eCC_' . md5($urlComplete);
 
 			$cache_data = $this->getCache($cache_key);
 
@@ -202,8 +202,8 @@ class eventsCalendarClient {
 
 				if ($cache_data !== false) {
 					$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
-					// This entry is for backup if the backend doesn't respond. Store forever.
-					$this->setCache($cache_key . '_backup', $cache_data, 0);
+					// This entry is for backup if the backend doesn't respond. Store nearly forever (1 year), avoid autoloading of past events.
+					$this->setCache($cache_key . '_backup', $cache_data, 365 * 24 * 60 * 60);
 
 					$this->setCacheKey($cache_key);
 					$this->setCacheKey($cache_key . '_backup');
