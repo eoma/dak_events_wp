@@ -23,16 +23,17 @@ h3.widget-title {
   background-image: url('../images/event-gradient.png');
   background-position: bottom;
   background-repeat: repeat-x;
-  height: 45px;
+  height: auto;
   border-bottom: 1px solid #fff;
   border-top: 1px solid #eee;
 }
 
 span.event_name {
-  width: 300px;
+  width: 290px;
   float: left;
   font-weight: bold;
   border-bottom: 1px solid #ccc;
+  padding-right: 10px;
   padding-bottom: 3px;
   font-size: 1.05em;
   background-image: url('../images/arrow-closed.png');
@@ -89,9 +90,7 @@ li.dew_eventList_date {
 }
 
 .dew_eventToggled {
-  background-image: url('../images/event-open-gradient.png');
-  background-position: bottom;
-  background-repeat: repeat-x;
+  background: url('../images/event-open-gradient.png') bottom repeat-x #c50000;
   color: #fff;
 }
 
