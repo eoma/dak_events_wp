@@ -66,6 +66,12 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 	}
 	$categories = substr($categories, 0, -2);
 
+	$covercharge = __('Free', 'dak_events_wp');
+
+	if (strlen($event->covercharge) > 0) {
+		$covercharge = $event->covercharge;
+	}
+
 	$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), array(
 		'title' => $event->title,
 		'date' => $date,
@@ -73,6 +79,7 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 		'arranger' => $event->arranger->name,
 		'category' => $categories,
 		'iCalUrl' => $event->ical,
+		'covercharge' => $covercharge,
 	));
 
 	return $output;
@@ -154,6 +161,12 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			}
 			$categories = substr($categories, 0, -2);
 
+			$covercharge = __('Free', 'dak_events_wp');
+
+			if (strlen($event->covercharge) > 0) {
+				$covercharge = $event->covercharge;
+			}
+
 			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
@@ -165,6 +178,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'startTime' => date($timeFormat, $startTimestamp),
 				'iCalUrl' => $event->ical,
 				'readMore' => DEW_tools::generateLinkToEvent($event),
+				'covercharge' => $covercharge,
 			));
 
 		}
@@ -245,6 +259,12 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'br' => array(),
 	);
 
+	$covercharge = __('Free', 'dak_events_wp');
+
+	if (strlen($event->covercharge) > 0) {
+		$covercharge = $event->covercharge;
+	}
+
 	$output = DEW_tools::sprintfn($eventFormat, array(
 		'title' => $event->title,
 		'leadParagraph' => $event->leadParagraph,
@@ -256,6 +276,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'startTime' => date($timeFormat, $startTimestamp),
 		'urlOriginal' => $event->url,
 		'iCalUrl' => $event->ical,
+		'covercharge' => $covercharge,
 	));
 
 	return $output;

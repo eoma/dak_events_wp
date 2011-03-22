@@ -33,6 +33,7 @@ class DEW_format {
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
+    " . __('CC:', 'dak_events_wp') . " %(covercharge)s<br />
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
@@ -53,6 +54,7 @@ class DEW_format {
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
+    " . __('CC:', 'dak_events_wp') . " %(covercharge)s<br />
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
@@ -72,6 +74,7 @@ class DEW_format {
   <strong>" . __('Where:', 'dak_events_wp') . "</strong> %(location)s<br />
   <strong>" . __('Arranger:', 'dak_events_wp') . "</strong> %(arranger)s<br />
   <strong>" . __('Type:', 'dak_events_wp') . "</strong> %(category)s<br />
+  <strong>" . __('CC:', 'dak_events_wp') . "</strong> %(covercharge)s<br />
   <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
 </p>";
 
