@@ -192,3 +192,39 @@ p.agenda_data {
 .agenda_event_wrapper {
   margin-bottom: 20px;
 }
+
+/*** css for dewPickerPopup ***/
+
+#dewPickerPopupBox {
+  padding: 15px;
+}
+
+#pickerPopupRightPane,
+#pickerPopupLeftPane
+{
+  float: left;
+  width: 50%;
+}
+
+#pickerPopupRightPane {
+  overflow: auto;
+  max-height: 360px;
+}
+
+#pickerPopupList li {
+  border: 1px solid #000;
+  padding: 2px;
+  margin: 3px;
+}
+
+#pickerPopupList li:hover {
+  cursor: pointer;
+}
+
+#pickerPopupList .selected .title {
+  font-weight: bold;
+}
+
+#pickerPopupLoadMoreElements {
+  width: 100%;
+}

@@ -16,7 +16,6 @@ require_once( DEW_PREFIX . '/dew_management.php' );
 require_once( DEW_PREFIX . '/dew_calendar.php' );
 require_once( DEW_PREFIX . '/dew_shortcode.php' );
 
-
 function DakEventsWpInit () {
 	wp_enqueue_script('dew_eventJsStyle', plugins_url('/dew_js.php?eventStylesheet=1', __FILE__), array('jquery'));
 	wp_enqueue_script('dew_js_events', DEW_URL . '/js/events.js', array('jquery'));
@@ -72,7 +71,71 @@ function dew_insertMyRewriteQueryVars($vars)
 	return $vars;
 }
 
+function dewEventServerUrl () {
+	/**
+	 * Adds a <script> element to the head section.
+	 * For use when you want to use the original event server
+	 * ie. an api call
+	 */
+	$dewOptions = get_option('optionsDakEventsWp');
+?>
+<script type="text/javascript">/* <![CDATA[ */
+var dewEventServerUrl = '<?php echo $dewOptions['eventServerUrl'] ?>';
+/* ]]> */
+</script>
+<?php
+}
+
+function dewEditorButtons () {
+	if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') ) {
+		return False;
+	}
+
+	if ( get_user_option('rich_editing') == true ) {
+		add_filter('mce_external_plugins', 'addDewEditorPlugin');
+		add_filter('mce_buttons', 'registerDewEditorButtons');
+		add_action('tiny_mce_preload_dialogs', 'dewEditorPluginPopup');
+		wp_enqueue_script("dew_js_pickerpopup", DEW_URL . '/js/dewPickerPopup.js', array('jquery'));
+		add_action('admin_head', 'dewEventServerUrl');
+	}
+}
+
+function addDewEditorPlugin ($plugin_array) {
+	$plugin_array['dewEditorExtra'] = plugins_url('/js/dewEditorExtraPlugin.js', __FILE__);
+	return $plugin_array;
+}
+
+function registerDewEditorButtons ($buttons) {
+	$buttons[] = 'separator';
+	$buttons[] = 'dewShowPickerPopup';
+
+	return $buttons;
+}
+
+function dewEditorPluginPopup () {
+?>
+<div id="dewPickerPopupBox">
+ <form id="dewPickerPopup" tabindex="-1">
+  <div id="pickerPopupLeftPane">
+   <select id="pickerPopupElementType">
+    <option value="events" selected="selected">Events</option>
+    <option value="festivals">Festivals</option>
+   </select>
+   <button id="pickerPopupAddElement" type="button" disabled="disabled">Add event</button><br />
+   <span id="pickerPopupDescription">Please select an element to the right to use in the post</span>
+  </div>
+  <div id="pickerPopupRightPane">
+   <ul id="pickerPopupList">
+   </ul>
+   <button type="button" id="pickerPopupLoadMoreElements" disabled="disabled" type="button">Load more events...</button>
+  </div>
+ </form>
+</div>
+<?php
+}
+
 add_action('init', 'DakEventsWpInit');
+add_action('init', 'DewEditorButtons');
 add_action('widgets_init', create_function('', 'return register_widget("DEW_Widget");') );
 add_action('admin_head', 'DakEventsWpAdminHeaderScript');
 add_action('admin_menu', 'DakEventsWpAdminMenu');
