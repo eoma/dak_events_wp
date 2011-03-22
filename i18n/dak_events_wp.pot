@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin "
 "0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
-"POT-Creation-Date: 2011-02-28 15:25:53+00:00\n"
+"POT-Creation-Date: 2011-03-22 17:04:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,47 +13,51 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: dak_events_wp.php:29
+#: dak_events_wp.php:28
 msgid "DAK Events Calendar"
 msgstr ""
 
-#: dew_format.php:16 dew_format.php:71
+#: dew_format.php:16 dew_format.php:73
 msgid "When:"
 msgstr ""
 
-#: dew_format.php:17 dew_format.php:72
+#: dew_format.php:17 dew_format.php:74
 msgid "Where:"
 msgstr ""
 
-#: dew_format.php:18 dew_format.php:35 dew_format.php:55 dew_format.php:73
+#: dew_format.php:18 dew_format.php:35 dew_format.php:56 dew_format.php:75
 msgid "Arranger:"
 msgstr ""
 
-#: dew_format.php:19 dew_format.php:74
+#: dew_format.php:19 dew_format.php:76
 msgid "Type:"
 msgstr ""
 
-#: dew_format.php:33 dew_format.php:53
+#: dew_format.php:33 dew_format.php:54
 msgid "%s in %s"
 msgstr ""
 
-#: dew_format.php:34 dew_format.php:54
+#: dew_format.php:34 dew_format.php:55
 msgid "Starts:"
 msgstr ""
 
-#: dew_format.php:36 dew_format.php:56 dew_format.php:75
+#: dew_format.php:36 dew_format.php:57 dew_format.php:77 dew_calendar.php:95
+msgid "CC:"
+msgstr ""
+
+#: dew_format.php:37 dew_format.php:58 dew_format.php:78
 msgid "Add event to your calendar"
 msgstr ""
 
-#: dew_format.php:40 dew_calendar.php:95
+#: dew_format.php:41 dew_calendar.php:99
 msgid "Read more"
 msgstr ""
 
-#: dew_format.php:60
+#: dew_format.php:62
 msgid "Orginal event"
 msgstr ""
 
-#: dew_format.php:70 dew_widget.php:97
+#: dew_format.php:72 dew_widget.php:97
 msgid "Title:"
 msgstr ""
 
@@ -113,7 +117,7 @@ msgstr ""
 msgid "Update Options"
 msgstr ""
 
-#: dew_calendar.php:113
+#: dew_calendar.php:117
 msgid "No arrangements at the moment."
 msgstr ""
 
@@ -191,11 +195,15 @@ msgstr ""
 msgid "%s %s %s from %s to %s %s %s"
 msgstr ""
 
-#: dew_shortcode.php:135 dew_shortcode.php:209
+#: dew_shortcode.php:69 dew_shortcode.php:164 dew_shortcode.php:262
+msgid "Free"
+msgstr ""
+
+#: dew_shortcode.php:142 dew_shortcode.php:223
 msgid "%s from %s to %s"
 msgstr ""
 
-#: dew_shortcode.php:141 dew_shortcode.php:215
+#: dew_shortcode.php:148 dew_shortcode.php:229
 msgid "%s from %s to %s %s"
 msgstr ""
 
