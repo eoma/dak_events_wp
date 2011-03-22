@@ -92,7 +92,7 @@ class DEW_Calendar {
 			$extra = "";
 
 			if (strlen($event->covercharge) > 0) {
-				$extra .= "<strong>" . __('CC:', 'dak_events_wp') . '</strong> ' . $event->covercharge . "<br />\n";
+				$extra .= '<strong>' . __('CC:', 'dak_events_wp') . '</strong> ' . $event->covercharge . "<br />\n";
 			}
 
 			// Adds link to either internal event or external
