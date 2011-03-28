@@ -45,11 +45,25 @@ class DEW_format {
 		return $format;
 	}
 
-	static public function fullEvent() {
+	static public function fullEvent(array $config = array()) {
 		// All named arguments are required in the format
+
+		/**
+		 * $config can be an associative array
+		 * array(
+		 * 	'no_title' => bool, // Whether to include the title or not
+		 * )
+		 */
+
+
+		$title = '<h2>%(title)s</h2>';
+		if (isset($config['no_title']) && ($config['no_title'] == true)) {
+			$title = '';
+		}
+
 		$format = "
 <div class=\"agenda_event_wrapper\">
-  <h2>%(title)s</h2>
+  " . $title . "
   <p class=\"agenda_data\">
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />

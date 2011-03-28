@@ -212,7 +212,13 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	$eventResult = $client->event($atts['event_id']);
 	$event = $eventResult->data[0];
 
-	$eventFormat = DEW_format::fullEvent();
+	$formatConfig = array();
+
+	if (isset($atts['no_title']) && ($atts['no_title'] == true)) {
+		$formatConfig['no_title'] = true;
+	}
+
+	$eventFormat = DEW_format::fullEvent($formatConfig);
 
 	//var_dump($event);
 
