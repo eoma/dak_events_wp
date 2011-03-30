@@ -95,6 +95,10 @@ class DEW_Calendar {
 				$extra .= '<strong>' . __('CC:', 'dak_events_wp') . '</strong> ' . $event->covercharge . "<br />\n";
 			}
 
+			if ($event->festival_id > 0) {
+				$extra .= '<a href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">Part of ' . $event->festival->title . '</a><br />';
+			}
+
 			// Adds link to either internal event or external
 			$extra .= '<a href="' . DEW_tools::generateLinkToArrangement($event, 'event') .'">'. __('Read more', 'dak_events_wp') .'</a>';
 
