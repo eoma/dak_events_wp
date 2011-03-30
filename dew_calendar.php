@@ -96,7 +96,7 @@ class DEW_Calendar {
 			}
 
 			// Adds link to either internal event or external
-			$extra .= '<a href="' . DEW_tools::generateLinkToEvent($event) .'">'. __('Read more', 'dak_events_wp') .'</a>';
+			$extra .= '<a href="' . DEW_tools::generateLinkToArrangement($event, 'event') .'">'. __('Read more', 'dak_events_wp') .'</a>';
 
 			$output .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
