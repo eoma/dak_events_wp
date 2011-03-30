@@ -79,6 +79,48 @@ class DEW_format {
 		return $format;
 	}
 
+	static public function fullFestival(array $config = array()) {
+		// All named arguments are required in the format
+
+		/**
+		 * $config can be an associative array
+		 * array(
+		 * 	'no_title' => bool, // Whether to include the title or not
+		 * )
+		 */
+
+
+		$title = '<h2>%(title)s</h2>';
+		if (isset($config['no_title']) && ($config['no_title'] == true)) {
+			$title = '';
+		}
+
+		$format = "
+<div class=\"agenda_event_wrapper\">
+  " . $title . "
+  <p class=\"agenda_data\">
+    '%(location)s' <br />
+    " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
+    " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
+    %(extra)s
+    <a href=\"%(iCalUrl)s\">" . __('Add festival to your calendar', 'dak_events_wp') . "</a><br />
+    <a href=\"#dew_festivalEvents\">" . __('Jump to the events', 'dak_events_wp') . "</a>
+  </p>
+  <p>%(leadParagraph)s</p>
+  %(description)s
+
+  <div id='dew_festivalEvents'>
+   %(festivalEvents)s
+  </div>
+
+  <p><small><a href='%(urlOriginal)s'>" . __('Orginal festival', 'dak_events_wp') . "</a></small></p>
+
+
+</div>";
+
+		return $format;
+	}
+
 	static public function eventDetailBox() {
 		// All named arguments are required in the format
 		$format = "
