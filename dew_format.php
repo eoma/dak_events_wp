@@ -82,15 +82,44 @@ class DEW_format {
 	static public function eventDetailBox() {
 		// All named arguments are required in the format
 		$format = "
-<p>
-  <strong>" . __('Title:', 'dak_events_wp') . "</strong> %(title)s<br />
-  <strong>" . __('When:', 'dak_events_wp') . "</strong> %(renderedDate)s<br />
-  <strong>" . __('Where:', 'dak_events_wp') . "</strong> %(location)s<br />
-  <strong>" . __('Arranger:', 'dak_events_wp') . "</strong> %(arranger)s<br />
-  <strong>" . __('Type:', 'dak_events_wp') . "</strong> %(category)s<br />
-  %(extra)s
-  <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
-</p>";
+<div class='dew_eventDetailBox'>
+  <div class='dew_eventDate'>
+    <span class='agenda_day_name'>%(startDayName)s</span>
+    <span class='agenda_day_number'>%(dayInMonth)s</span>
+    <span class='agenda_month_name'>%(monthName)s</span>
+  </div>
+  <div class='dew_eventDetails'>
+    <span class='dew_eventTitle'>%(title)s</span><br />
+    " . sprintf(__('%s in %s', 'dak_events_wp'), '%(category)s', '%(location)s') . "<br />
+    " . __('Starts', 'dak_events_wp') . " %(startTime)s<br />
+    " . __('Arranged by', 'dak_events_wp') . " %(arranger)s<br />
+    %(extra)s
+    <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
+  </div>
+</div>";
+
+		return $format;
+	}
+
+	static public function festivalDetailBox() {
+		// All named arguments are required in the format
+		$format = "
+<div class='dew_eventDetailBox'>
+  <div class='dew_eventDate'>
+    <span class='agenda_day_name'>%(startDayName)s</span>
+    <span class='agenda_day_number'>%(dayInMonth)s</span>
+    <span class='agenda_month_name'>%(monthName)s</span>
+  </div>
+  <div class='dew_eventDetails'>
+    <span class='dew_eventTitle'>%(title)s</span><br />
+    %(location)s<br />
+    " . __('Starts', 'dak_events_wp') . " %(startTime)s<br />
+    " . __('Ends', 'dak_events_wp') . " %(endDatetime)s<br />
+    " . __('Arranged by', 'dak_events_wp') . " %(arranger)s<br />
+    %(extra)s
+    <a href=\"%(iCalUrl)s\">" . __('Add festival to your calendar', 'dak_events_wp') . "</a>
+  </div>
+</div>";
 
 		return $format;
 	}

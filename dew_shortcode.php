@@ -12,7 +12,20 @@ function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
 	
 }
 
-function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
+function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
+	/**
+	 * Requires that the type attribute is set
+	 * type can be event or festival
+	 */
+
+	$validTypes = array('event', 'festival');
+
+	if (!isset($atts['type']) || !in_array($atts['type'], $validTypes)) {
+		return "<p>You must use [dew_detailBox type=&lt;type&gt; id=&lt;id&gt;], with type being either event or festival.</p>";
+	}
+
+	$type = $atts['type'];
+
 	$options = get_option('optionsDakEventsWp');
 	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 	$locale = new WP_Locale();
@@ -23,64 +36,76 @@ function dew_event_detailbox_shortcode_handler ($atts, $content = null, $code = 
 	$timeFormat = $options['timeFormat'];
 
 	if (!isset($atts['id'])) {
-		return "<p>" . __('No event id specified', 'dak_events_wp') . "</p>";
+		return "<p>" . __('No id specified for detailbox', 'dak_events_wp') . "</p>";
 	}
 	
-	$result = $client->event($atts['id']);
+	if ($type == 'event') {
+		$result = $client->event($atts['id']);
+	} else if ($type == 'festival') {
+		$result = $client->festival($atts['id']);
+	}
 
 	if ($result->totalCount == 0) {
 		return "<p>" . sprintf(__('No event found with specified id %d.', 'dak_events_wp'), $atts['id']) . "</p>";
 	}
 
-	$event = $result->data[0];
+	$arr = $result->data[0];
 
-	$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
-	$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
+	$startTimestamp = DEW_tools::dateStringToTime($arr->startDate, $arr->startTime);
+	$endTimestamp = DEW_tools::dateStringToTime($arr->endDate, $arr->endTime);
 
-	if ($event->startDate == $event->endDate) {
-		$day = ucfirst($locale->get_weekday(date('w', $startTimestamp )));
-		$date = sprintf(__('%s %s from %s to %s', 'dak_events_wp'),
-			$day,
-			date($dateFormat, $startTimestamp),
-			date($timeFormat, $startTimestamp),
-			date($timeFormat, $endTimestamp)
-		);
-	} else {
-		$startDay = ucfirst($locale->get_weekday(date('w', $startTimestamp )));
-		$endDay = ucfirst($locale->get_weekday(date('w', $endTimestamp )));
-		$date = sprintf(__('%s %s %s from %s to %s %s %s', 'dak_events_wp'),
-			$startDay,
-			date($dateFormat, $startTimestamp),
-		        date($timeFormat, $startTimestamp),
-		        $endDay,
-			date($dateFormat, $endTimestamp),
-			date($timeFormat, $endTimestamp)
-		);
+	$location = DEW_tools::getLocationFromEvent($arr);
+
+	if ($type == 'event') {
+		$categories = '';
+		foreach ($arr->categories as $c) {
+			$categories .= $c->name . ', ';
+		}
+		$categories = substr($categories, 0, -2);
 	}
 
-	$location = DEW_tools::getLocationFromEvent($event);
-
-	$categories = '';
-	foreach ($event->categories as $c) {
-		$categories .= $c->name . ', ';
+	if ($type == 'festival') {
+		$arrangers = '';
+		foreach ($arr->arrangers as $a) {
+			$arrangers .= $a->name . ', ';
+		}
+		$arrangers = substr($arrangers, 0, -2);
 	}
-	$categories = substr($categories, 0, -2);
 
 	$extra = "";
 
-	if (strlen($event->covercharge) > 0) {
-		$extra .= '<strong>' . __('CC:', 'dak_events_wp') . '</strong> ' . $event->covercharge . '<br />' . "\n";
+	if (strlen($arr->covercharge) > 0) {
+		$extra .= __('CC:', 'dak_events_wp') . ' ' . $arr->covercharge . '<br />' . "\n";
 	}
 
-	$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), array(
-		'title' => $event->title,
-		'date' => $date,
-		'location' => $location,
-		'arranger' => $event->arranger->name,
-		'category' => $categories,
-		'iCalUrl' => $event->ical,
-		'extra' => $extra,
-	));
+	$startDayName = ucfirst(date_i18n('l', $startTimestamp));
+	$dayInMonth = date('j', $startTimestamp);
+	$monthName = date_i18n('F', $startTimestamp);
+
+	$title = '<a href="' . DEW_tools::generateLinkToArrangement($arr, $type) . '">' . $arr->title . '</a>';
+
+	$renderArr = array(
+			'title' => $title,
+			'startDayName' => $startDayName,
+			'dayInMonth' => $dayInMonth,
+			'monthName' => $monthName,
+			'startTime' => date('H:i', $startTimestamp),
+			'location' => $location,
+			'iCalUrl' => $arr->ical,
+			'extra' => $extra,
+	);
+
+	if ($type == 'event') {
+		$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), $renderArr + array(
+			'arranger' => $arr->arranger->name,
+			'category' => $categories,
+		));
+	} else if ($type == 'festival') {
+		$output =  DEW_tools::sprintfn(DEW_format::festivalDetailBox(), $renderArr + array(
+			'endDatetime' => ($arr->startDate == $arr->endDate) ? date('H:i', $endTimestamp) : date_i18n(__('F j, Y H:i'), $endTimestamp),
+			'arranger' => $arrangers,
+		));
+	}
 
 	return $output;
 }
@@ -180,7 +205,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'category' => $categories,
 				'startTime' => date($timeFormat, $startTimestamp),
 				'iCalUrl' => $event->ical,
-				'readMore' => DEW_tools::generateLinkToEvent($event),
+				'readMore' => DEW_tools::generateLinkToArrangement($event, 'event'),
 				'extra' => $extra,
 			));
 

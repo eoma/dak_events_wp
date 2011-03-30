@@ -158,4 +158,4 @@ add_filter('query_vars','dew_insertMyRewriteQueryVars');
 add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
 add_shortcode('dew_fullevent', 'dew_fullevent_shortcode_handler');
 add_shortcode('dew_agenda_or_fullevent', 'dew_agenda_or_fullevent_shortcode_handler');
-add_shortcode('dew_event_detailbox', 'dew_event_detailbox_shortcode_handler');
+add_shortcode('dew_detailbox', 'dew_detailbox_shortcode_handler');
