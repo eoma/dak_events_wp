@@ -110,14 +110,17 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$atts = str_replace(array("\"", "'", "&quot;"), array('', '', ''), $atts);
 
-	if ( ! empty($atts['arranger_id']) ) 
+	if ( ! empty($atts['arranger_id']) )
 		$queryArgs['arranger_id'] = DEW_tools::stringToIntArray($atts['arranger_id']);
 	
-	if ( ! empty($atts['location_id']) ) 
+	if ( ! empty($atts['location_id']) )
 		$queryArgs['location_id'] = DEW_tools::stringToIntArray($atts['location_id']);
 
-	if ( ! empty($atts['category_id']) ) 
+	if ( ! empty($atts['category_id']) )
 		$queryArgs['category_id'] = DEW_tools::stringToIntArray($atts['category_id']);
+
+	if ( ! empty($atts['festival_id']) )
+		$queryArgs['festival_id'] = DEW_tools::stringToIntArray($atts['festival_id']);
 
 	$results = $client->filteredEventsList($queryArgs);
 
