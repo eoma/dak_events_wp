@@ -47,14 +47,22 @@ function dew_insertMyRewriteRules($rules)
 	$newrules = array();
 	$options = get_option('optionsDakEventsWp');
 
-	if (isset($options['rewriteEventUrlRegex'])) {
+	if (isset($options['rewriteEventUrlRegex']) && isset($rules[$options['rewriteEventUrlRegex']])) {
 		unset($rules[$options['rewriteEventUrlRegex']]);
+	}
+
+	if (isset($options['rewriteFestivalUrlRegex']) && isset($rules[$options['rewriteFestivalUrlRegex']])) {
+		unset($rules[$options['rewriteFestivalUrlRegex']]);
 	}
 
 	if (isset($options['eventPageId']) && ($options['eventPageId'] > 0)) {
 		$page = get_page($options['eventPageId']);
+
 		$options['rewriteEventUrlRegex'] = '(' . $page->post_name . ')/(\d+)$';
 		$newrules[$options['rewriteEventUrlRegex']] = 'index.php?pagename=$matches[1]&event_id=$matches[2]';
+
+		$options['rewriteFestivalUrlRegex'] = '(' . $page->post_name . ')/festival/(\d+)$';
+		$newrules[$options['rewriteFestivalUrlRegex']] = 'index.php?pagename=$matches[1]&festival_id=$matches[2]';
 	}
 
 	update_option('optionsDakEventsWp', $options);
@@ -67,6 +75,10 @@ function dew_insertMyRewriteQueryVars($vars)
 {
 	if (!in_array('event_id', $vars)) {
 		$vars[] = 'event_id';
+	}
+
+	if (!in_array('festival_id', $vars)) {
+		$vars[] = 'festival_id';
 	}
 	return $vars;
 }
