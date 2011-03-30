@@ -276,23 +276,6 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	}
 	$categories = substr($categories, 0, -2);
 
-	$allowedHtml = array(
-		'a' => array(
-			'href' => array(),
-		),
-		'p' => array(),
-		'span' => array(),
-		'b' => array(),
-		'strong' => array(),
-		'em' => array(),
-		'i' => array(),
-		'blockquote' => array(),
-		'ul' => array(),
-		'ol' => array(),
-		'li' => array(),
-		'br' => array(),
-	);
-
 	$extra = "";
 
 	if (strlen($event->covercharge) > 0) {
@@ -301,8 +284,8 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$output = DEW_tools::sprintfn($eventFormat, array(
 		'title' => $event->title,
-		'leadParagraph' => $event->leadParagraph,
-		'description' => wp_kses($event->description, $allowedHtml),
+		'leadParagraph' => DEW_tools::allowedHtml($event->leadParagraph),
+		'description' => DEW_tools::allowedHtml($event->description),
 		'renderedDate' => $renderedDate,
 		'location' => $location,
 		'arranger' => $event->arranger->name,
