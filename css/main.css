@@ -113,7 +113,8 @@ li.dew_eventList_date {
   padding: 3px;
 }
 
-.dew_agenda h2 {
+.dew_agenda h2,
+.dew_eventDate {
   margin-bottom: 10px;
   float: left;
   color: #666;
@@ -191,6 +192,25 @@ p.agenda_data {
 
 .agenda_event_wrapper {
   margin-bottom: 20px;
+}
+
+/*
+ * dew_eventDetailBox
+ */
+
+.dew_eventDetailBox {
+  background-color: #efefef;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.dew_eventDetailBox .dew_eventDetails {
+  font-size: 0.8em;
+}
+
+.dew_eventDetailBox .dew_eventTitle {
+  font-size: 1.2em;
 }
 
 /*** css for dewPickerPopup ***/
