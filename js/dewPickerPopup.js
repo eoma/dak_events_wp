@@ -3,46 +3,72 @@ var dewpp; // dewPickerPopup
 (function($) {
 
 	var ed, inputs = {}, list, activeSelection, activeSelectionId = null, srvUrl, 
-	    state = {};
+	    state = {}, elementType;
 
 	dewpp = {
 
 		init : function () {
 			inputs.addElement = $('#pickerPopupAddElement');
 			inputs.loadMoreElements = $('#pickerPopupLoadMoreElements');
+			inputs.elementType = $('#pickerPopupElementType');
 			list = $('#pickerPopupList');
 
 			activeSelection = $('#pickerPopupList li');
 			activeSelection.live('click', dewpp.setActiveSelection );
 
 			inputs.addElement.click( function() {
-				dewpp.update();
+				dewpp.addElement();
 			});
 
 			inputs.loadMoreElements.click(dewpp.loadMoreElements);
 
+			inputs.elementType.change(dewpp.changeElementType);
+
 			// dewEventServerUrl is a variable loaded through the dak_events_wp
 			srvUrl = dewEventServerUrl;
+			elementType = 'events';
 
 			state.limit = 20;
 			state.offset = 0;
 			state.count = 0;
 			state.totalCount = 0;
 
-			dewpp.loadElements(true, dewpp.canLoadMoreElements);
+			dewpp.loadElements(true, dewpp.canLoadMoreElements, elementType);
 		},
 
-		update : function () {
+		addElement : function () {
 			ed = tinyMCEPopup.editor;
 
 			if (activeSelectionId != null) {
-				ed.execCommand('mceInsertContent', 0, '[dew_event_detailbox id=' + activeSelectionId + ']');
+				if (elementType == 'events') {
+					ed.execCommand('mceInsertContent', 0, '[dew_detailbox type=event id=' + activeSelectionId + '] ');
+				} else if (elementType == 'festivals') {
+					ed.execCommand('mceInsertContent', 0, '[dew_detailbox type=festival id=' + activeSelectionId + '] ');
+
+				}
 			}
 		},
 
 		loadMoreElements : function () {
 			state.offset = state.offset + state.limit;
-			dewpp.loadElements(false, dewpp.canLoadMoreElements);
+			dewpp.loadElements(false, dewpp.canLoadMoreElements, elementType);
+		},
+
+		changeElementType : function (e) {
+			var newElement = $(this).val();
+
+			if (newElement != elementType) {
+				dewpp.resetActiveSelection();
+				elementType = newElement;
+
+				if (elementType == 'events') {
+					inputs.addElement.text('Add event');
+				} else if (elementType == 'festivals') {
+					inputs.addElement.text('Add festival');
+				}
+
+				dewpp.loadElements(true, dewpp.canLoadMoreElements, elementType);
+			}
 		},
 
 		canLoadMoreElements : function () {
@@ -53,8 +79,17 @@ var dewpp; // dewPickerPopup
 			}
 		},
 
-		loadElements : function (emptyList, callback) {
-			var url = srvUrl + 'api/json/filteredEvents';
+		loadElements : function (emptyList, callback, type) {
+
+			var url = srvUrl + 'api/json/';
+
+			if (type == 'festivals') {
+				url = url + 'festival/list';
+			} else if (type == 'events') {
+				url = url + 'filteredEvents';
+			} else {
+				url = url + 'filteredEvents';
+			}
 
 			var data = {};
 
@@ -99,6 +134,11 @@ var dewpp; // dewPickerPopup
 					callback();
 				}
 			});
+		},
+
+		resetActiveSelection: function () {
+			activeSelectionId = null;
+			inputs.addElement.attr('disabled', true);
 		},
 
 		setActiveSelection : function() {
