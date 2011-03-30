@@ -58,7 +58,11 @@ class DEW_tools {
 		}
 	}
 
-	static public function generateLinkToEvent ($event) {
+	static public function generateLinkToArrangement ($arr, $type) {
+		/**
+		 * Type van be either event or festival
+		 */
+
 		global $wp_rewrite;
 
 		if (is_null(self::$options)) {
@@ -67,7 +71,7 @@ class DEW_tools {
 
 		if (self::$options['eventPageId'] <= 0) {
 			// Don't construct any links if it's not an existing page
-			return $event->url;
+			return $arr->url;
 		}
 
 		$pageLink = get_page_link(self::$options['eventPageId']);
@@ -79,7 +83,11 @@ class DEW_tools {
 				$pageLink .= '/';
 			}
 
-			$pageLink .= $event->id;
+			if ($type == 'festival') {
+				$pageLink .= 'festival/';
+			}
+
+			$pageLink .= $arr->id;
 		} else {
 			if (strpos($pageLink, '?') === false) {
 				$pageLink .= '?';
@@ -89,7 +97,11 @@ class DEW_tools {
 				$pageLink .= '&amp;';
 			}
 
-			$pageLink .= 'event=' . $event->id;
+			if ($type == 'event') {
+				$pageLink .= 'event_id=' . $arr->id;
+			} else if ($type == 'festival') {
+				$pageLink .= 'festival_id=' . $arr->id;
+			}
 		}
 
 		return $pageLink;
