@@ -145,4 +145,26 @@ class DEW_tools {
 
 		return vsprintf($format, array_values($args));
 	}
+
+	static function allowedHtml ($dirtyHtml) {
+		
+		$allowedHtml = array(
+			'a' => array(
+				'href' => array(),
+			),
+			'p' => array(),
+			'span' => array(),
+			'b' => array(),
+			'strong' => array(),
+			'em' => array(),
+			'i' => array(),
+			'blockquote' => array(),
+			'ul' => array(),
+			'ol' => array(),
+			'li' => array(),
+			'br' => array(),
+		);
+
+		return wp_kses($dirtyHtml, $allowedHtml);
+	}
 }
