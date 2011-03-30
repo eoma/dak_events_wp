@@ -148,6 +148,9 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	if ( ! empty($atts['festival_id']) )
 		$queryArgs['festival_id'] = DEW_tools::stringToIntArray($atts['festival_id']);
 
+	if ( ! empty($atts['noCurrentEvents']) )
+		$queryArgs['noCurrentEvents'] = intval($atts['noCurrentEvents']);
+
 	$results = $client->filteredEventsList($queryArgs);
 
 	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data);
@@ -372,7 +375,7 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		'urlOriginal' => $festival->url,
 		'iCalUrl' => $festival->ical,
 		'extra' => $extra,
-		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id)),
+		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id, 'noCurrentEvents' => true)),
 	));
 
 	return $output;
