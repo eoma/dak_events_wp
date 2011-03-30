@@ -120,6 +120,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'arranger_id' => '1,2,3,4',
 	 *       'location_id' => '4,3,2,1',
 	 *       'category_id' => '3,4,1,2',
+	 *       'festival_id' => '1,2,3,2',
 	 * )
 	 */
 	$options = get_option('optionsDakEventsWp');
@@ -299,12 +300,93 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	return $output;
 }
 
-function dew_agenda_or_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
+function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "") {
+	/**
+	 * $atts can contain
+	 * array(
+	 *       'festival_id' => '1',
+	 * )
+	 */
+
+	$options = get_option('optionsDakEventsWp');
+
+	$dateFormat = $options['dateFormat'];
+	$timeFormat = $options['timeFormat'];
+
+	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
+	$locale = new WP_Locale();
+
+	$festivalResult = $client->festival($atts['festival_id']);
+	$festival = $festivalResult->data[0];
+
+	$formatConfig = array();
+
+	if (isset($atts['no_title']) && ($atts['no_title'] == true)) {
+		$formatConfig['no_title'] = true;
+	}
+
+	$festivalFormat = DEW_format::fullFestival($formatConfig);
+
+	//var_dump($festival);
+
+	$startTimestamp = DEW_tools::dateStringToTime($festival->startDate, $festival->startTime);
+	$endTimestamp = DEW_tools::dateStringToTime($festival->endDate, $festival->endTime);
+
+	if ($festival->startDate == $festival->endDate) {
+		$renderedDate = sprintf(__('%s from %s to %s', 'dak_events_wp'),
+			date($dateFormat, $startTimestamp),
+			date($timeFormat, $startTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
+	} else {
+		$renderedDate = sprintf(__('%s from %s to %s %s', 'dak_events_wp'),
+			date($dateFormat, $startTimestamp),
+			date($timeFormat, $startTimestamp),
+			date($dateFormat, $endTimestamp),
+			date($timeFormat, $endTimestamp)
+		);
+	}
+
+	$location = DEW_tools::getLocationFromEvent($festival);
+
+	$arrangers = '';
+	foreach ($festival->arrangers as $f) {
+		$arrangers .= $f->name . ', ';
+	}
+	$arrangers = substr($arrangers, 0, -2);
+
+	$extra = "";
+
+	if (strlen($festival->covercharge) > 0) {
+		$extra .= __('CC:', 'dak_events_wp') . ' ' . $festival->covercharge . '<br />' . "\n";
+	}
+
+	$output = DEW_tools::sprintfn($festivalFormat, array(
+		'title' => $festival->title,
+		'leadParagraph' => DEW_tools::allowedHtml($festival->leadParagraph),
+		'description' => DEW_tools::allowedHtml($festival->description),
+		'renderedDate' => $renderedDate,
+		'location' => $location,
+		'arranger' => $arrangers,
+		'startTime' => date($timeFormat, $startTimestamp),
+		'urlOriginal' => $festival->url,
+		'iCalUrl' => $festival->ical,
+		'extra' => $extra,
+		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id)),
+	));
+
+	return $output;
+}
+
+function dew_agenda_or_fullarrangement_shortcode_handler ($atts, $content = null, $code = "") {
 	global $wp_query;
 
 	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
 		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
 		return dew_fullevent_shortcode_handler (array('event_id' => intval($event_id)), $content, $code);
+	} elseif (!empty($_GET['festival_id']) || $wp_query->get('festival_id')) {
+		$festival_id = (empty($_GET['festival_id'])) ? $wp_query->get('festival_id') : $_GET['festival_sid'];
+		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
 	} else {
 		return dew_agenda_shortcode_handler ($atts, $content, $code);
 	}
