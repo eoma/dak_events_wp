@@ -28,7 +28,7 @@ class DEW_format {
 		// All named arguments are required in the format
 		$format = "
 <div class=\"agenda_event_wrapper\">
-  <h3>%(title)s</h3>
+  <h3><a href=\"%(readMore)s\">%(title)s</a></h3>
   <p class=\"agenda_data\">
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(startTime)s<br />
@@ -37,9 +37,6 @@ class DEW_format {
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
-  <a href=\"%(readMore)s\">
-  " . __('Read more', 'dak_events_wp') . "
-  </a>
 </div>";
 
 		return $format;
