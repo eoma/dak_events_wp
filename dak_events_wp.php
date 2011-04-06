@@ -6,7 +6,6 @@ Version: 0.1
 */
 
 define('DEW_PREFIX', dirname(realpath(__FILE__)));
-define('DEW_URL',  WP_PLUGIN_URL . '/dak_events_wp');
 
 // Include the client library for our remote events
 require_once( DEW_PREFIX . '/eventsCalendarClient.php' );
@@ -18,8 +17,8 @@ require_once( DEW_PREFIX . '/dew_shortcode.php' );
 
 function DakEventsWpInit () {
 	wp_enqueue_script('dew_eventJsStyle', plugins_url('/dew_js.php?eventStylesheet=1', __FILE__), array('jquery'));
-	wp_enqueue_script('dew_js_events', DEW_URL . '/js/events.js', array('jquery'));
-	wp_enqueue_style('dew_mainStyle', DEW_URL . '/css/main.css');
+	wp_enqueue_script('dew_js_events', plugins_url('/js/events.js', __FILE__), array('jquery'));
+	wp_enqueue_style('dew_mainStyle', plugins_url('/css/main.css', __FILE__));
 	load_plugin_textdomain('dak_events_wp', false, dirname(plugin_basename(__FILE__)) . '/i18n');
 }
 
@@ -32,7 +31,7 @@ function DakEventsWpAdminHeaderScript () {
 }
 
 if ( is_admin() ) {
-	wp_enqueue_script("dew_js_widgetadmin", DEW_URL . '/js/widgetAdmin.js', array('jquery'));
+	wp_enqueue_script("dew_js_widgetadmin", plugins_url('/js/widgetAdmin.js', __FILE__), array('jquery'));
 }
 
 // Remember to flush_rules() when adding rules
@@ -103,11 +102,12 @@ function dewEditorButtons () {
 		return False;
 	}
 
-	if ( get_user_option('rich_editing') == true ) {
+	if (is_admin() && (get_user_option('rich_editing') == true)) {
 		add_filter('mce_external_plugins', 'addDewEditorPlugin');
 		add_filter('mce_buttons', 'registerDewEditorButtons');
 		add_action('tiny_mce_preload_dialogs', 'dewEditorPluginPopup');
-		wp_enqueue_script("dew_js_pickerpopup", DEW_URL . '/js/dewPickerPopup.js', array('jquery'));
+
+		wp_enqueue_script("dew_js_pickerpopup", plugins_url('/js/dewPickerPopup.js', __FILE__), array('jquery'));
 		add_action('admin_head', 'dewEventServerUrl');
 	}
 }
