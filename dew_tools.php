@@ -175,7 +175,7 @@ class DEW_tools {
 
 		if (empty($linkBack)) {
 			$protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https');
-			$linkBack = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+			$linkBack = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		}
 
 		$query = array();
