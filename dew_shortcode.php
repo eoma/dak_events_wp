@@ -92,6 +92,7 @@ function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
 			'startTime' => date('H:i', $startTimestamp),
 			'location' => $location,
 			'iCalUrl' => $arr->ical,
+			'googleCalUrl' => DEW_tools::createGoogleCalUrl($arr),
 			'extra' => $extra,
 	);
 
@@ -209,6 +210,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'category' => $categories,
 				'startTime' => date($timeFormat, $startTimestamp),
 				'iCalUrl' => $event->ical,
+				'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 				'readMore' => DEW_tools::generateLinkToArrangement($event, 'event'),
 				'extra' => $extra,
 			));
@@ -297,6 +299,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'startTime' => date($timeFormat, $startTimestamp),
 		'urlOriginal' => $event->url,
 		'iCalUrl' => $event->ical,
+		'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 		'extra' => $extra,
 	));
 
@@ -374,6 +377,7 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		'startTime' => date($timeFormat, $startTimestamp),
 		'urlOriginal' => $festival->url,
 		'iCalUrl' => $festival->ical,
+		'googleCalUrl' => DEW_tools::createGoogleCalUrl($festival),
 		'extra' => $extra,
 		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id, 'noCurrentEvents' => true)),
 	));

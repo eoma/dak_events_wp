@@ -35,6 +35,7 @@ class DEW_format {
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
+    <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
 </div>";
@@ -67,6 +68,7 @@ class DEW_format {
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
+    <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
   %(description)s
@@ -100,7 +102,9 @@ class DEW_format {
     " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
     " . __('Arranger:', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
-    <a href=\"%(iCalUrl)s\">" . __('Add festival to your calendar', 'dak_events_wp') . "</a><br />
+    <a href=\"%(iCalUrl)s\">" . __('Add festival to your calendar', 'dak_events_wp') . "</a>
+    <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
+    <br />
     <a href=\"#dew_festivalEvents\">" . __('Jump to the events', 'dak_events_wp') . "</a>
   </p>
   <p>%(leadParagraph)s</p>
@@ -134,6 +138,7 @@ class DEW_format {
     " . __('Arranged by', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
+    <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
   </div>
 </div>";
 
@@ -157,6 +162,7 @@ class DEW_format {
     " . __('Arranged by', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add festival to your calendar', 'dak_events_wp') . "</a>
+    <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
   </div>
 </div>";
 

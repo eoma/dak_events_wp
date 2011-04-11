@@ -167,4 +167,34 @@ class DEW_tools {
 
 		return wp_kses($dirtyHtml, $allowedHtml);
 	}
+
+	static function createGoogleCalUrl($arr, $linkBack = '') {
+		$base = 'http://www.google.com/calendar/event';
+
+		$linkBack = trim(strval($linkBack));
+
+		if (empty($linkBack)) {
+			$protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https');
+			$linkBack = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+		}
+
+		$query = array();
+
+		$query['action'] = 'TEMPLATE';
+        $query['text'] = $arr->title;
+		$query['location'] = self::getLocationFromEvent($arr);
+
+		$startTimestamp = self::dateStringToTime($arr->startDate, $arr->startTime);
+		$endTimestamp = self::dateStringToTime($arr->endDate, $arr->endTime);
+
+		$query['dates'] = date('Ymd\THis\Z', $startTimestamp) . '/' . date('Ymd\THis\Z', $endTimestamp);
+
+		$query['details'] = $linkBack . ': ' . strip_tags($arr->leadParagraph);
+
+		$query['sprop'] = array();
+		$query['sprop'][] = $linkBack;
+		$query['sprop'][] = 'name:' . $arr->title;
+
+		return $base . '?' . http_build_query($query);
+	}
 }
