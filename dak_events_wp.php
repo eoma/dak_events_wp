@@ -60,7 +60,7 @@ function dew_insertMyRewriteRules($rules)
 		$options['rewriteEventUrlRegex'] = '(' . $page->post_name . ')/(\d+)(/(.*))?$';
 		$newrules[$options['rewriteEventUrlRegex']] = 'index.php?pagename=$matches[1]&event_id=$matches[2]';
 
-		$options['rewriteFestivalUrlRegex'] = '(' . $page->post_name . ')/festival/(\d+)/(/(.*))?$';
+		$options['rewriteFestivalUrlRegex'] = '(' . $page->post_name . ')/festival/(\d+)(/(.*))?$';
 		$newrules[$options['rewriteFestivalUrlRegex']] = 'index.php?pagename=$matches[1]&festival_id=$matches[2]';
 	}
 
