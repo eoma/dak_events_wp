@@ -87,7 +87,7 @@ class DEW_tools {
 				$pageLink .= 'festival/';
 			}
 
-			$pageLink .= $arr->id;
+			$pageLink .= $arr->id . '/' . sanitize_title($arr->title);
 		} else {
 			if (strpos($pageLink, '?') === false) {
 				$pageLink .= '?';
