@@ -291,8 +291,38 @@ class eventsCalendarClient {
 	 * @param array $args Array of arguments to pass on to backend.
 	 * @return array
 	 */
-	public function filteredEventsList (array $args) {
-		return $this->getData('filteredEvents' , $args );
+	public function filteredEventsList (array $args, $fetchAll = false) {
+		if ($fetchAll) {
+			$finalResult = new stdClass;
+
+			$args['limit'] = 100;
+			$args['offset'] = 0;
+
+			$result = $this->getData('filteredEvents', $args);
+			$finalResult->data = $result->data;
+
+			$totalCount = intval($result->count);
+
+			while ( ($args['offset'] + $result->limit) < $result->totalCount ) {
+				$args['offset'] += $result->limit;
+
+				$result = $this->getData('filteredEvents' , $args );
+				$finalResult->data = array_merge($finalResult->data, $result->data);
+				
+				$totalCount += $result->count;
+			}
+
+			unset($result);
+
+			$finalResult->count = $totalCount;
+			$finalResult->totalCount = $totalCount;
+			$finalResult->limit = $totalCount;
+			$finalResult->offset = 0;
+
+			return $finalResult;
+		} else {
+			return $this->getData('filteredEvents' , $args );
+		}
 	}
 	
 	/**
