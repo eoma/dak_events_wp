@@ -122,7 +122,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'location_id' => '4,3,2,1',
 	 *       'category_id' => '3,4,1,2',
 	 *       'festival_id' => '1,2,3,2',
-	 *       'semester_view' => true or false,
+	 *       'no_current_events' => 1 or 0,
+	 *       'semester_view' => 1 or 0,
 	 * )
 	 */
 	$options = get_option('optionsDakEventsWp');
@@ -155,7 +156,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	if ( ! empty($atts['no_current_events']) )
 		$queryArgs['noCurrentEvents'] = intval($atts['no_current_events']);
 		
-	if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+	if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
 		$thisMonth = intval(date('n'));
 
 		if ( $thisMonth <= 7 ) {
@@ -200,7 +201,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 		$startDayName = ucfirst($locale->get_weekday(date('w', $timestamp )));
 		$monthName = ucfirst($locale->get_month(date('n', $timestamp )));
 		
-		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
 			if ($lastMonth != date('n', $timestamp)) {
 				if ($lastMonth != 0) {
 					$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
@@ -279,7 +280,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	}
 
 	if ($monthOutput != "") {
-		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
 			$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
 				'monthName' => $monthName,
 				'id' => 'm' . $lastMonth,
