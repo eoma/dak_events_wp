@@ -276,6 +276,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 				$monthOutput = "";
 			}
+		} else {
+			$output .= $monthOutput;
 		}
 	}
 
