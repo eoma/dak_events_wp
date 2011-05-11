@@ -122,6 +122,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'location_id' => '4,3,2,1',
 	 *       'category_id' => '3,4,1,2',
 	 *       'festival_id' => '1,2,3,2',
+	 *       'semester_view' => true or false,
 	 * )
 	 */
 	$options = get_option('optionsDakEventsWp');
@@ -134,6 +135,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	$timeFormat = $options['timeFormat'];
 
 	//print_r($atts);
+	
+	$queryArgs['onlySummaries'] = 1;
 
 	$atts = str_replace(array("\"", "'", "&quot;"), array('', '', ''), $atts);
 
@@ -149,23 +152,73 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	if ( ! empty($atts['festival_id']) )
 		$queryArgs['festival_id'] = DEW_tools::stringToIntArray($atts['festival_id']);
 
-	if ( ! empty($atts['noCurrentEvents']) )
-		$queryArgs['noCurrentEvents'] = intval($atts['noCurrentEvents']);
+	if ( ! empty($atts['no_current_events']) )
+		$queryArgs['noCurrentEvents'] = intval($atts['no_current_events']);
+		
+	if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+		$thisMonth = intval(date('n'));
 
-	$results = $client->filteredEventsList($queryArgs);
+		if ( $thisMonth <= 7 ) {
+			$agendaTitle = '<h2>' . sprintf(__('Events in spring %s', 'dak_events_wp'), date('Y')) . '</h2>' . "\n"; 
+			$startDate = date('Y') . '-01-01';
+			$endDate = date('Y') . '-07-31';
+		} else {
+			$agendaTitle = '<h2>' . sprintf(__('Events in autumn %s', 'dak_events_wp'), date('Y')) . '</h2>' . "\n"; 
+			$startDate = date('Y') . '-08-01';
+			$endDate = (intval(date('Y')) + 1) . '-01-31';
+		}
+		
+		$queryArgs['startDate'] = $startDate;
+		$queryArgs['endDate'] = $endDate;
+		
+		$results = $client->filteredEventsList($queryArgs, true);
+		$eventFormat = DEW_format::agendaCompactList();
+		$eventCollectionFormat = DEW_format::agendaEventCollection();
+	} else {
+		$results = $client->filteredEventsList($queryArgs);
+		$eventFormat = DEW_format::agendaFullEvent();
+	}
 
 	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data);
 
-	$eventFormat = DEW_format::agendaFullEvent();
+	$eventDateCollectionFormat = DEW_format::agendaEventDateCollection();
 	
-	$output = "<div class='dew_agenda'>\n";
+	$output = "";
+
+	if (!empty($agendaTitle)) {
+		$output .= $agendaTitle;
+	}
+	
+	$output .= "<div class='dew_agenda'>\n";
+
+	$monthOutput = "";
+
+	$lastMonth = 0;
 
 	foreach ($dateSortedEvents as $timestamp => $events) {
-		$startDayName = ucfirst($locale->get_weekday(date('w', $timestamp )));
 		
-		$output .= "<h2><span class='agenda_day_name'>" . $startDayName . "</span> <span class='agenda_day_number'>" . date('j', $timestamp) . "</span><span class='agenda_month_name'>" . date('F', $timestamp) . "</span></h2>\n";
-
-		$output .= "<div class='event_date_list'>\n";
+		$startDayName = ucfirst($locale->get_weekday(date('w', $timestamp )));
+		$monthName = ucfirst($locale->get_month(date('n', $timestamp )));
+		
+		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+			if ($lastMonth != date('n', $timestamp)) {
+				if ($lastMonth != 0) {
+					$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
+						'monthName' => $monthName,
+						'id' => 'm' . $lastMonth,
+						'extraClass' => (($lastMonth != date('n')) ? 'dew_hide' : ''),
+						'extraCollectionClass' => (($lastMonth == date('n')) ? 'dew_active' : ''),
+						'eventCollection' => $monthOutput,
+					));
+				
+					$monthOutput = "";
+				}
+			
+				$lastMonth = date('n', $timestamp);
+			}
+		}
+		
+		$dateOutput = "";
 
 		foreach($events as $event) {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
@@ -200,27 +253,44 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				$extra .= __('CC:', 'dak_events_wp') . ' ' . $event->covercharge . '<br />' . "\n";
 			}
 
-			$output .= DEW_tools::sprintfn($eventFormat, array(
+			$dateOutput .= DEW_tools::sprintfn($eventFormat, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
-				'description' => $event->description,
 				'renderedDate' => $renderedDate,
 				'location' => $location,
 				'arranger' => $event->arranger->name,
 				'category' => $categories,
 				'startTime' => date($timeFormat, $startTimestamp),
-				'iCalUrl' => $event->ical,
-				'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 				'readMore' => DEW_tools::generateLinkToArrangement($event, 'event'),
 				'extra' => $extra,
 			));
 
 		}
 
-		$output .= "</div>\n";
+		$monthOutput .= DEW_tools::sprintfn($eventDateCollectionFormat,
+			array(
+				'dayName' => $startDayName,
+				'dayNumber' => date('j', $timestamp),
+				'monthName' => $monthName,
+				'eventCollection' => $dateOutput,
+			)
+		
+		);
 	}
 
-	//$output .= '<button type="button" class="dew_agenda_loadExtra">Load more</button>';
+	if ($monthOutput != "") {
+		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 'true') ) {
+			$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
+				'monthName' => $monthName,
+				'id' => 'm' . $lastMonth,
+				'extraClass' => (($lastMonth != date('n')) ? 'dew_hide' : ''),
+				'extraCollectionClass' => (($lastMonth == date('n')) ? 'dew_active' : ''),
+				'eventCollection' => $monthOutput,
+			));
+		} else {
+			$output .= $monthOutput;
+		}
+	}
 
 	$output .= "</div>\n";
 
@@ -379,7 +449,7 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		'iCalUrl' => $festival->ical,
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($festival),
 		'extra' => $extra,
-		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id, 'noCurrentEvents' => true)),
+		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id, 'no_current_events' => true)),
 	));
 
 	return $output;

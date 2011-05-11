@@ -40,6 +40,43 @@ class DEW_format {
 
 		return $format;
 	}
+	
+	static public function agendaCompactList() {
+		$format = "
+<div class='agenda_compact_event_wrapper'>
+%(startTime)s - <a href=\"%(readMore)s\">%(title)s</a> <br />
+%(category)s - %(location)s
+</div>
+";
+
+		return $format;
+	}
+	
+	static public function agendaEventCollection() {
+		$format = "
+<h2 class='agenda_collection_name %(extraCollectionClass)s'>%(monthName)s</h2>
+<div class='agenda_event_collection %(extraClass)s' id='%(id)s'>
+  %(eventCollection)s
+</div>
+";
+
+		return $format;
+	}
+
+	static public function agendaEventDateCollection () {
+		$format = "
+<h2 class='agenda_box'>
+  <span class='agenda_day_name'>%(dayName)s</span>
+  <span class='agenda_day_number'>%(dayNumber)s</span>
+  <span class='agenda_month_name'>%(monthName)s</span>
+</h2>
+<div class='event_date_list'>
+  %(eventCollection)s
+</div>
+";
+
+		return $format;
+	}
 
 	static public function fullEvent(array $config = array()) {
 		// All named arguments are required in the format

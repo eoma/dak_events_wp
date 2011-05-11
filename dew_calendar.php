@@ -114,7 +114,6 @@ class DEW_Calendar {
 			));
 			$output .= '</li>' . "\n";
 		}
-		$output .= '</li>' . "\n";
 		$output .= '</ul>' . "\n";
 		
 		if ($output == '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list"></ul>') {

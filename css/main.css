@@ -113,7 +113,25 @@ li.dew_eventList_date {
   padding: 3px;
 }
 
-.dew_agenda h2,
+/*
+ * dew_agenda
+ */
+
+.dew_agenda h2.agenda_collection_name:hover {
+  cursor: pointer;
+}
+
+.dew_agenda h2.agenda_collection_name {
+  /*border-bottom: solid 3px #000;*/
+  margin-top: 10px;
+  color: #555;
+}
+
+.dew_agenda h2.agenda_collection_name.dew_active {
+  color: #000;
+}
+
+.dew_agenda h2.agenda_box,
 .dew_eventDate {
   margin-bottom: 10px;
   float: left;
@@ -187,6 +205,10 @@ p.agenda_data {
   padding-left: 10px;
   border: 1px solid #ddd;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.agenda_compact_event_wrapper {
   margin-bottom: 10px;
 }
 
