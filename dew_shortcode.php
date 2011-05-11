@@ -196,29 +196,15 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$lastMonth = 0;
 
-	foreach ($dateSortedEvents as $timestamp => $events) {
-		
+	$dateSortedEventsKeys = array_keys($dateSortedEvents);
+	$numberOfDateSortedEvents = count($dateSortedEventsKeys);
+	for ($i = 0; $i < $numberOfDateSortedEvents; $i++) {
+		$timestamp = $dateSortedEventsKeys[$i];
+		$events = $dateSortedEvents[$timestamp];
+
 		$startDayName = ucfirst($locale->get_weekday(date('w', $timestamp )));
 		$monthName = ucfirst($locale->get_month(date('n', $timestamp )));
-		
-		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
-			if ($lastMonth != date('n', $timestamp)) {
-				if ($lastMonth != 0) {
-					$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
-						'monthName' => $monthName,
-						'id' => 'm' . $lastMonth,
-						'extraClass' => (($lastMonth != date('n')) ? 'dew_hide' : ''),
-						'extraCollectionClass' => (($lastMonth == date('n')) ? 'dew_active' : ''),
-						'eventCollection' => $monthOutput,
-					));
-				
-					$monthOutput = "";
-				}
-			
-				$lastMonth = date('n', $timestamp);
-			}
-		}
-		
+
 		$dateOutput = "";
 
 		foreach($events as $event) {
@@ -277,19 +263,19 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			)
 		
 		);
-	}
-
-	if ($monthOutput != "") {
+		
 		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
-			$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
-				'monthName' => $monthName,
-				'id' => 'm' . $lastMonth,
-				'extraClass' => (($lastMonth != date('n')) ? 'dew_hide' : ''),
-				'extraCollectionClass' => (($lastMonth == date('n')) ? 'dew_active' : ''),
-				'eventCollection' => $monthOutput,
-			));
-		} else {
-			$output .= $monthOutput;
+			if ( (($i + 1) == $numberOfDateSortedEvents) || (date('n', $timestamp) != date('n', $dateSortedEventsKeys[$i + 1])) ) {
+				$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
+					'monthName' => $monthName,
+					'id' => 'm' . date('n', $timestamp),
+					'extraClass' => ((date('n') != date('n', $timestamp)) ? 'dew_hide' : ''),
+					'extraCollectionClass' => ((date('n') == date('n', $timestamp)) ? 'dew_active' : ''),
+					'eventCollection' => $monthOutput,
+				));
+
+				$monthOutput = "";
+			}
 		}
 	}
 
