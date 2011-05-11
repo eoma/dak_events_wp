@@ -58,7 +58,7 @@ class DEW_tools {
 		}
 	}
 
-	static public function generateLinkToArrangement ($arr, $type) {
+	static public function generateLinkToArrangement ($arr, $type, $useTitleInUrl = true) {
 		/**
 		 * Type van be either event or festival
 		 */
@@ -87,7 +87,10 @@ class DEW_tools {
 				$pageLink .= 'festival/';
 			}
 
-			$pageLink .= $arr->id . '/' . sanitize_title($arr->title);
+			$pageLink .= $arr->id;
+			if ($useTitleInUrl) {
+				$pageLink .= '/' . sanitize_title($arr->title);
+			}
 		} else {
 			if (strpos($pageLink, '?') === false) {
 				$pageLink .= '?';
@@ -195,6 +198,6 @@ class DEW_tools {
 		$query['sprop'][] = $linkBack;
 		$query['sprop'][] = 'name:' . $arr->title;
 
-		return $base . '?' . http_build_query($query);
+		return $base . '?' . http_build_query($query, '', '&amp;');
 	}
 }
