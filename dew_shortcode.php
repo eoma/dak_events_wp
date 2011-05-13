@@ -347,6 +347,11 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		$extra .= __('CC:', 'dak_events_wp') . ' ' . $event->covercharge . '<br />' . "\n";
 	}
 
+	if ($event->festival != null) {
+		$extra .= __('Part of festival', 'dak_events_wp') . ': ' 
+		       . '<a href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">' . $event->festival->title .'</a><br />';
+	}
+
 	$output = DEW_tools::sprintfn($eventFormat, array(
 		'title' => $event->title,
 		'leadParagraph' => DEW_tools::allowedHtml($event->leadParagraph),
