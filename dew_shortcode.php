@@ -391,7 +391,7 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 	$locale = new WP_Locale();
 
 	if (empty($atts['event_id'])) {
-		return __('No festival_id attribute supplied to shortcode [dew_event]', 'dak_events_wp');
+		return __('No festival_id attribute supplied to shortcode [dew_festival]', 'dak_events_wp');
 	}
 
 	$festivalResult = $client->festival($atts['festival_id']);
