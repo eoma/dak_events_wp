@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin "
 "0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
-"POT-Creation-Date: 2011-03-22 17:04:47+00:00\n"
+"POT-Creation-Date: 2011-05-16 10:10:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,52 +13,68 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: dak_events_wp.php:28
+#: dak_events_wp.php:27
 msgid "DAK Events Calendar"
 msgstr ""
 
-#: dew_format.php:16 dew_format.php:73
+#: dew_format.php:16
 msgid "When:"
 msgstr ""
 
-#: dew_format.php:17 dew_format.php:74
+#: dew_format.php:17
 msgid "Where:"
 msgstr ""
 
-#: dew_format.php:18 dew_format.php:35 dew_format.php:56 dew_format.php:75
+#: dew_format.php:18 dew_format.php:35 dew_format.php:103 dew_format.php:138
 msgid "Arranger:"
 msgstr ""
 
-#: dew_format.php:19 dew_format.php:76
+#: dew_format.php:19
 msgid "Type:"
 msgstr ""
 
-#: dew_format.php:33 dew_format.php:54
+#: dew_format.php:33 dew_format.php:101 dew_format.php:171
 msgid "%s in %s"
 msgstr ""
 
-#: dew_format.php:34 dew_format.php:55
+#: dew_format.php:34 dew_format.php:102 dew_format.php:137
 msgid "Starts:"
 msgstr ""
 
-#: dew_format.php:36 dew_format.php:57 dew_format.php:77 dew_calendar.php:95
-msgid "CC:"
-msgstr ""
-
-#: dew_format.php:37 dew_format.php:58 dew_format.php:78
+#: dew_format.php:105 dew_format.php:175
 msgid "Add event to your calendar"
 msgstr ""
 
-#: dew_format.php:41 dew_calendar.php:99
-msgid "Read more"
+#: dew_format.php:106 dew_format.php:141 dew_format.php:176 dew_format.php:200
+msgid "Google calendar"
 msgstr ""
 
-#: dew_format.php:62
+#: dew_format.php:110
 msgid "Orginal event"
 msgstr ""
 
-#: dew_format.php:72 dew_widget.php:97
-msgid "Title:"
+#: dew_format.php:140 dew_format.php:199
+msgid "Add festival to your calendar"
+msgstr ""
+
+#: dew_format.php:143
+msgid "Jump to the events"
+msgstr ""
+
+#: dew_format.php:152
+msgid "Orginal festival"
+msgstr ""
+
+#: dew_format.php:172 dew_format.php:195
+msgid "Starts"
+msgstr ""
+
+#: dew_format.php:173 dew_format.php:197
+msgid "Arranged by"
+msgstr ""
+
+#: dew_format.php:196
+msgid "Ends"
 msgstr ""
 
 #: dew_management.php:94
@@ -117,8 +133,21 @@ msgstr ""
 msgid "Update Options"
 msgstr ""
 
-#: dew_calendar.php:117
+#: dew_calendar.php:95 dew_shortcode.php:78 dew_shortcode.php:240
+#: dew_shortcode.php:351 dew_shortcode.php:439
+msgid "CC:"
+msgstr ""
+
+#: dew_calendar.php:103
+msgid "Read more"
+msgstr ""
+
+#: dew_calendar.php:120
 msgid "No arrangements at the moment."
+msgstr ""
+
+#: dew_widget.php:97
+msgid "Title:"
 msgstr ""
 
 #: dew_widget.php:103
@@ -179,32 +208,44 @@ msgstr ""
 msgid "Add Category"
 msgstr ""
 
-#: dew_shortcode.php:26
-msgid "No event id specified"
+#: dew_shortcode.php:39
+msgid "No id specified for detailbox"
 msgstr ""
 
-#: dew_shortcode.php:32
+#: dew_shortcode.php:49
 msgid "No event found with specified id %d."
 msgstr ""
 
-#: dew_shortcode.php:42
-msgid "%s %s from %s to %s"
+#: dew_shortcode.php:106
+msgid "F j, Y H:i"
 msgstr ""
 
-#: dew_shortcode.php:51
-msgid "%s %s %s from %s to %s %s %s"
+#: dew_shortcode.php:163
+msgid "Events in spring %s"
 msgstr ""
 
-#: dew_shortcode.php:69 dew_shortcode.php:164 dew_shortcode.php:262
-msgid "Free"
+#: dew_shortcode.php:167
+msgid "Events in autumn %s"
 msgstr ""
 
-#: dew_shortcode.php:142 dew_shortcode.php:223
+#: dew_shortcode.php:215 dew_shortcode.php:326 dew_shortcode.php:414
 msgid "%s from %s to %s"
 msgstr ""
 
-#: dew_shortcode.php:148 dew_shortcode.php:229
+#: dew_shortcode.php:221 dew_shortcode.php:332 dew_shortcode.php:420
 msgid "%s from %s to %s %s"
+msgstr ""
+
+#: dew_shortcode.php:306
+msgid "No event_id attribute supplied to shortcode [dew_event]"
+msgstr ""
+
+#: dew_shortcode.php:355
+msgid "Part of festival"
+msgstr ""
+
+#: dew_shortcode.php:394
+msgid "No festival_id attribute supplied to shortcode [dew_festival]"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
