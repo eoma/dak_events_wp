@@ -302,6 +302,10 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 	$locale = new WP_Locale();
 
+	if (empty($atts['event_id'])) {
+		return __('No event_id attribute supplied to shortcode [dew_event]', 'dak_events_wp');
+	}
+
 	$eventResult = $client->event($atts['event_id']);
 	$event = $eventResult->data[0];
 
@@ -385,6 +389,10 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 
 	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 	$locale = new WP_Locale();
+
+	if (empty($atts['event_id'])) {
+		return __('No festival_id attribute supplied to shortcode [dew_event]', 'dak_events_wp');
+	}
 
 	$festivalResult = $client->festival($atts['festival_id']);
 	$festival = $festivalResult->data[0];
