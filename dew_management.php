@@ -36,6 +36,15 @@ class DEW_Management {
 		if (!isset($options['eventPageId'])) 
 			$options['eventPageId'] = null; // Page id (integer)
 
+		if (!isset($options['eventUsePictures']))
+			$options['eventUsePictures'] = false;
+
+		if (!isset($options['eventPictureWidth']))
+			$options['eventPictureWidth'] = isset($GLOBALS['content_width']) ? $GLOBALS['content_width'] : 600;
+
+		if (!isset($options['eventPictureClass']))
+			$options['eventPictureClass'] = 'aligncenter';
+
 		$options['cache'] = intval($options['cache']);
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
@@ -79,6 +88,20 @@ class DEW_Management {
 				}
 			}
 
+			if (isset($_POST['eventUsePictures'])) {
+				$options['eventUsePictures'] = (bool) $_POST['eventUsePictures'];
+			}
+
+			if (isset($_POST['eventPictureWidth']) && ((int)$_POST['eventPictureWidth'] > 0)) {
+				$options['eventPictureWidth'] = (int) $_POST['eventPictureWidth'];
+			} else {
+				$options['eventPictureWidth'] = isset($GLOBALS['content_width']) ? $GLOBALS['content_width'] : 600;
+			}
+
+			if (isset($_POST['eventPictureClass'])) {
+				$options['eventPictureClass'] = esc_attr($_POST['eventPictureClass']);
+			}
+
 			update_option('optionsDakEventsWp', $options);
 
 			dew_flushRules();
@@ -88,7 +111,10 @@ class DEW_Management {
 			$eventsCalendarClient = new eventsCalendarClient($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 			$eventsCalendarClient->clearCache();
 			$eventsCalendarClient = null;
-                }
+
+			$uploadDir = wp_upload_dir();
+			DEW_tools::rrmdir($uploadDir['basedir'] . '/dew_pictures');
+		}
 ?>
     <div class="wrap">
       <h2><?php _e('Events Calendar Options', 'dak_events_wp') ?></h2>
@@ -152,11 +178,35 @@ class DEW_Management {
             </select>
           </td>
         </tr>
+        <tr>
+          <th><label for="dew_eventUsePictures">Use pictures?</label></th>
+          <td><input type="checkbox" name="eventUsePictures" id="dew_eventUsePictures" <?php if ($options['eventUsePictures']) echo 'checked="checked"' ?> /></td>
+        </tr>
+        <tr>
+          <th><label for="dew_eventPictureWidth">Max picture width</label></th>
+          <td><input type="text" name="eventPictureWidth" id="dew_eventPictureWidth" value="<?php echo $options['eventPictureWidth'] ?>" <?php if (!$options['eventUsePictures']) echo 'disabled="disabled"' ?> /></td>
+        </tr>
+        <tr>
+          <th><label for="dew_eventPictureClass">Picture class(es)</label></th>
+          <td><input type="text" name="eventPictureClass" id="dew_eventPictureClass" value="<?php echo $options['eventPictureClass'] ?>" <?php if (!$options['eventUsePictures']) echo 'disabled="disabled"' ?> /></td>
+        </tr>
       </table>
       <input type="hidden" name="optionsDakEventsWpSubmitted" value="1" />
       <p class="submit">
         <input type="submit" name="submit" value="<?php _e('Update Options', 'dak_events_wp') ?> &raquo;">
       </p>
+      <script type="text/javascript">
+jQuery(document).ready(function() {
+	jQuery('#dew_eventUsePictures').click(function () {
+		var pictureWidth = document.getElementById('dew_eventPictureWidth');
+		pictureWidth.disabled = !pictureWidth.disabled;
+
+		var pictureClass = document.getElementById('dew_eventPictureClass');
+		pictureClass.disabled = !pictureClass.disabled;
+
+	});
+});
+      </script>
     </form>
 <?php
   }

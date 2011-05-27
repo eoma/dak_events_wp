@@ -356,6 +356,16 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		       . '<a href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">' . $event->festival->title .'</a><br />';
 	}
 
+	$primaryPicture = '';
+
+	if ($options['eventUsePictures'] && !empty($event->primaryPicture)) {
+		$img = DEW_tools::getPicture($event->primaryPicture, $options['eventPictureWidth']);
+
+		if ($img != false) {
+			$primaryPicture = '<img class="' . $options['eventPictureClass'] . ' size-auto" alt="' . esc_attr($event->primaryPicture->description) . '" src="' . content_url('uploads' . $img['relative']) . '" />';
+		}
+	}
+
 	$output = DEW_tools::sprintfn($eventFormat, array(
 		'title' => $event->title,
 		'leadParagraph' => DEW_tools::allowedHtml($event->leadParagraph),
@@ -369,6 +379,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'iCalUrl' => $event->ical,
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 		'extra' => $extra,
+		'primaryPicture' => $primaryPicture,
 	));
 
 	return $output;

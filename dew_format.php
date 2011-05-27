@@ -107,6 +107,7 @@ class DEW_format {
   </p>
   <p>%(leadParagraph)s</p>
   %(description)s
+  %(primaryPicture)s
   <p><small><a href='%(urlOriginal)s'>" . __('Orginal event', 'dak_events_wp') . "</a></small></p>
 </div>";
 

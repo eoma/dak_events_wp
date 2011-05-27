@@ -200,4 +200,93 @@ class DEW_tools {
 
 		return $base . '?' . http_build_query($query, '', '&amp;');
 	}
+
+	/**
+	 * Will return array of absolute and relative path of transformed picture
+	 * It should only use the image functions avaiable in wordpress core.
+	 *
+	 * @param $picObj object     Object containing variables called url
+	 * @param $maxWidth integer  Maximum width of the image
+	 * @return mixed
+	 */
+	static function getPicture ($picObj, $maxWidth = 600, $maxHeight = 1000) {
+
+		// $picObj should be of the type that comes with 
+		// event object (eg. event->primaryPicture or event->pictures[...]) or festival object
+
+		$uploadDir = wp_upload_dir();
+
+		$md5path = md5($picObj->url);
+		$pathdata = pathinfo($picObj->filename);
+
+		// We first construct its path
+		$relativeFilePath = '/dew_pictures/' . substr($md5path, 0, 2)
+		                  . '/' . substr($md5path, 2, 2)
+		                  . '/' . $md5path . '.' . $pathdata['extension'];
+
+		$filePath = $uploadDir['basedir'] . $relativeFilePath;
+		
+		$imageData = array(
+			'relative' => $relativeFilePath,
+			'absolute' => $filePath,
+		);
+
+		if ( ! file_exists($filePath) ) {
+			$tmpFile = tempnam(sys_get_temp_dir(), rand(1000,9999)) . '.' . $pathdata['extension'];
+			$gotFile = file_put_contents($tmpFile, file_get_contents($picObj->url));
+
+			if ( $gotFile === false ) {
+				if (WP_DEBUG) echo "Could not save picture to temporary location\n";
+				return false;
+			}
+
+			if (!file_exists(dirname($filePath))) {
+				wp_mkdir_p(dirname($filePath));
+			}
+
+			if ($picObj->width > $maxWidth || $picObj->height > $maxHeight) {
+				$result = image_resize($tmpFile, $maxWidth, $maxHeight);
+			
+				unlink ($tmpFile);
+			} else {
+				$result = $tmpFile;
+			}
+			
+			if ( is_wp_error($result) ) {
+				if (WP_DEBUG) echo $result->get_error_message();
+				return False;
+			}
+
+			rename ($result, $filePath);
+
+			clearstatcache();
+
+			// Set correct file permissions
+			$stat = @ stat( dirname( $filePath ) );
+			$perms = $stat['mode'] & 0007777;
+			$perms = $perms & 0000666;
+			@ chmod( $filePath, $perms );
+			@ chgrp( $filePath, $stat['gid'] );
+			clearstatcache();
+
+		}
+
+		return $imageData;
+	}
+
+	/**
+	 * Will recursively remove files and directories, including $path if it's a directory
+	 */
+	public static function rrmdir($path) {
+		// Taken from http://www.php.net/manual/en/function.unlink.php#100092
+		if (file_exists($path)) {
+			if (is_file($path)) {
+				return  @unlink($path);
+			} else {
+				return array_map(array('DEW_tools', 'rrmdir'), glob($path.'/*')) == @rmdir($path);
+			}
+		} else {
+			return false;
+		}
+	}
 }
