@@ -8,6 +8,12 @@ require_once( DEW_PREFIX . '/eventsCalendarClient.php' );
 require_once( DEW_PREFIX . '/dew_tools.php' );
 require_once( DEW_PREFIX . '/dew_format.php' );
 
+add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
+add_shortcode('dew_fullevent', 'dew_fullevent_shortcode_handler');
+add_shortcode('dew_fullfestival', 'dew_fullfestival_shortcode_handler');
+add_shortcode('dew_agenda_or_fullarrangement', 'dew_agenda_or_fullarrangement_shortcode_handler');
+add_shortcode('dew_detailbox', 'dew_detailbox_shortcode_handler');
+
 function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
 	
 }
