@@ -170,6 +170,29 @@ class DEW_tools {
 
 		return wp_kses($dirtyHtml, $allowedHtml);
 	}
+	
+	static function curl_get_content($url) {
+		echo "using curl\n";
+		
+		//Initialize the Curl session
+		$ch = curl_init();
+		//Set curl to return the data instead of printing it to the browser.
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		// Do not verify SSL-certificate, use with care.
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+		//Set the URL
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		//Execute the fetch
+		$data = curl_exec($ch);
+
+		//Close the connection
+		curl_close($ch);
+
+		return $data;
+	}
 
 	static function createGoogleCalUrl($arr, $linkBack = '') {
 		$base = 'http://www.google.com/calendar/event';
@@ -233,7 +256,14 @@ class DEW_tools {
 
 		if ( ! file_exists($filePath) ) {
 			$tmpFile = tempnam(sys_get_temp_dir(), rand(1000,9999)) . '.' . $pathdata['extension'];
-			$gotFile = file_put_contents($tmpFile, file_get_contents($picObj->url));
+			
+			if (function_exists('curl_init')) {
+				$content = DEW_tools::curl_get_content($picObj->url);
+			} else {
+				$content = file_get_contents($picObj->url);
+			}
+
+			$gotFile = file_put_contents($tmpFile, $content);
 
 			if ( $gotFile === false ) {
 				if (WP_DEBUG) echo "Could not save picture to temporary location\n";
