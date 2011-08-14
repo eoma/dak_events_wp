@@ -172,8 +172,6 @@ class DEW_tools {
 	}
 	
 	static function curl_get_content($url) {
-		echo "using curl\n";
-		
 		//Initialize the Curl session
 		$ch = curl_init();
 		//Set curl to return the data instead of printing it to the browser.
