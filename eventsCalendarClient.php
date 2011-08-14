@@ -36,11 +36,19 @@ class eventsCalendarClient {
 	static private $keyCollectionChanged = false;
 	static private $keyCollectionInstances = 0;
 
+	private $getContentMethod;
+
 	public function __construct ($url, $apiKey = null, $enableCache = self::CACHE_APC, $cacheTime = 5) {
 		$this->url = strval($url) . 'api/json/';
 		$this->apiKey = $apiKey;
 		$this->cacheTime = intval($cacheTime);
 		$this->enableCache = intval($enableCache);
+
+		if (function_exists('curl_init')) {
+			$this->getContentMethod = 'curl';
+		} else {
+			$this->getContentMethod = 'file_get_contents';
+		}
 
 		self::$keyCollectionInstances++;
 	}
@@ -160,6 +168,33 @@ class eventsCalendarClient {
 		$this->saveCacheKeyCollection();
 	}
 
+	public function getContent ($url) {
+		if ($this->getContentMethod == 'curl') {
+			//Initialize the Curl session
+			$ch = curl_init();
+			//Set curl to return the data instead of printing it to the browser.
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+			// Do not verify SSL-certificate, use with care.
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+			//Set the URL
+			curl_setopt($ch, CURLOPT_URL, $url);
+
+			//Execute the fetch
+			$data = curl_exec($ch);
+
+			//Close the connection
+			curl_close($ch);
+
+			return $data;
+		} else if ($this->getContentMethod == 'file_get_contents') {
+			return file_get_contents($url);
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * This function will get the data from the server
 	 * and cache it for a period, say 5 seconds.
@@ -198,7 +233,7 @@ class eventsCalendarClient {
 			$cache_data = $this->getCache($cache_key);
 
 			if ($cache_data === false) {
-				$cache_data = file_get_contents($urlComplete);
+				$cache_data = $this->getContent($urlComplete);
 
 				if ($cache_data !== false) {
 					$this->setCache($cache_key, $cache_data, (is_null($cacheTime) ? $this->cacheTime : $cacheTime));
@@ -212,7 +247,7 @@ class eventsCalendarClient {
 				}
 			}
 		} else {
-			$cache_data = file_get_contents($urlComplete);
+			$cache_data = $this->getContent($urlComplete);
 		}
 
 		if ($rawString) {
