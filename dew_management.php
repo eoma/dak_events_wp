@@ -81,7 +81,7 @@ class DEW_Management {
 
 			$options['dateFormat'] = !empty($_POST['dateFormat']) ? trim($_POST['dateFormat']) : 'Y-m-d';
 			$options['timeFormat'] = !empty($_POST['timeFormat']) ? trim($_POST['timeFormat']) : 'H:i';
-			$options['dayStartHour'] = !empty($_POST['dayStartHour']) ? intval($_POST['dayStartHour']) : 6;
+			$options['dayStartHour'] = intval($_POST['dayStartHour']);
 
 			if (isset($_POST['cache']) && in_array(intval($_POST['cache']), array(0,1,2))) {
 				$options['cache'] = intval($_POST['cache']);
