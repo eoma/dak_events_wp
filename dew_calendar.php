@@ -59,8 +59,15 @@ class DEW_Calendar {
 
 		$startDateTimestamp = 0;
 		foreach($events->data as $event) {
-			$startDateTimestampTmp = DEW_tools::dateStringToTime($event->startDate);
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
+
+			// Allow events that start early next day (eg. dj's at 01:00)
+			// to be listed on the former day
+			$startDateTimestampTmp = strtotime(date('Y-m-d', $startTimestamp - (intval($this->options['dayStartHour']) * 3600)));
+			
+			//echo $event->startDate . "\n";
+			//echo date('Y-m-d', $startTimestamp - (intval($this->options['dayStartHour']) * 3600)) . "\n";
+			
 			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
 
 			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimestamp )));
@@ -68,7 +75,10 @@ class DEW_Calendar {
 			
 			if ($startDateTimestamp != $startDateTimestampTmp) {
 				$startDateTimestamp = $startDateTimestampTmp;
-				$output .= '<li class="dew_eventList_date">' . $startDayName . ' ' . date($dateFormat, $startTimestamp) . '</li>' ;
+				$output .= '<li class="dew_eventList_date">'
+				        . ucfirst($this->locale->get_weekday(date('w', $startDateTimestamp )))
+				        . ' ' . date($dateFormat, $startDateTimestamp)
+				        . '</li>' ;
 			}
 
 			$location = DEW_tools::getLocationFromEvent($event);
