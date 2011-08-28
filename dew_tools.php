@@ -25,7 +25,7 @@ class DEW_tools {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
 			
 			
-			$startTimestamp = $startTimestamp + $dayStartHour * 3600;
+			$startTimestamp = $startTimestamp - $dayStartHour * 3600;
 			
 			$startTimestamp = strtotime(date('Y-m-d', $startTimestamp));
 
