@@ -16,12 +16,18 @@ class DEW_tools {
 	 * @param array $eventList An event list
 	 * @return array
 	 */
-	static public function groupEventsByDate (array $eventList) {
+	static public function groupEventsByDate (array $eventList, $dayStartHour = 0) {
 		$dateArray = array();
+		
+		$dayStartHour = intval($dayStartHour);
 
 		foreach ($eventList as $event) {
-			list($year, $month, $day) = explode('-', $event->startDate);
-			$startTimestamp = mktime(0, 0, 0, $month, $day, $year);
+			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
+			
+			
+			$startTimestamp = $startTimestamp + $dayStartHour * 3600;
+			
+			$startTimestamp = strtotime(date('Y-m-d', $startTimestamp));
 
 			$dateArray[ strval($startTimestamp) ][] = $event;
 		}
