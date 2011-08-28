@@ -186,7 +186,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 		$eventFormat = DEW_format::agendaFullEvent();
 	}
 
-	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data);
+	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data, $options['dayStartHour']);
 
 	$eventDateCollectionFormat = DEW_format::agendaEventDateCollection();
 	
