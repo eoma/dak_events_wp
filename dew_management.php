@@ -24,7 +24,10 @@ class DEW_Management {
 
 		if (!isset($options['timeFormat']))
 			$options['timeFormat'] = 'H:i';
-		
+
+		if (!isset($options['dayStartHour']))
+			$options['dayStartHour'] = 6;
+
 		if (!isset($options['cache']))
 			$options['cache'] = eventsCalendarClient::CACHE_WP;
 
@@ -78,6 +81,7 @@ class DEW_Management {
 
 			$options['dateFormat'] = !empty($_POST['dateFormat']) ? trim($_POST['dateFormat']) : 'Y-m-d';
 			$options['timeFormat'] = !empty($_POST['timeFormat']) ? trim($_POST['timeFormat']) : 'H:i';
+			$options['dayStartHour'] = !empty($_POST['dayStartHour']) ? intval($_POST['dayStartHour']) : 6;
 
 			if (isset($_POST['cache']) && in_array(intval($_POST['cache']), array(0,1,2))) {
 				$options['cache'] = intval($_POST['cache']);
@@ -147,6 +151,10 @@ class DEW_Management {
         <tr>
           <th><label for="dew_timeFormat"><?php _e('Time format', 'dak_events_wp') ?></label></th>
           <td><input type="text" id="dew_timeFormat" name="timeFormat" size="10" value="<?php echo $options['timeFormat'] ?>" /> <small><?php printf(__('(see %s)', 'dak_events_wp'), '<a href="http://php.net/date">php date()</a>') ?></small></td>
+        </tr>
+        <tr>
+          <th><label for="dew_dayStartHour"><?php _e('Day starts at (hour)', 'dak_events_wp') ?></label></th>
+          <td><input type="text" id="dew_dayStartHour" name="dayStartHour" size="2" value="<?php echo $options['dayStartHour'] ?>" /></td>
         </tr>
         <tr>
           <th><label for="dew_cache"><?php _e('Use cache?', 'dak_events_wp') ?></label></th>
