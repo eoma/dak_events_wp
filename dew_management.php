@@ -10,20 +10,18 @@ require_once(DEW_PREFIX . '/eventsCalendarClient.php');
  */
 class DEW_Management {
 
-
-	/**
-	 * Provides the admin option panel.
-	 */
-	function options() {
+	static function getOptions () {
 		$options = get_option('optionsDakEventsWp');
+
 		if(!is_array($options))
 			$options = array();
-		
+
 		if (!isset($options['eventServerUrl']))
 			$options['eventServerUrl'] = '';
 
 		if (!isset($options['dateFormat']))
 			$options['dateFormat'] = 'Y-m-d';
+
 		if (!isset($options['timeFormat']))
 			$options['timeFormat'] = 'H:i';
 		
@@ -32,7 +30,7 @@ class DEW_Management {
 
 		if (!isset($options['cacheTime']))
 			$options['cacheTime'] = 600;
-		
+
 		if (!isset($options['eventPageId'])) 
 			$options['eventPageId'] = null; // Page id (integer)
 
@@ -46,6 +44,15 @@ class DEW_Management {
 			$options['eventPictureClass'] = 'aligncenter';
 
 		$options['cache'] = intval($options['cache']);
+
+		return $options;
+	}
+
+	/**
+	 * Provides the admin option panel.
+	 */
+	function options() {
+		$options = self::getOptions();
 		if (isset($_POST['optionsDakEventsWpSubmitted']) && $_POST['optionsDakEventsWpSubmitted']) {
 			//echo var_dump($_POST);
 			$options['eventServerUrl'] = !empty($_POST['eventServerUrl']) ? trim($_POST['eventServerUrl']) : '';

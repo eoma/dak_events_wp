@@ -32,7 +32,7 @@ function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$type = $atts['type'];
 
-	$options = get_option('optionsDakEventsWp');
+	$options = DEW_Management::getOptions();
 	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 	$locale = new WP_Locale();
 
@@ -132,7 +132,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'semester_view' => 1 or 0,
 	 * )
 	 */
-	$options = get_option('optionsDakEventsWp');
+	$options = DEW_Management::getOptions();
 	$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
 	$locale = new WP_Locale();
 
@@ -300,7 +300,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	 * )
 	 */
 
-	$options = get_option('optionsDakEventsWp');
+	$options = DEW_Management::getOptions();
 
 	$dateFormat = $options['dateFormat'];
 	$timeFormat = $options['timeFormat'];
@@ -399,7 +399,7 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 	 * )
 	 */
 
-	$options = get_option('optionsDakEventsWp');
+	$options = DEW_Management::getOptions();
 
 	$dateFormat = $options['dateFormat'];
 	$timeFormat = $options['timeFormat'];

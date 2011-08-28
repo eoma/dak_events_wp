@@ -23,7 +23,7 @@ class DEW_Calendar {
 	 * Constructor.
 	 */
 	function __construct() {
-		$this->options = get_option('optionsDakEventsWp');
+		$this->options = DEW_Management::getOptions();
 		$this->eventServerUrl = $this->options['eventServerUrl'];
 		$this->locale = new WP_Locale();
 	}
@@ -35,9 +35,9 @@ class DEW_Calendar {
 	 */
 	function displayEventList($num, $filter = null, $id_base = null) {
 		$client = new eventsCalendarClient($this->eventServerUrl, null, $this->options['cache'], $this->options['cacheTime']);
-		$options = get_option('optionsDakEventsWp');
-		$dateFormat = $options['dateFormat'];
-		$timeFormat = $options['timeFormat'];
+
+		$dateFormat = $this->options['dateFormat'];
+		$timeFormat = $this->options['timeFormat'];
 
 		if ( isset($filter) && is_array($filter) 
 		     && (!empty($filter['arranger_id']) || !empty($filter['location_id']) || !empty($filter['category_id'])) || !empty($filter['daysInFuture'])) {

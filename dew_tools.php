@@ -66,7 +66,7 @@ class DEW_tools {
 		global $wp_rewrite;
 
 		if (is_null(self::$options)) {
-			self::$options = get_option('optionsDakEventsWp');
+			self::$options = DEW_Management::getOptions();
 		}
 
 		if (self::$options['eventPageId'] <= 0) {

@@ -14,7 +14,7 @@ class DEW_Widget extends WP_Widget {
 	private $options;
 
 	function __construct() {
-		$this->options = get_option('optionsDakEventsWp');
+		$this->options = DEW_Management::getOptions();
 		$this->eventServerUrl = $this->options['eventServerUrl'];
 		parent::__construct(false, 'DAK Events');
 	}

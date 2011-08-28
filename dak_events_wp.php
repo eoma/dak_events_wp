@@ -44,7 +44,7 @@ function dew_flushRules(){
 function dew_insertMyRewriteRules($rules)
 {
 	$newrules = array();
-	$options = get_option('optionsDakEventsWp');
+	$options = DEW_Management::getOptions('optionsDakEventsWp');
 
 	if (isset($options['rewriteEventUrlRegex']) && isset($rules[$options['rewriteEventUrlRegex']])) {
 		unset($rules[$options['rewriteEventUrlRegex']]);
@@ -88,7 +88,7 @@ function dewEventServerUrl () {
 	 * For use when you want to use the original event server
 	 * ie. an api call
 	 */
-	$dewOptions = get_option('optionsDakEventsWp');
+	$dewOptions = DEW_Management::getOptions();
 ?>
 <script type="text/javascript">/* <![CDATA[ */
 var dewEventServerUrl = '<?php echo $dewOptions['eventServerUrl'] ?>';
