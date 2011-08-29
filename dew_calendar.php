@@ -89,7 +89,7 @@ class DEW_Calendar {
 				              . date($timeFormat, $endTimestamp);
 			} else {
 				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' til '
-				              . strftime("%R", $endTimestamp);
+				              . date("H:m", $endTimestamp);
 			}
 			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
 
