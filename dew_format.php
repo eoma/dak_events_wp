@@ -44,8 +44,8 @@ class DEW_format {
 	static public function agendaCompactList() {
 		$format = "
 <div class='agenda_compact_event_wrapper'>
-%(startTime)s - <a href=\"%(readMore)s\">%(title)s</a> <br />
-%(category)s - %(location)s
+<a href=\"%(readMore)s\">%(title)s</a> <br />
+<span class=\"agenda_compact_event_details\">%(startTime)s - %(category)s - %(location)s</span>
 </div>
 ";
 

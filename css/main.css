@@ -209,7 +209,15 @@ p.agenda_data {
 }
 
 .agenda_compact_event_wrapper {
-  margin-bottom: 10px;
+  margin: 10px 0 10px 0;
+}
+
+.agenda_compact_event_wrapper a {
+  font-size: 1.2em;
+}
+
+.agenda_compact_event_wrapper .agenda_compact_event_details {
+  font-size: 0.84em;
 }
 
 .agenda_event_wrapper {
