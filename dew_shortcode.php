@@ -204,6 +204,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 	$dateSortedEventsKeys = array_keys($dateSortedEvents);
 	$numberOfDateSortedEvents = count($dateSortedEventsKeys);
+
 	for ($i = 0; $i < $numberOfDateSortedEvents; $i++) {
 		$timestamp = $dateSortedEventsKeys[$i];
 		$events = $dateSortedEvents[$timestamp];
@@ -284,6 +285,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			}
 		} else {
 			$output .= $monthOutput;
+			$monthOutput = '';
 		}
 	}
 
