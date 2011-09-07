@@ -361,6 +361,23 @@ class eventsCalendarClient {
 	}
 	
 	/**
+	 * Return list of filtered events
+	 * @param array $filter Array of eventual filters.
+	 * @return array
+	 */
+	public function filteredHistoryList (array $filter = array()) {
+		/**
+		 * $filter can contain arranger_id, category_id, location_id, master_location_id
+		 * example: array(
+		 *  'arranger_id' => array(1,2,3,4),
+		 *  'category_id' => 1,
+		 *  'location_id' => '1,2,3,4'
+		 * );
+		 */
+		return $this->getData('historyList' , $filter );
+	}
+
+	/**
 	 * Returns a specific event with id $id
 	 * @param integer $id Event id
 	 * @param array $args Other arguments
