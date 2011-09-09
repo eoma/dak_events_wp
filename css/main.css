@@ -144,8 +144,12 @@ li.dew_eventList_date {
   border: 1px solid #ddd;
   background-color: #eee;
   text-align: center;
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 0.9em;
+}
+
+.dew_agenda h2.agenda_box {
+	margin-bottom: 0;
 }
 
 .dew_agenda h3 {
@@ -155,12 +159,30 @@ li.dew_eventList_date {
   margin-top: 0;
 }
 
+.clearfix:after, .agenda_day:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix, .agenda_day { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix, .agenda_day { height: 1%; }
+.clearfix, .agenda_day { display: block; }
+/* close commented backslash hack */
+
+.agenda_day {
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 35px;
+	margin-bottom: 35px;
+}
+
 .event_date_list {
   padding: 0px;
   float: left;
   width: 450px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #ccc;
 }
 
 .agenda_day_name {
@@ -211,7 +233,11 @@ p.agenda_data {
 }
 
 .agenda_compact_event_wrapper {
-  margin: 0px 0 35px 0;
+  margin: 25px 0 0px 0;
+}
+
+.agenda_compact_event_wrapper:first-child {
+  margin: 0px 0 0px 0;
 }
 
 .agenda_compact_event_wrapper a {
