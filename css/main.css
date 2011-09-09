@@ -125,6 +125,7 @@ li.dew_eventList_date {
   /*border-bottom: solid 3px #000;*/
   margin-top: 10px;
   color: #555;
+  
 }
 
 .dew_agenda h2.agenda_collection_name.dew_active {
@@ -155,10 +156,11 @@ li.dew_eventList_date {
 }
 
 .event_date_list {
-  padding: 5px;
+  padding: 0px;
   float: left;
   width: 450px;
   margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
 }
 
 .agenda_day_name {
@@ -209,11 +211,12 @@ p.agenda_data {
 }
 
 .agenda_compact_event_wrapper {
-  margin: 10px 0 10px 0;
+  margin: 0px 0 35px 0;
 }
 
 .agenda_compact_event_wrapper a {
-  font-size: 1.2em;
+  font-size: 1.4em;
+  text-decoration:none;
 }
 
 .agenda_compact_event_wrapper .agenda_compact_event_details {
