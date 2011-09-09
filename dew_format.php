@@ -65,13 +65,15 @@ class DEW_format {
 
 	static public function agendaEventDateCollection () {
 		$format = "
-<h2 class='agenda_box'>
-  <span class='agenda_day_name'>%(dayName)s</span>
-  <span class='agenda_day_number'>%(dayNumber)s</span>
-  <span class='agenda_month_name'>%(monthName)s</span>
-</h2>
-<div class='event_date_list'>
-  %(eventCollection)s
+<div class='agenda_day clearfix'>
+  <h2 class='agenda_box'>
+    <span class='agenda_day_name'>%(dayName)s</span>
+    <span class='agenda_day_number'>%(dayNumber)s</span>
+    <span class='agenda_month_name'>%(monthName)s</span>
+  </h2>
+  <div class='event_date_list'>
+    %(eventCollection)s
+  </div>
 </div>
 ";
 
