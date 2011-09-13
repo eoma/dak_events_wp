@@ -39,7 +39,7 @@ class eventsCalendarClient {
 	private $getContentMethod;
 
 	public function __construct ($url, $apiKey = null, $enableCache = self::CACHE_APC, $cacheTime = 5) {
-		$this->url = strval($url) . 'api/json/';
+		$this->url = strval($url) . '/api/json/';
 		$this->apiKey = $apiKey;
 		$this->cacheTime = intval($cacheTime);
 		$this->enableCache = intval($enableCache);
