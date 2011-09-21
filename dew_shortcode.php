@@ -11,7 +11,8 @@ require_once( DEW_PREFIX . '/dew_format.php' );
 add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
 add_shortcode('dew_fullevent', 'dew_fullevent_shortcode_handler');
 add_shortcode('dew_fullfestival', 'dew_fullfestival_shortcode_handler');
-add_shortcode('dew_agenda_or_fullarrangement', 'dew_agenda_or_fullarrangement_shortcode_handler');
+add_shortcode('dew_agenda_or_arrangement', 'dew_agenda_or_arrangement_shortcode_handler');
+add_shortcode('dew_agenda_or_arrangement_with_menu', 'dew_agenda_or_arrangement_with_menu_shortcode_handler');
 add_shortcode('dew_detailbox', 'dew_detailbox_shortcode_handler');
 
 function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
@@ -118,7 +119,7 @@ function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
 }
 
 /**
- * Will output the agenda of the next 20 events
+ * Will output an agenda based on some filters
  */
 function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	/**
@@ -129,7 +130,11 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'category_id' => '3,4,1,2',
 	 *       'festival_id' => '1,2,3,2',
 	 *       'no_current_events' => 1 or 0,
-	 *       'semester_view' => 1 or 0,
+	 *       'compact_events' => 1 or 0,
+	 *       'start_date' => '2011-05-01',
+	 *       'end_date' => '2011-05-31',
+	 *       'dayspan' => 7,
+	 *       'title' => '<h1>Events in may</h1>',
 	 * )
 	 */
 	$options = DEW_Management::getOptions();
@@ -146,6 +151,10 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	$queryArgs['onlySummaries'] = 1;
 
 	$atts = str_replace(array("\"", "'", "&quot;"), array('', '', ''), $atts);
+	$title = null;
+
+	if ( ! empty($atts['title']) )
+		$title = trim($atts['title']);
 
 	if ( ! empty($atts['arranger_id']) )
 		$queryArgs['arranger_id'] = DEW_tools::stringToIntArray($atts['arranger_id']);
@@ -161,49 +170,49 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 	if ( ! empty($atts['no_current_events']) )
 		$queryArgs['noCurrentEvents'] = intval($atts['no_current_events']);
-		
-	if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
-		$thisMonth = intval(date('n'));
 
-		if ( $thisMonth <= 7 ) {
-			$agendaTitle = '<h2>' . sprintf(__('Events in spring %s', 'dak_events_wp'), date('Y')) . '</h2>' . "\n"; 
-			$startDate = date('Y') . '-01-01';
-			$endDate = date('Y') . '-07-31';
-		} else {
-			$agendaTitle = '<h2>' . sprintf(__('Events in autumn %s', 'dak_events_wp'), date('Y')) . '</h2>' . "\n"; 
-			$startDate = date('Y') . '-08-01';
-			$endDate = (intval(date('Y')) + 1) . '-01-31';
-		}
-		
-		$queryArgs['startDate'] = $startDate;
-		$queryArgs['endDate'] = $endDate;
-		
+    if ( ! empty($atts['start_date']) ) {
+		$queryArgs['startDate'] = strval($atts['start_date']);
+	}
+
+    if ( ! empty($atts['end_date']) ) {
+		$queryArgs['endDate'] = strval($atts['end_date']);
+	}
+
+    if ( ! empty($atts['dayspan']) ) {
+		$queryArgs['dayspan'] = intval($atts['dayspan']);
+	}
+
+	if ( (isset($queryArgs['start_date']) && isset($queryArgs['end_date'])) || isset($queryArgs['dayspan']) ) {
 		$results = $client->filteredEventsList($queryArgs, true);
-		$eventFormat = DEW_format::agendaCompactList();
-		$eventCollectionFormat = DEW_format::agendaEventCollection();
 	} else {
 		$results = $client->filteredEventsList($queryArgs);
+	}
+
+	if( ! empty($atts['compact_view']) && ($atts['compact_view'] == 1) ) {
+		$eventFormat = DEW_format::agendaCompactEvent();
+	} else {
 		$eventFormat = DEW_format::agendaFullEvent();
 	}
 
-	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data, $options['dayStartHour']);
-
 	$eventDateCollectionFormat = DEW_format::agendaEventDateCollection();
+
+	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data, $options['dayStartHour']);
 	
 	$output = "";
 
-	if (!empty($agendaTitle)) {
-		$output .= $agendaTitle;
+	if (!empty($title)) {
+		$output .= $title;
 	}
 	
 	$output .= "<div class='dew_agenda'>\n";
 
-	$monthOutput = "";
-
-	$lastMonth = 0;
-
 	$dateSortedEventsKeys = array_keys($dateSortedEvents);
 	$numberOfDateSortedEvents = count($dateSortedEventsKeys);
+
+	if ($results->count == 0) {
+		$output .= "<p>No events found :(</p>\n";
+	}
 
 	for ($i = 0; $i < $numberOfDateSortedEvents; $i++) {
 		$timestamp = $dateSortedEventsKeys[$i];
@@ -261,7 +270,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 		}
 
-		$monthOutput .= DEW_tools::sprintfn($eventDateCollectionFormat,
+		$output .= DEW_tools::sprintfn($eventDateCollectionFormat,
 			array(
 				'dayName' => $startDayName,
 				'dayNumber' => date('j', $timestamp),
@@ -270,23 +279,6 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			)
 		
 		);
-		
-		if ( ! empty($atts['semester_view']) && ($atts['semester_view'] == 1) ) {
-			if ( (($i + 1) == $numberOfDateSortedEvents) || (date('n', $timestamp) != date('n', $dateSortedEventsKeys[$i + 1])) ) {
-				$output .= DEW_tools::sprintfn($eventCollectionFormat, array(
-					'monthName' => $monthName,
-					'id' => 'm' . date('n', $timestamp),
-					'extraClass' => ((date('n') != date('n', $timestamp)) ? 'dew_hide' : ''),
-					'extraCollectionClass' => ((date('n') == date('n', $timestamp)) ? 'dew_active' : ''),
-					'eventCollection' => $monthOutput,
-				));
-
-				$monthOutput = "";
-			}
-		} else {
-			$output .= $monthOutput;
-			$monthOutput = '';
-		}
 	}
 
 	$output .= "</div>\n";
@@ -487,5 +479,171 @@ function dew_agenda_or_fullarrangement_shortcode_handler ($atts, $content = null
 		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
 	} else {
 		return dew_agenda_shortcode_handler ($atts, $content, $code);
+	}
+}
+
+function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content = null, $code = "") {
+	global $wp_query;
+
+	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
+		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
+
+		return dew_fullevent_shortcode_handler (array('event_id' => intval($event_id)), $content, $code);
+	} elseif (!empty($_GET['festival_id']) || $wp_query->get('festival_id')) {
+		$festival_id = (empty($_GET['festival_id'])) ? $wp_query->get('festival_id') : $_GET['festival_sid'];
+
+		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
+	} else {
+		$locale = new WP_Locale();
+
+		$config = array(
+			'compact_view' => 1,
+		);
+
+		if (isset($atts['arranger_id'])) {
+			$config['arranger_id'] = $atts['arranger_id'];
+		}
+
+		if (isset($atts['category_id'])) {
+			$config['category_id'] = $atts['category_id'];
+		}
+
+		if (isset($atts['location_id'])) {
+			$config['location_id'] = $atts['location_id'];
+		}
+
+		$queryYear = 0;
+		$queryMonth = 0;
+
+		if (isset($_GET['dew_archive'])) {
+			$dateComponents = explode('-', $_GET['dew_archive']);
+
+			if (count($dateComponents) >= 2) {
+				$queryYear = intval($dateComponents[0]);
+				$queryMonth = intval($dateComponents[1]);
+			}
+
+			if (($queryMonth >= 1) && ($queryMonth <= 12)) {
+				$config['start_date'] = sprintf('%04d-%02d-01', $queryYear, $queryMonth);
+				$config['end_date'] = sprintf('%04d-%02d-', $queryYear, $queryMonth);
+
+				if (in_array($queryMonth, array(1, 3, 5, 7, 8, 10, 12))) {
+					$config['end_date'] .= '31';
+				} else if (in_array($queryMonth, array(4, 6, 9, 11))) {
+					$config['end_date'] .= '30';
+				} else {
+					if (date('L', strtotime($queryYear . '-01-01'))) {
+						$config['end_date'] .= '29';
+					} else {
+						$config['end_date'] .= '28';
+					}
+				}
+			}
+		}
+
+		$content = "<ul class=\"agenda_menu\">\n";
+		
+		$dew_archive = null;
+
+		if (!empty($_GET['dew_archive'])) {
+			$dew_archive = strval($_GET['dew_archive']);
+		}
+
+		$class = '';
+		if (empty($dew_archive)) {
+			$class = 'class="active"';
+		}
+		$content .= '<li ' . $class . '><a href="' . get_permalink() . '">Next 14 days</a></li>' . "\n";
+
+		$currentMonth = intval(date('n'));
+		$currentYear = intval(date('Y'));
+
+		$month = $currentMonth;
+		$year = $currentYear;
+
+		for ($i = 0; $i < 4; $i++) {
+			$monthName = ucfirst($locale->get_month($month));
+
+			$class = '';
+			
+			if (($year == $queryYear) && ($month == $queryMonth)) {
+				$class = 'class="active"';
+			}
+
+			$content .= '<li ' . $class . '><a href="?dew_archive=' . sprintf('%04d-%02d', $year, $month) . '">' . $monthName . '</a></li>'. "\n";
+
+			if ($month == 12) {
+				$month = 1;
+				$year++;
+			} else {
+				$month++;
+			}
+		}
+
+		$class = '';
+		if ($dew_archive == 'list') {
+			$class = 'class="active"';
+		}
+		$content .= '<li ' . $class . '><a href="?dew_archive=list">Archive</a></li>' . "\n";
+
+		$content .= "</ul>\n";
+
+		if (empty($dew_archive)) {
+
+		}
+
+		if ($dew_archive == 'list') {
+			$options = DEW_Management::getOptions();
+			$client = new eventsCalendarClient ($options['eventServerUrl'], null, $options['cache'], $options['cacheTime']);
+
+			$historyList = $client->filteredHistoryList();
+
+			$content .= '<ul class="agenda_archive">' . "\n";
+
+			$previousYear = null;
+			$yearElements = null;
+
+			foreach (array_reverse($historyList->data) as $h) {
+				$ts = strtotime($h->date);
+				$year = date('Y', $ts);
+				$month = date('n', $ts);
+
+				if ($year != $previousYear) {
+					
+					if ( ! empty($yearElements) ) {
+						$content .= ' <li><span class="agenda_archive_year">' . $previousYear . '</span>' . "\n";
+						$content .= '  <ul>' . "\n";
+						$content .= $yearElements . "\n";
+						$content .= '  </ul>' . "\n";
+						$content .= ' </li>' . "\n";
+					}
+					
+					$previousYear = $year;
+					$yearElements = '';
+				}
+
+				$yearElements .= '   <li><a href="?dew_archive=' . date('Y-m', $ts) . '">' . $locale->get_month($month) . '</a></li>' . "\n";
+			}
+
+			$content .= ' <li><span class="agenda_archive_year">' . $previousYear . '</span>' . "\n";
+			$content .= '  <ul>' . "\n";
+			$content .= $yearElements . "\n";
+			$content .= '  </ul>' . "\n";
+			$content .= ' </li>' . "\n";
+
+			$content .= '</ul>' . "\n";
+		} else {
+			
+			if (!empty($dew_archive)) {
+				$config['title'] = '<h2 class="agenda_title">Events in ' . $locale->get_month($queryMonth) . ' ' . $queryYear . '</h2>' . "\n";
+			} else {
+				$config['title'] = '<h2 class="agenda_title">Events for the next 14 days.</h2>';
+				$config['dayspan'] = 14;
+			}
+			
+			$content .= dew_agenda_shortcode_handler ($config);
+		}
+
+		return $content;
 	}
 }

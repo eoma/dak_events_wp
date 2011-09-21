@@ -307,3 +307,28 @@ p.agenda_data {
 #pickerPopupLoadMoreElements {
   width: 100%;
 }
+
+ul.agenda_menu {
+  padding: 0.5em;
+}
+
+ul.agenda_menu li {
+  display: inline;
+  margin: 0 0.5em 0 0.5em;
+}
+
+ul.agenda_menu li.active a {
+  color: #d00;
+}
+
+.agenda_title {
+  margin: 0.5em 0 0.5em 0;
+}
+
+.agenda_archive .agenda_archive_year {
+  font-size: 1.2em;
+}
+
+.agenda_archive li > ul {
+  margin-left: 0.5em;
+}
