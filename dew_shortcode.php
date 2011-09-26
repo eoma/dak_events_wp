@@ -476,15 +476,6 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $code = "") {
 	// $atts should contain dayspan, if not it will be set to 14
 	global $wp_query;
-	global $wp_rewrite;
-
-	$linkBase = get_permalink();
-
-	if ($wp_rewrite->using_permalinks()) {
-		$linkBase .= '?';
-	} else {
-		$linkBase .= '&amp;';
-	}
 
 	if (!isset($atts['dayspan'])) {
 		$atts['dayspan'] = 14;
@@ -498,16 +489,17 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 		
 	$dew_archive = null;
 
-	if (!empty($_GET['dew_archive'])) {
-		$dew_archive = strval($_GET['dew_archive']);
+	if (!empty($_GET['dew_archive']) || $wp_query->get('dew_archive')) {
+		$dew_archive = strval($wp_query->get('dew_archive'));
 	}
+
 
 	$class = '';
 	if (empty($dew_archive)) {
 		$class = 'class="active"';
 	}
 
-	$content .= '<li ' . $class . '><a href="' . get_permalink() . '">Next ' . $atts['dayspan'] . ' days</a></li>' . "\n";
+	$content .= '<li ' . $class . '><a href="' . DEW_tools::generateLinkToAgenda('upcoming') . '">Next ' . $atts['dayspan'] . ' days</a></li>' . "\n";
 
 	$currentMonth = intval(date('n'));
 	$currentYear = intval(date('Y'));
@@ -517,8 +509,8 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 	$month = $currentMonth;
 	$year = $currentYear;
 
-	if (isset($_GET['dew_archive'])) {
-		$dateComponents = explode('-', $_GET['dew_archive']);
+	if (isset($dew_archive)) {
+		$dateComponents = explode('-', $dew_archive);
 
 		if (count($dateComponents) >= 2) {
 			$queryYear = intval($dateComponents[0]);
@@ -535,7 +527,7 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 			$class = 'class="active"';
 		}
 
-		$content .= '<li ' . $class . '><a href="' . $linkBase . 'dew_archive=' . sprintf('%04d-%02d', $year, $month) . '">' . $monthName . '</a></li>'. "\n";
+		$content .= '<li ' . $class . '><a href="' . DEW_tools::generateLinkToAgenda('month', array($year, $month)) . '">' . $monthName . '</a></li>'. "\n";
 
 		if ($month == 12) {
 			$month = 1;
@@ -549,7 +541,7 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 	if ($dew_archive == 'list') {
 		$class = 'class="active"';
 	}
-	$content .= '<li ' . $class . '><a href="' . $linkBase . 'dew_archive=list">Archive</a></li>' . "\n";
+	$content .= '<li ' . $class . '><a href="' . DEW_tools::generateLinkToAgenda('list') . '">Archive</a></li>' . "\n";
 
 	$content .= "</ul>\n";
 
@@ -571,15 +563,6 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
  */
 function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $code = "") {
 	global $wp_query;
-	global $wp_rewrite;
-
-	$linkBase = get_permalink();
-
-	if ($wp_rewrite->using_permalinks()) {
-		$linkBase .= '?';
-	} else {
-		$linkBase .= '&amp;';
-	}
 
 	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
 		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
@@ -618,8 +601,8 @@ function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $c
 
 		$dew_archive = null;
 
-		if (!empty($_GET['dew_archive'])) {
-			$dew_archive = strval($_GET['dew_archive']);
+		if (!empty($_GET['dew_archive']) || $wp_query->get('dew_archive')) {
+			$dew_archive = strval($wp_query->get('dew_archive'));
 		}
 
 		if (!isset($atts['exclude_menu']) || ($atts['exclude_menu'] == 0)) {
@@ -632,8 +615,8 @@ function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $c
 		$queryYear = 0;
 		$queryMonth = 0;
 
-		if (isset($_GET['dew_archive'])) {
-			$dateComponents = explode('-', $_GET['dew_archive']);
+		if (isset($dew_archive)) {
+			$dateComponents = explode('-', $dew_archive);
 
 			if (count($dateComponents) >= 2) {
 				$queryYear = intval($dateComponents[0]);
@@ -688,7 +671,7 @@ function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $c
 					$yearElements = '';
 				}
 
-				$yearElements .= '   <li><a href="' . $linkBase . 'dew_archive=' . date('Y-m', $ts) . '">' . $locale->get_month($month) . '</a></li>' . "\n";
+				$yearElements .= '   <li><a href="' . DEW_tools::generateLinkToAgenda('month', array($year, $month)) . '">' . $locale->get_month($month) . '</a></li>' . "\n";
 			}
 
 			$content .= ' <li><span class="agenda_archive_year">' . $previousYear . '</span>' . "\n";

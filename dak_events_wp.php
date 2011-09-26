@@ -46,6 +46,14 @@ function dew_insertMyRewriteRules($rules)
 	$newrules = array();
 	$options = DEW_Management::getOptions('optionsDakEventsWp');
 
+	if (isset($options['rewriteArchiveMonthUrlRegex']) && isset($rules[$options['rewriteArchiveMonthUrlRegex']])) {
+		unset($rules[$options['rewriteArchiveMonthUrlRegex']]);
+	}
+
+	if (isset($options['rewriteArchiveListUrlRegex']) && isset($rules[$options['rewriteArchiveListUrlRegex']])) {
+		unset($rules[$options['rewriteArchiveListUrlRegex']]);
+	}
+
 	if (isset($options['rewriteEventUrlRegex']) && isset($rules[$options['rewriteEventUrlRegex']])) {
 		unset($rules[$options['rewriteEventUrlRegex']]);
 	}
@@ -56,6 +64,12 @@ function dew_insertMyRewriteRules($rules)
 
 	if (isset($options['eventPageId']) && ($options['eventPageId'] > 0)) {
 		$page = get_page($options['eventPageId']);
+
+		$options['rewriteArchiveMonthUrlRegex'] = '(' . $page->post_name . ')/archive/(\d{4})/(\d{2})$';
+		$newrules[$options['rewriteArchiveMonthUrlRegex']] = 'index.php?pagename=$matches[1]&dew_archive=$matches[2]-$matches[3]';
+
+		$options['rewriteArchiveListUrlRegex'] = '(' . $page->post_name . ')/archive(/)?$';
+		$newrules[$options['rewriteArchiveListUrlRegex']] = 'index.php?pagename=$matches[1]&dew_archive=list';
 
 		$options['rewriteEventUrlRegex'] = '(' . $page->post_name . ')/(\d+)(/(.*))?$';
 		$newrules[$options['rewriteEventUrlRegex']] = 'index.php?pagename=$matches[1]&event_id=$matches[2]';
@@ -72,6 +86,10 @@ function dew_insertMyRewriteRules($rules)
 // Adding the event_id var so that WP recognizes it
 function dew_insertMyRewriteQueryVars($vars)
 {
+	if (!in_array('dew_archive', $vars)) {
+		$vars[] = 'dew_archive';
+	}
+
 	if (!in_array('event_id', $vars)) {
 		$vars[] = 'event_id';
 	}

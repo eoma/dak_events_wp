@@ -64,6 +64,65 @@ class DEW_tools {
 		}
 	}
 
+	static public function generateLinkToAgenda ($type, $dateArray = array()) {
+		/**
+		 * Type van be either upcoming, list or month
+		 */
+
+		global $wp_rewrite;
+
+		if (is_null(self::$options)) {
+			self::$options = DEW_Management::getOptions();
+		}
+
+		if (self::$options['eventPageId'] <= 0) {
+			// Don't construct any links if it's not an existing page
+			return $arr->url;
+		}
+
+		$pageLink = get_page_link(self::$options['eventPageId']);
+
+		if ($wp_rewrite->using_permalinks()) {
+
+			if (strrpos($pageLink, '/') < (strlen($pageLink) - 1)) {
+				// Append forwardslash if it's not the at end of the link
+				$pageLink .= '/';
+			}
+
+			if ($type == 'upcoming') {
+				// Do nothing
+				//$pageLink .= '';
+			} else if ($type == 'list') {
+				$pageLink .= 'archive/';
+			} else if ($type == 'month') {
+				if (count($dateArray) >= 2) {
+					$pageLink .= 'archive/' . sprintf('%04d/%02d', $dateArray[0], $dateArray[1]) . '/';
+				}
+			}
+		} else {
+			if (strpos($pageLink, '?') === false) {
+				$pageLink .= '?';
+			}
+
+			if (strpos($pageLink, '?') < (strlen($pageLink) - 1)) {
+				$pageLink .= '&amp;';
+			}
+
+			if ($type == 'upcoming') {
+				// Do nothing
+				//$pageLink .= '';
+			} else if ($type == 'list') {
+				$pageLink .= 'dew_archive=list';
+			} else if ($type == 'month') {
+				if (count($dateArray) >= 2) {
+					$pageLink .= 'dew_archive=' . sprintf('%04d-%02d', $dateArray[0], $dateArray[1]);
+				}
+			}
+		}
+
+		return $pageLink;
+	}
+
 	static public function generateLinkToArrangement ($arr, $type, $useTitleInUrl = true) {
 		/**
 		 * Type van be either event or festival
