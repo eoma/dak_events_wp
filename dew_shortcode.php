@@ -11,8 +11,8 @@ require_once( DEW_PREFIX . '/dew_format.php' );
 add_shortcode('dew_agenda', 'dew_agenda_shortcode_handler');
 add_shortcode('dew_fullevent', 'dew_fullevent_shortcode_handler');
 add_shortcode('dew_fullfestival', 'dew_fullfestival_shortcode_handler');
+add_shortcode('dew_agenda_menu', 'dew_agenda_menu_shortcode_handler');
 add_shortcode('dew_agenda_or_arrangement', 'dew_agenda_or_arrangement_shortcode_handler');
-add_shortcode('dew_agenda_or_arrangement_with_menu', 'dew_agenda_or_arrangement_with_menu_shortcode_handler');
 add_shortcode('dew_detailbox', 'dew_detailbox_shortcode_handler');
 
 function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
@@ -468,21 +468,100 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 	return $output;
 }
 
-function dew_agenda_or_fullarrangement_shortcode_handler ($atts, $content = null, $code = "") {
+/**
+ * $atts can be array(
+ *   'dayspan' => any number bigger than or equal to 0
+ * );
+ */
+function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $code = "") {
+	// $atts should contain dayspan, if not it will be set to 14
 	global $wp_query;
 
-	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
-		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
-		return dew_fullevent_shortcode_handler (array('event_id' => intval($event_id)), $content, $code);
-	} elseif (!empty($_GET['festival_id']) || $wp_query->get('festival_id')) {
-		$festival_id = (empty($_GET['festival_id'])) ? $wp_query->get('festival_id') : $_GET['festival_sid'];
-		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
+	if (!isset($atts['dayspan'])) {
+		$atts['dayspan'] = 14;
 	} else {
-		return dew_agenda_shortcode_handler ($atts, $content, $code);
+		$atts['dayspan'] = intval($atts['dayspan']);
 	}
+
+	$locale = new WP_Locale();
+
+	$content = "<ul class=\"agenda_menu\">\n";
+		
+	$dew_archive = null;
+
+	if (!empty($_GET['dew_archive'])) {
+		$dew_archive = strval($_GET['dew_archive']);
+	}
+
+	$class = '';
+	if (empty($dew_archive)) {
+		$class = 'class="active"';
+	}
+
+	$content .= '<li ' . $class . '><a href="' . get_permalink() . '">Next ' . $atts['dayspan'] . ' days</a></li>' . "\n";
+
+	$currentMonth = intval(date('n'));
+	$currentYear = intval(date('Y'));
+
+	$queryYear = 0;
+	$queryMonth = 0;
+
+	$month = $currentMonth;
+	$year = $currentYear;
+
+	if (isset($_GET['dew_archive'])) {
+		$dateComponents = explode('-', $_GET['dew_archive']);
+
+		if (count($dateComponents) >= 2) {
+			$queryYear = intval($dateComponents[0]);
+			$queryMonth = intval($dateComponents[1]);
+		}
+	}
+
+	for ($i = 0; $i < 4; $i++) {
+		$monthName = ucfirst($locale->get_month($month));
+
+		$class = '';
+			
+		if (($year == $queryYear) && ($month == $queryMonth)) {
+			$class = 'class="active"';
+		}
+
+		$content .= '<li ' . $class . '><a href="?dew_archive=' . sprintf('%04d-%02d', $year, $month) . '">' . $monthName . '</a></li>'. "\n";
+
+		if ($month == 12) {
+			$month = 1;
+			$year++;
+		} else {
+			$month++;
+		}
+	}
+
+	$class = '';
+	if ($dew_archive == 'list') {
+		$class = 'class="active"';
+	}
+	$content .= '<li ' . $class . '><a href="?dew_archive=list">Archive</a></li>' . "\n";
+
+	$content .= "</ul>\n";
+
+	if (empty($dew_archive)) {
+
+	}
+
+	return $content;
 }
 
-function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content = null, $code = "") {
+/**
+ * $atts can be array(
+ *   'arranger_id' => '1,2,3,4',
+ *   'category_id' => '1,2,3,4',
+ *   'location_id' => '1,2,3,4',
+ *   'exclude_menu' => 1 or 0,
+ *   'dayspan' => any number bigger than or equal to 0
+ * );
+ */
+function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $code = "") {
 	global $wp_query;
 
 	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
@@ -495,6 +574,14 @@ function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content 
 		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
 	} else {
 		$locale = new WP_Locale();
+
+		if (!isset($atts['dayspan'])) {
+			$atts['dayspan'] = 14;
+		} else {
+			$atts['dayspan'] = intval($atts['dayspan']);
+		}
+
+		$content = "";
 
 		$config = array(
 			'compact_view' => 1,
@@ -511,6 +598,19 @@ function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content 
 		if (isset($atts['location_id'])) {
 			$config['location_id'] = $atts['location_id'];
 		}
+
+		$dew_archive = null;
+
+		if (!empty($_GET['dew_archive'])) {
+			$dew_archive = strval($_GET['dew_archive']);
+		}
+
+		if (!isset($atts['exclude_menu']) || ($atts['exclude_menu'] == 0)) {
+			$content .= dew_agenda_menu_shortcode_handler(array('dayspan' => $atts['dayspan']));
+		}
+
+		$currentMonth = intval(date('n'));
+		$currentYear = intval(date('Y'));
 
 		$queryYear = 0;
 		$queryMonth = 0;
@@ -539,57 +639,6 @@ function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content 
 					}
 				}
 			}
-		}
-
-		$content = "<ul class=\"agenda_menu\">\n";
-		
-		$dew_archive = null;
-
-		if (!empty($_GET['dew_archive'])) {
-			$dew_archive = strval($_GET['dew_archive']);
-		}
-
-		$class = '';
-		if (empty($dew_archive)) {
-			$class = 'class="active"';
-		}
-		$content .= '<li ' . $class . '><a href="' . get_permalink() . '">Next 14 days</a></li>' . "\n";
-
-		$currentMonth = intval(date('n'));
-		$currentYear = intval(date('Y'));
-
-		$month = $currentMonth;
-		$year = $currentYear;
-
-		for ($i = 0; $i < 4; $i++) {
-			$monthName = ucfirst($locale->get_month($month));
-
-			$class = '';
-			
-			if (($year == $queryYear) && ($month == $queryMonth)) {
-				$class = 'class="active"';
-			}
-
-			$content .= '<li ' . $class . '><a href="?dew_archive=' . sprintf('%04d-%02d', $year, $month) . '">' . $monthName . '</a></li>'. "\n";
-
-			if ($month == 12) {
-				$month = 1;
-				$year++;
-			} else {
-				$month++;
-			}
-		}
-
-		$class = '';
-		if ($dew_archive == 'list') {
-			$class = 'class="active"';
-		}
-		$content .= '<li ' . $class . '><a href="?dew_archive=list">Archive</a></li>' . "\n";
-
-		$content .= "</ul>\n";
-
-		if (empty($dew_archive)) {
-
 		}
 
 		if ($dew_archive == 'list') {
@@ -637,8 +686,8 @@ function dew_agenda_or_arrangement_with_menu_shortcode_handler ($atts, $content 
 			if (!empty($dew_archive)) {
 				$config['title'] = '<h2 class="agenda_title">Events in ' . $locale->get_month($queryMonth) . ' ' . $queryYear . '</h2>' . "\n";
 			} else {
-				$config['title'] = '<h2 class="agenda_title">Events for the next 14 days.</h2>';
-				$config['dayspan'] = 14;
+				$config['title'] = '<h2 class="agenda_title">Events for the next ' . $atts['dayspan'] . ' days.</h2>';
+				$config['dayspan'] = $atts['dayspan'];
 			}
 			
 			$content .= dew_agenda_shortcode_handler ($config);
