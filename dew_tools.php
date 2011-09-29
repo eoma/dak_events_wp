@@ -308,10 +308,10 @@ class DEW_tools {
 		// We first construct its path
 		$relativeFilePath = '/dew_pictures/' . substr($md5path, 0, 2)
 		                  . '/' . substr($md5path, 2, 2)
-		                  . '/' . $md5path . '.' . $pathdata['extension'];
+		                  . '/' . $md5path . '-' . $maxWidth . 'x' . $maxHeight . '.' . $pathdata['extension'];
 
 		$filePath = $uploadDir['basedir'] . $relativeFilePath;
-		
+
 		$imageData = array(
 			'relative' => $relativeFilePath,
 			'absolute' => $filePath,
