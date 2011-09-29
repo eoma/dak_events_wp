@@ -19,16 +19,20 @@ function dew_calendar_shortcode_handler ($atts, $content = null, $code = "") {
 	
 }
 
-function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
+function dew_detailbox_shortcode_handler ($atts, $template = null, $code = "") {
 	/**
-	 * Requires that the type attribute is set
-	 * type can be event or festival
+	 * Requires that the type and id attribute is set
+	 * $atts can contain array(
+	 *      'type' => 'event' or 'festival',
+	 *      'id' => '1',
+	 *      'template' => '<b>%(title)s</b> <p>htmlcode</p>'
+	 * )
 	 */
 
 	$validTypes = array('event', 'festival');
 
 	if (!isset($atts['type']) || !in_array($atts['type'], $validTypes)) {
-		return "<p>You must use [dew_detailBox type=&lt;type&gt; id=&lt;id&gt;], with type being either event or festival.</p>";
+		return "<p>You must use [dew_detailbox type=&lt;type&gt; id=&lt;id&gt;], with type being either event or festival.</p>";
 	}
 
 	$type = $atts['type'];
@@ -86,31 +90,75 @@ function dew_detailbox_shortcode_handler ($atts, $content = null, $code = "") {
 	}
 
 	$startDayName = ucfirst(date_i18n('l', $startTimestamp));
-	$dayInMonth = date('j', $startTimestamp);
-	$monthName = date_i18n('F', $startTimestamp);
+	$startDayInMonth = date('j', $startTimestamp);
+	$startMonthName = date_i18n('F', $startTimestamp);
 
-	$title = '<a href="' . DEW_tools::generateLinkToArrangement($arr, $type) . '">' . $arr->title . '</a>';
+	$endDayName = ucfirst(date_i18n('l', $endTimestamp));
+	$endDayInMonth = date('j', $endTimestamp);
+	$endMonthName = date_i18n('F', $endTimestamp);
+
+	if ($arr->startDate == date('Y-m-d', $endTimestamp - $options['dayStartHour'] * 3600)) {
+		$endDatetime = date('H:i', $endTimestamp);
+	} else {
+		$endDatetime = date_i18n(__('F j, Y H:i'), $endTimestamp);
+	}
 
 	$renderArr = array(
-			'title' => $title,
-			'startDayName' => $startDayName,
-			'dayInMonth' => $dayInMonth,
-			'monthName' => $monthName,
-			'startTime' => date('H:i', $startTimestamp),
-			'location' => $location,
-			'iCalUrl' => $arr->ical,
-			'googleCalUrl' => DEW_tools::createGoogleCalUrl($arr),
-			'extra' => $extra,
+		'title' => $arr->title,
+
+		'location' => $location,
+
+		'startDate' => date($dateFormat, $startTimestamp),
+		'startDayName' => $startDayName,
+		'startDay' => $startDayInMonth,
+		'startMonthName' => $startMonthName,
+		'startMonth' => date('m', $startTimestamp),
+		'startYear' => date('Y', $startTimestamp),
+		'startTime' => date('H:i', $startTimestamp),
+
+		'endDatetime' => $endDatetime,
+		'endDate' => date($dateFormat, $endTimestamp),
+		'endDayName' => $endDayName,
+		'endDay' => $endDayInMonth,
+		'endMonthName' => $endMonthName,
+		'endMonth' => date('m', $endTimestamp),
+		'endYear' => date('Y', $endTimestamp),
+		'endTime' => date('H:i', $endTimestamp),
+
+		'url' => DEW_tools::generateLinkToArrangement($arr, $type),
+		'originalUrl' => $arr->url,
+		'iCalUrl' => $arr->ical,
+		'googleCalUrl' => DEW_tools::createGoogleCalUrl($arr),
+		'extra' => $extra,
 	);
 
+	$detailBoxTemplate = null;
+
+	if (!empty($atts['template'])) {
+		if (function_exists('dew_template_' . $atts['template'])) {
+			$detailBoxTemplate = call_user_func('dew_template_' . $atts['template']);
+		} else {
+			$detailBoxTemplate = $atts['template'];
+		}
+	} else if (!empty($template)) {
+		$detailBoxTemplate = $template;
+	}
+
 	if ($type == 'event') {
-		$output =  DEW_tools::sprintfn(DEW_format::eventDetailBox(), $renderArr + array(
+		if (empty($detailBoxTemplate)) {
+			$detailBoxTemplate = DEW_format::eventDetailBox();
+		}
+
+		$output = DEW_tools::sprintfn($detailBoxTemplate, $renderArr + array(
 			'arranger' => $arr->arranger->name,
 			'category' => $categories,
 		));
 	} else if ($type == 'festival') {
-		$output =  DEW_tools::sprintfn(DEW_format::festivalDetailBox(), $renderArr + array(
-			'endDatetime' => ($arr->startDate == $arr->endDate) ? date('H:i', $endTimestamp) : date_i18n(__('F j, Y H:i'), $endTimestamp),
+		if (empty($detailBoxTemplate)) {
+			$detailBoxTemplate = DEW_format::festivalDetailBox();
+		}
+
+		$output = DEW_tools::sprintfn($detailBoxTemplate, $renderArr + array(
 			'arranger' => $arrangers,
 		));
 	}
@@ -135,6 +183,8 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'end_date' => '2011-05-31',
 	 *       'dayspan' => 7,
 	 *       'title' => '<h1>Events in may</h1>',
+	 *       'eventTemplate' => 'some template' or function name,
+	 *       'eventDateCollectionTemplate' => 'some template' or function name,
 	 * )
 	 */
 	$options = DEW_Management::getOptions();
@@ -189,13 +239,29 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 		$results = $client->filteredEventsList($queryArgs);
 	}
 
-	if( ! empty($atts['compact_view']) && ($atts['compact_view'] == 1) ) {
-		$eventFormat = DEW_format::agendaCompactEvent();
+	if ( ! empty($atts['eventTemplate']) ) {
+		if (function_exists('dew_template_' . $atts['eventTemplate'])) {
+			$eventTemplate = call_user_func('dew_template_' . $atts['eventTemplate']);
+		} else {
+			$eventTemplate = $atts['eventTemplate'];
+		}
 	} else {
-		$eventFormat = DEW_format::agendaFullEvent();
+		if( ! empty($atts['compact_view']) && ($atts['compact_view'] == 1) ) {
+			$eventTemplate = DEW_format::agendaCompactEvent();
+		} else {
+			$eventTemplate = DEW_format::agendaFullEvent();
+		}
 	}
 
-	$eventDateCollectionFormat = DEW_format::agendaEventDateCollection();
+	if ( ! empty($atts['eventDateCollectionTemplate']) ) {
+		if (function_exists('dew_template_' . $atts['eventDateCollectionTemplate'])) {
+			$eventDateCollectionTemplate = call_user_func('dew_template_' . $atts['eventDateCollectionTemplate']);
+		} else {
+			$eventDateCollectionTemplate = $atts['eventDateCollectionTemplate'];
+		}
+	} else {
+		$eventDateCollectionTemplate = DEW_format::agendaEventDateCollection();
+	}
 
 	$dateSortedEvents = DEW_tools::groupEventsByDate($results->data, $options['dayStartHour']);
 	
@@ -256,7 +322,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				$extra .= __('CC:', 'dak_events_wp') . ' ' . $event->covercharge . '<br />' . "\n";
 			}
 
-			$dateOutput .= DEW_tools::sprintfn($eventFormat, array(
+			$dateOutput .= DEW_tools::sprintfn($eventTemplate, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
 				'renderedDate' => $renderedDate,
@@ -270,7 +336,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 
 		}
 
-		$output .= DEW_tools::sprintfn($eventDateCollectionFormat,
+		$output .= DEW_tools::sprintfn($eventDateCollectionTemplate,
 			array(
 				'dayName' => $startDayName,
 				'dayNumber' => date('j', $timestamp),
@@ -286,11 +352,13 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	return $output;
 }
 
-function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
+function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 	/**
 	 * $atts can contain
 	 * array(
 	 *       'event_id' => '1',
+	 *       'exclude_metadata' => 1 or 0,
+	 *       'template' => 'some html and %(variableSubstitutions)s' or function name
 	 * )
 	 */
 
@@ -315,7 +383,17 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		$formatConfig['no_title'] = true;
 	}
 
-	$eventFormat = DEW_format::fullEvent($formatConfig);
+	if (!empty($atts['template'])) {
+		if (function_exists('dew_template_' . $atts['eventTemplate'])) {
+			$eventTemplate = call_user_func('dew_template_' . $atts['eventTemplate']);
+		} else {
+			$eventTemplate = $atts['eventTemplate'];
+		}
+	} else if (!empty($template)) {
+		$eventTemplate = $template;
+	} else {
+		$eventTemplate = DEW_format::fullEvent($formatConfig);
+	}
 
 	//var_dump($event);
 
@@ -366,7 +444,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		}
 	}
 
-	$output = DEW_tools::sprintfn($eventFormat, array(
+	$output = DEW_tools::sprintfn($eventTemplate, array(
 		'title' => $event->title,
 		'leadParagraph' => DEW_tools::allowedHtml($event->leadParagraph),
 		'description' => DEW_tools::allowedHtml($event->description),
@@ -375,7 +453,7 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 		'arranger' => $event->arranger->name,
 		'category' => $categories,
 		'startTime' => date($timeFormat, $startTimestamp),
-		'urlOriginal' => $event->url,
+		'originalUrl' => $event->url,
 		'iCalUrl' => $event->ical,
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 		'extra' => $extra,
@@ -385,11 +463,17 @@ function dew_fullevent_shortcode_handler ($atts, $content = null, $code = "") {
 	return $output;
 }
 
-function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "") {
+function dew_fullfestival_shortcode_handler ($atts, $template = null, $code = "") {
 	/**
 	 * $atts can contain
 	 * array(
 	 *       'festival_id' => '1',
+	 *       'exclude_metadata' => '1',
+	 *       'template' => 'blabla'
+	 *       'agendaTemplate' => array(
+	 *           'eventTemplate' => 'some template' or function name,
+	 *           'eventDateCollectionTemplate' => 'some template' or function name,
+	 *       ),
 	 * )
 	 */
 
@@ -414,7 +498,19 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		$formatConfig['no_title'] = true;
 	}
 
-	$festivalFormat = DEW_format::fullFestival($formatConfig);
+	$festivalTemplate = null;
+
+	if (!empty($template)) {
+		$festivalTemplate = $template;
+	} else if (!empty($atts['template'])) {
+		if (function_exists('dew_template_' . $atts['template'])) {
+			$festivalTemplate = call_user_func('dew_template_' . $atts['template']);
+		} else {
+			$festivalTemplate = $atts['template'];
+		}
+	} else {
+		$festivalTemplate = DEW_format::fullFestival($formatConfig);
+	}
 
 	//var_dump($festival);
 
@@ -450,7 +546,22 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		$extra .= __('CC:', 'dak_events_wp') . ' ' . $festival->covercharge . '<br />' . "\n";
 	}
 
-	$output = DEW_tools::sprintfn($festivalFormat, array(
+	$agendaConfig = array(
+		'festival_id' => $festival->id,
+		'no_current_events' => true,
+	);
+
+	if (!empty($atts['agendaTemplate'])) {
+		if (!empty($atts['agendaTemplate']['eventTemplate'])) {
+			$agendaConfig['eventTemplate'] = $atts['agendaTemplate']['eventTemplate'];
+		}
+
+		if (!empty($atts['agendaTemplate']['eventDateCollectionTemplate'])) {
+			$agendaConfig['eventTemplate'] = $atts['agendaTemplate']['eventDateCollectionTemplate'];
+		}
+	}
+
+	$output = DEW_tools::sprintfn($festivalTemplate, array(
 		'title' => $festival->title,
 		'leadParagraph' => DEW_tools::allowedHtml($festival->leadParagraph),
 		'description' => DEW_tools::allowedHtml($festival->description),
@@ -458,11 +569,11 @@ function dew_fullfestival_shortcode_handler ($atts, $content = null, $code = "")
 		'location' => $location,
 		'arranger' => $arrangers,
 		'startTime' => date($timeFormat, $startTimestamp),
-		'urlOriginal' => $festival->url,
+		'originalUrl' => $festival->url,
 		'iCalUrl' => $festival->ical,
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($festival),
 		'extra' => $extra,
-		'festivalEvents' => dew_agenda_shortcode_handler(array('festival_id' => $festival->id, 'no_current_events' => true)),
+		'festivalEvents' => dew_agenda_shortcode_handler($agendaConfig),
 	));
 
 	return $output;
@@ -492,7 +603,6 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 	if (!empty($_GET['dew_archive']) || $wp_query->get('dew_archive')) {
 		$dew_archive = strval($wp_query->get('dew_archive'));
 	}
-
 
 	$class = '';
 	if (empty($dew_archive)) {
@@ -558,20 +668,61 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
  *   'category_id' => '1,2,3,4',
  *   'location_id' => '1,2,3,4',
  *   'exclude_menu' => 1 or 0,
+ *   'exclude_metadata' => 1 or 0,
  *   'dayspan' => any number bigger than or equal to 0
+ *   'eventTemplate' => 'some template' or function name,
+ *   'festivalTemplate' => array(
+ *       'template' => 'some template' or function name,
+ *       'eventAgendaTemplate' => 'some template' or function name,
+ *    ),
+ *    'agendaTemplate' => array(
+ *        'eventTemplate => 'some template' or function name,
+ *        'eventDateCollectionTemplate' => 'some template' or function name
+ *    ),
  * );
  */
 function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $code = "") {
+
 	global $wp_query;
 
 	if (!empty($_GET['event_id']) || $wp_query->get('event_id')) {
 		$event_id = (empty($_GET['event_id'])) ? $wp_query->get('event_id') : $_GET['event_id'];
 
-		return dew_fullevent_shortcode_handler (array('event_id' => intval($event_id)), $content, $code);
+		$fullEventArgs = array(
+			'event_id' => intval($event_id),
+		);
+
+		if (isset($atts['exclude_metadata']) && ($atts['exclude_metadata'] == 1)) {
+			$fullEventArgs['exclude_metadata'] = true;
+		}
+
+		if (!empty($atts['eventTemplate'])) {
+			$fullEventArgs['template'] = $atts['eventTemplate'];
+		}
+
+		return dew_fullevent_shortcode_handler ($fullEventArgs, $content, $code);
 	} elseif (!empty($_GET['festival_id']) || $wp_query->get('festival_id')) {
 		$festival_id = (empty($_GET['festival_id'])) ? $wp_query->get('festival_id') : $_GET['festival_sid'];
 
-		return dew_fullfestival_shortcode_handler (array('festival_id' => intval($festival_id)), $content, $code);
+		$fullFestivalArgs = array(
+			'festival_id' => intval($festival_id),
+		);
+
+		if (isset($atts['exclude_metadata']) && ($atts['exclude_metadata'] == 1)) {
+			$fullFestivalArgs['exclude_metadata'] = true;
+		}
+
+		if (!empty($atts['festivalTemplate'])) {
+			if (!empty($atts['festivalTemplate']['template'])) {
+				$fullFestivalArgs['template'] = $atts['festivalTemplate']['template'];
+			}
+
+			if (!empty($atts['festivalTemplate']['eventAgendaTemplate'])) {
+				$fullFestivalArgs['eventAgendaTemplate'] = $atts['festivalTemplate']['eventAgendaTemplate'];
+			}
+		}
+
+		return dew_fullfestival_shortcode_handler ($fullFestivalArgs, $content, $code);
 	} else {
 		$locale = new WP_Locale();
 
@@ -688,6 +839,16 @@ function dew_agenda_or_arrangement_shortcode_handler ($atts, $content = null, $c
 			} else {
 				$config['title'] = '<h2 class="agenda_title">Events for the next ' . $atts['dayspan'] . ' days.</h2>';
 				$config['dayspan'] = $atts['dayspan'];
+			}
+
+			if (!empty($atts['agendaTemplate'])) {
+				if (!empty($atts['agendaTemplate']['eventTemplate'])) {
+					$config['eventTemplate'] = $atts['agendaTemplate']['eventTemplate'];
+				}
+
+				if (!empty($atts['agendaTemplate']['eventDateCollectionTemplate'])) {
+					$config['eventDateCollectionTemplate'] = $atts['agendaTemplate']['eventDateCollectionTemplate'];
+				}
 			}
 			
 			$content .= dew_agenda_shortcode_handler ($config);

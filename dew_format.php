@@ -51,19 +51,9 @@ class DEW_format {
 
 		return $format;
 	}
-	
-	static public function agendaEventCollection() {
-		$format = "
-<h2 class='agenda_collection_name %(extraCollectionClass)s'>%(monthName)s</h2>
-<div class='agenda_event_collection %(extraClass)s' id='%(id)s'>
-  %(eventCollection)s
-</div>
-";
-
-		return $format;
-	}
 
 	static public function agendaEventDateCollection () {
+		// Will contains all events in a day
 		$format = "
 <div class='agenda_day clearfix'>
   <h2 class='agenda_box'>
@@ -87,6 +77,7 @@ class DEW_format {
 		 * $config can be an associative array
 		 * array(
 		 * 	'no_title' => bool, // Whether to include the title or not
+		 * 	'exclude_metadata' => bool, // Whether to include the metadata (start/end, location, etc) or not
 		 * )
 		 */
 
@@ -98,7 +89,10 @@ class DEW_format {
 
 		$format = "
 <div class=\"agenda_event_wrapper\">
-  " . $title . "
+  " . $title;
+
+		if (!isset($config['exclude_metadata']) || !$config['exclude_metadata']) {
+			$format .= "
   <p class=\"agenda_data\">
     " . sprintf(__('%s in %s', 'dak_events_wp') , '%(category)s', '%(location)s') . "<br />
     " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
@@ -106,11 +100,14 @@ class DEW_format {
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
     <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
-  </p>
+  </p>";
+		}
+
+		$format .= "
   <p>%(leadParagraph)s</p>
   %(description)s
   %(primaryPicture)s
-  <p><small><a href='%(urlOriginal)s'>" . __('Orginal event', 'dak_events_wp') . "</a></small></p>
+  <p><small><a href='%(originalUrl)s'>" . __('Orginal event', 'dak_events_wp') . "</a></small></p>
 </div>";
 
 		return $format;
@@ -123,6 +120,7 @@ class DEW_format {
 		 * $config can be an associative array
 		 * array(
 		 * 	'no_title' => bool, // Whether to include the title or not
+		 * 	'exclude_metadata' => bool, // Whether to include the metadata (start/end, location, etc) or not
 		 * )
 		 */
 
@@ -134,7 +132,10 @@ class DEW_format {
 
 		$format = "
 <div class=\"agenda_event_wrapper\">
-  " . $title . "
+  " . $title;
+
+		if (!isset($config['exclude_metadata']) || !$config['exclude_metadata']) {
+			$format .= "
   <p class=\"agenda_data\">
     '%(location)s' <br />
     " . __('Starts:', 'dak_events_wp') . " %(renderedDate)s<br />
@@ -144,7 +145,10 @@ class DEW_format {
     <a href=\"%(googleCalUrl)s\" target=\"_blank\">" . __('Google calendar', 'dak_events_wp') . "</a>
     <br />
     <a href=\"#dew_festivalEvents\">" . __('Jump to the events', 'dak_events_wp') . "</a>
-  </p>
+  </p>";
+		}
+
+		$format .= "
   <p>%(leadParagraph)s</p>
   %(description)s
 
@@ -152,27 +156,29 @@ class DEW_format {
    %(festivalEvents)s
   </div>
 
-  <p><small><a href='%(urlOriginal)s'>" . __('Orginal festival', 'dak_events_wp') . "</a></small></p>
-
-
+  <p><small><a href='%(originalUrl)s'>" . __('Orginal festival', 'dak_events_wp') . "</a></small></p>
 </div>";
 
 		return $format;
 	}
 
-	static public function eventDetailBox() {
-		// All named arguments are required in the format
+	static public function eventDetailBox($config = array()) {
+		/*
+		 * All named arguments are required in the format
+		 */
+
 		$format = "
 <div class='dew_eventDetailBox'>
   <div class='dew_eventDate'>
     <span class='agenda_day_name'>%(startDayName)s</span>
-    <span class='agenda_day_number'>%(dayInMonth)s</span>
-    <span class='agenda_month_name'>%(monthName)s</span>
+    <span class='agenda_day_number'>%(startDay)s</span>
+    <span class='agenda_month_name'>%(startMonthName)s</span>
   </div>
   <div class='dew_eventDetails'>
-    <span class='dew_eventTitle'>%(title)s</span><br />
+    <span class='dew_eventTitle'><a href='%(url)s'>%(title)s</a></span><br />
     " . sprintf(__('%s in %s', 'dak_events_wp'), '%(category)s', '%(location)s') . "<br />
     " . __('Starts', 'dak_events_wp') . " %(startTime)s<br />
+    " . __('Ends', 'dak_events_wp') . " %(endDatetime)s<br />
     " . __('Arranged by', 'dak_events_wp') . " %(arranger)s<br />
     %(extra)s
     <a href=\"%(iCalUrl)s\">" . __('Add event to your calendar', 'dak_events_wp') . "</a>
@@ -183,17 +189,20 @@ class DEW_format {
 		return $format;
 	}
 
-	static public function festivalDetailBox() {
-		// All named arguments are required in the format
+	static public function festivalDetailBox($config = array()) {
+		/*
+		 * All named arguments are required in the format
+		 */
+
 		$format = "
 <div class='dew_eventDetailBox'>
   <div class='dew_eventDate'>
     <span class='agenda_day_name'>%(startDayName)s</span>
-    <span class='agenda_day_number'>%(dayInMonth)s</span>
-    <span class='agenda_month_name'>%(monthName)s</span>
+    <span class='agenda_day_number'>%(startDay)s</span>
+    <span class='agenda_month_name'>%(startMonthName)s</span>
   </div>
   <div class='dew_eventDetails'>
-    <span class='dew_eventTitle'>%(title)s</span><br />
+    <span class='dew_eventTitle'><a href='%(url)s'>%(title)s</a></span><br />
     %(location)s<br />
     " . __('Starts', 'dak_events_wp') . " %(startTime)s<br />
     " . __('Ends', 'dak_events_wp') . " %(endDatetime)s<br />
