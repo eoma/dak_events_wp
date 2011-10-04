@@ -68,19 +68,15 @@ function dew_detailbox_shortcode_handler ($atts, $template = null, $code = "") {
 	$location = DEW_tools::getLocationFromEvent($arr);
 
 	if ($type == 'event') {
-		$categories = '';
-		foreach ($arr->categories as $c) {
-			$categories .= $c->name . ', ';
-		}
-		$categories = substr($categories, 0, -2);
+		$categoryList = array();
+		foreach($arr->categories as $category) $categoryList[] = $category->name;
+		$categories = implode(', ', $categoryList);
 	}
 
 	if ($type == 'festival') {
-		$arrangers = '';
-		foreach ($arr->arrangers as $a) {
-			$arrangers .= $a->name . ', ';
-		}
-		$arrangers = substr($arrangers, 0, -2);
+		$arrangerList = array();
+		foreach($arr->arrangers as $arranger) $arrangerList[] = $arranger->name;
+		$arrangers = implode(', ', $arrangerList);
 	}
 
 	$extra = "";
