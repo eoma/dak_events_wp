@@ -465,7 +465,7 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 		'extra' => $extra,
 		'primaryPicture' => $primaryPicture,
-		'festivalLink' => $festivalLink;
+		'festivalLink' => $festivalLink,
 	));
 
 	return $output;
