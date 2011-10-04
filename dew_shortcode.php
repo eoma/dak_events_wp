@@ -384,10 +384,10 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 	}
 
 	if (!empty($atts['template'])) {
-		if (function_exists('dew_template_' . $atts['eventTemplate'])) {
-			$eventTemplate = call_user_func('dew_template_' . $atts['eventTemplate']);
+		if (function_exists('dew_template_' . $atts['template'])) {
+			$eventTemplate = call_user_func('dew_template_' . $atts['template']);
 		} else {
-			$eventTemplate = $atts['eventTemplate'];
+			$eventTemplate = $atts['template'];
 		}
 	} else if (!empty($template)) {
 		$eventTemplate = $template;
