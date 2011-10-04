@@ -321,7 +321,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 			$festivalLink = "";
 
 			if ($event->festival_id) {
-				$festivalLink = '<a class="festivalLink" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
+				$festivalLink = '<a class="festival_link" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
                   . $event->festival->title . '</a>';
 			}
 	
@@ -435,7 +435,7 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 
 	$festivalLink = "";
 	if ($event->festival != null) {
-		$festivalLink = '<a class="festivalLink" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
+		$festivalLink = '<a class="festival_link" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
 		   . $event->festival->title
            . '</a>';
 		$extra .= __('Part of festival', 'dak_events_wp') . ': ' . $festivalLink . '<br />';
