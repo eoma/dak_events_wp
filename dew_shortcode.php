@@ -318,6 +318,13 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				$extra .= __('CC:', 'dak_events_wp') . ' ' . $event->covercharge . '<br />' . "\n";
 			}
 
+			$festivalLink = "";
+
+			if ($event->festival_id) {
+				$festivalLink = '<a class="festivalLink" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
+                  . $event->festival->title . '</a>';
+			}
+	
 			$dateOutput .= DEW_tools::sprintfn($eventTemplate, array(
 				'title' => $event->title,
 				'leadParagraph' => $event->leadParagraph,
@@ -327,6 +334,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 				'category' => $categories,
 				'startTime' => date($timeFormat, $startTimestamp),
 				'readMore' => DEW_tools::generateLinkToArrangement($event, 'event'),
+				'festivalLink' => $festivalLink,
 				'extra' => $extra,
 			));
 
@@ -425,9 +433,12 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 		$extra .= __('CC:', 'dak_events_wp') . ' ' . $event->covercharge . '<br />' . "\n";
 	}
 
+	$festivalLink = "";
 	if ($event->festival != null) {
-		$extra .= __('Part of festival', 'dak_events_wp') . ': ' 
-		       . '<a href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">' . $event->festival->title .'</a><br />';
+		$festivalLink = '<a class="festivalLink" href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">'
+		   . $event->festival->title
+           . '</a>';
+		$extra .= __('Part of festival', 'dak_events_wp') . ': ' . $festivalLink . '<br />';
 	}
 
 	$primaryPicture = '';
@@ -454,6 +465,7 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 		'googleCalUrl' => DEW_tools::createGoogleCalUrl($event),
 		'extra' => $extra,
 		'primaryPicture' => $primaryPicture,
+		'festivalLink' => $festivalLink;
 	));
 
 	return $output;
