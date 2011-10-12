@@ -23,13 +23,16 @@ class DEW_tools {
 
 		foreach ($eventList as $event) {
 			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
-			
-			
-			$startTimestamp = $startTimestamp - $dayStartHour * 3600;
-			
+
+			$startTimestamp -= $dayStartHour * 3600;
 			$startTimestamp = strtotime(date('Y-m-d', $startTimestamp));
 
-			$dateArray[ strval($startTimestamp) ][] = $event;
+			$key = strval($startTimestamp);
+
+			if (!isset($dateArray[$key]))
+				$dateArray[$key] = array();
+
+			$dateArray[$key][] = $event;
 		}
 
 		return $dateArray;
@@ -319,7 +322,9 @@ class DEW_tools {
 
 		if ( ! file_exists($filePath) ) {
 			$tmpFile = tempnam(sys_get_temp_dir(), rand(1000,9999)) . '.' . $pathdata['extension'];
-			
+
+			//echo "Will fetch " . $picObj->url . "\n";
+
 			if (function_exists('curl_init')) {
 				$content = DEW_tools::curl_get_content($picObj->url);
 			} else {
@@ -367,6 +372,12 @@ class DEW_tools {
 		return $imageData;
 	}
 
+	static public function getPictureUrl($picObj, $maxWidth = 600, $maxHeight = 1000) {
+		$picData = self::getPicture($picObj, $maxWidth, $maxHeight);
+		$uploadDir = wp_upload_dir();
+		return $uploadDir['baseurl'] . $picData['relative'];
+	}
+
 	/**
 	 * Will recursively remove files and directories, including $path if it's a directory
 	 */
@@ -380,6 +391,26 @@ class DEW_tools {
 			}
 		} else {
 			return false;
+		}
+	}
+
+	public static function eventEndSameDay($event) {
+		if (is_null(self::$options)) {
+			self::$options = DEW_Management::getOptions();
+		}
+
+		$skewDayStart = self::$options['dayStartHour'];
+
+		if ($event->startDate == $event->endDate) {
+			return true;
+		} else {
+			$endTimestamp = self::dateStringToTime($event->endDate, $event->endTime);
+
+			if ($event->startDate == date('Y-m-d', $endTimestamp - $skewDayStart * 3600)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 }
