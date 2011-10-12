@@ -53,89 +53,13 @@ class DEW_Calendar {
 			$events = $client->upcomingEvents($num);
 		}
 
-		$output = '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list">';
-		
-		$eventFormat = DEW_format::eventInList();
+		$dateSortedEvents = DEW_tools::groupEventsByDate($events->data, $this->options['dayStartHour']);
 
-		$startDateTimestamp = 0;
-		foreach($events->data as $event) {
-			$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
+		ob_start();
 
-			// Allow events that start early next day (eg. dj's at 01:00)
-			// to be listed on the former day
-			$startDateTimestampTmp = strtotime(date('Y-m-d', $startTimestamp - (intval($this->options['dayStartHour']) * 3600)));
-			
-			//echo $event->startDate . "\n";
-			//echo date('Y-m-d', $startTimestamp - (intval($this->options['dayStartHour']) * 3600)) . "\n";
-			
-			$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
+		do_action('dew_render_widget_list', $dateSortedEvents, array('dateFormat' => $dateFormat, 'id_base' => $id_base));
 
-			$startDayName = ucfirst($this->locale->get_weekday(date('w', $startTimestamp )));
-			$endDayName = ucfirst($this->locale->get_weekday(date('w', $endTimestamp )));
-			
-			if ($startDateTimestamp != $startDateTimestampTmp) {
-				$startDateTimestamp = $startDateTimestampTmp;
-				$output .= '<li class="dew_eventList_date">'
-				        . ucfirst($this->locale->get_weekday(date('w', $startDateTimestamp )))
-				        . ' ' . date($dateFormat, $startDateTimestamp)
-				        . '</li>' ;
-			}
-
-			$location = DEW_tools::getLocationFromEvent($event);
-
-			if ($event->startDate == $event->endDate) {
-				$renderedDate = $startDayName . ' ' . date($dateFormat, $startTimestamp)
-				              . ' fra ' . date($timeFormat, $startTimestamp) . ' til '
-				              . date($timeFormat, $endTimestamp);
-			} else {
-				$renderedDate = $startDayName . ' ' . date($dateFormat . ' ' . $timeFormat, $startTimestamp) . ' til '
-				              . date("H:m", $endTimestamp);
-			}
-			$output .= '<li class="dew_event" id="' . $id_base . '-dak-events-wp-list-' . $event->id . '">';
-
-			$categories = '';
-			foreach ($event->categories as $c) {
-				$categories .= $c->name . ', ';
-			}
-			$categories = substr($categories, 0, -2);
-
-			$extra = "";
-
-			if (strlen($event->covercharge) > 0) {
-				$extra .= '<strong>' . __('CC:', 'dak_events_wp') . '</strong> ' . $event->covercharge . "<br />\n";
-			}
-
-			if ($event->festival_id > 0) {
-				$extra .= '<a href="' . DEW_tools::generateLinkToArrangement($event->festival, 'festival') . '">Part of ' . $event->festival->title . '</a><br />';
-			}
-
-			// Adds link to either internal event or external
-			$extra .= '<a href="' . DEW_tools::generateLinkToArrangement($event, 'event') .'">'. __('Read more', 'dak_events_wp') .'</a>';
-
-			$output .= DEW_tools::sprintfn($eventFormat, array(
-				'title' => $event->title,
-				'leadParagraph' => $event->leadParagraph,
-				'renderedDate' => $renderedDate,
-				'renderedTime' => date($timeFormat, $startTimestamp),
-				'location' => $location,
-				'arranger' => $event->arranger->name,
-				'category' => $categories,
-				'extra' => $extra,
-			));
-			$output .= '</li>' . "\n";
-		}
-		$output .= '</ul>' . "\n";
-		
-		if ($output == '<ul class="dew_eventList" id="' . $id_base . '-dak-events-wp-list"></ul>') {
-			echo '<ul><li id="no-events-in-list"><strong>' . __('No arrangements at the moment.', 'dak_events_wp') . '</strong></li></ul>' ."\n";
-		} else {
-
-			if (false !== strpos($output, "\'")) {
-				$output = stripslashes($output);
-			}
-
-			echo $output . "\n";
-		}
+		echo ob_get_clean();
 	}
 }
 endif;
