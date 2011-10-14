@@ -108,6 +108,19 @@ abstract class DEW_arrangement {
 		}
 	}
 
+	/**
+	 * Will determine whether the event happens now
+	 *
+	 * @return boolean
+	 */
+	public function happensNow() {
+		// Try to compute current timestamp in active timezone
+		// Ugly hack, not to be trusted in the long term
+		$now = time() + get_option('gmt_offset') * 3600;
+
+		return ( ($this->getStartTimestamp() < $now) && ($this->getEndTimestamp() > $now) );
+	}
+
 	public function getUpdatedAt () { return $this->arr->updated_at; }
 	public function getCreatedAt () { return $this->arr->created_at; }
 }
