@@ -178,55 +178,7 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 		$formatConfig['no_title'] = true;
 	}
 
-	if (!empty($atts['template'])) {
-		if (function_exists('dew_template_' . $atts['template'])) {
-			$eventTemplate = call_user_func('dew_template_' . $atts['template']);
-		} else {
-			$eventTemplate = $atts['template'];
-		}
-	} else if (!empty($template)) {
-		$eventTemplate = $template;
-	} else {
-		$eventTemplate = DEW_format::fullEvent($formatConfig);
-	}
-
 	//var_dump($event);
-
-	$startTimestamp = DEW_tools::dateStringToTime($event->startDate, $event->startTime);
-	$endTimestamp = DEW_tools::dateStringToTime($event->endDate, $event->endTime);
-
-	if ($event->startDate == $event->endDate) {
-		$renderedDate = sprintf(__('%s from %s to %s', 'dak_events_wp'),
-			date($dateFormat, $startTimestamp),
-			date($timeFormat, $startTimestamp),
-			date($timeFormat, $endTimestamp)
-		);
-	} else {
-		$renderedDate = sprintf(__('%s from %s to %s %s', 'dak_events_wp'),
-			date($dateFormat, $startTimestamp),
-			date($timeFormat, $startTimestamp),
-			date($dateFormat, $endTimestamp),
-			date($timeFormat, $endTimestamp)
-		);
-	}
-
-	$location = DEW_tools::getLocationFromEvent($event);
-
-
-	$festivalLink = "";
-	if ($event->festival != null) {
-		$festivalLink = DEW_tools::generateLinkToArrangement($event->festival, 'festival');
-	}
-
-	$primaryPicture = '';
-
-	if ($options['eventUsePictures'] && !empty($event->primaryPicture)) {
-		$img = DEW_tools::getPicture($event->primaryPicture, $options['eventPictureWidth']);
-
-		if ($img != false) {
-			$primaryPicture = '<img class="' . $options['eventPictureClass'] . ' size-auto" alt="' . esc_attr($event->primaryPicture->description) . '" src="' . content_url('uploads' . $img['relative']) . '" />';
-		}
-	}
 
 	ob_start();
 

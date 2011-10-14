@@ -2,7 +2,6 @@
 if(!class_exists("DEW_Calendar")) :
 require_once(DEW_PREFIX . '/eventsCalendarClient.php');
 require_once(DEW_PREFIX . '/dew_tools.php');
-require_once(DEW_PREFIX . '/dew_format.php');
 
 /**
  * Displays the events list and the calendars
