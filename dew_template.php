@@ -207,7 +207,7 @@ class DEW_template {
 <div class='agenda_compact_event_wrapper'>
  <a href="<?php echo $event->getUrl() ?>"><?php echo $event->getTitle() ?></a> <br />
  <span class="agenda_compact_event_details">
-  <?php echo $startTime ?> - <?php echo $event->getCategory() ?> - <?php echo $event->getLocation() ?>
+  <?php echo $startTime ?> - <?php echo $event->getCategory() ?> - <?php echo $event->getLocation() ?><?php if ($event->happensNow()) echo " - <em>" . __("happens now", 'dak_events_wp') . "</em>"; ?>
  </span>
 </div>
 
