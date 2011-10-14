@@ -130,7 +130,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
     if ( ! empty($atts['dayspan']) )
 		$queryArgs['dayspan'] = intval($atts['dayspan']);
 
-	if ( (isset($queryArgs['start_date']) && isset($queryArgs['end_date'])) || isset($queryArgs['dayspan']) ) {
+	if ( (isset($queryArgs['startDate']) && isset($queryArgs['endDate'])) || isset($queryArgs['dayspan']) ) {
 		$results = $client->filteredEventsList($queryArgs, true);
 	} else {
 		$results = $client->filteredEventsList($queryArgs);
