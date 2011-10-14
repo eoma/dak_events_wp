@@ -24,7 +24,7 @@ add_action('dew_render_agenda_menu', 'DEW_template::agendaMenu', 10, 1);
 // The following actions are related to rendering of agendas
 
 // This one is the primary template to be called from the dew_agenda_shortcode_handler()
-add_action('dew_render_agenda', 'DEW_template::agenda', 10, 1); 
+add_action('dew_render_agenda', 'DEW_template::agenda', 10, 2); 
 
 // These are primarily called from do_action('dew_render_agenda', ...) 
 // and do_action('dew_render_fullfestival', ...)
@@ -142,7 +142,12 @@ class DEW_template {
 		<?php
 	}
 
-	static public function agenda (array $dateSortedEvents) {
+	static public function agenda (array $dateSortedEvents, $config = array()) {
+
+		if ( ! empty($config['title']) ) {
+			echo "<h2>{$config['title']}</h2><br />\n";
+		}
+
 		echo "<div class=\"dew_agenda\">\n";
 
 		if (empty($dateSortedEvents)) {

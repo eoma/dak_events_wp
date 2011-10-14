@@ -101,10 +101,10 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	$queryArgs['onlySummaries'] = 1;
 
 	$atts = str_replace(array("\"", "'", "&quot;"), array('', '', ''), $atts);
-	$title = null;
+	$config = array();
 
 	if ( ! empty($atts['title']) )
-		$title = trim($atts['title']);
+		$config['title'] = trim($atts['title']);
 
 	if ( ! empty($atts['arranger_id']) )
 		$queryArgs['arranger_id'] = DEW_tools::stringToIntArray($atts['arranger_id']);
@@ -140,10 +140,9 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	
 	ob_start();
 
-	do_action('dew_render_agenda', $dateSortedEvents);
+	do_action('dew_render_agenda', $dateSortedEvents, $config);
 
-	$bufferContent = ob_get_contents();
-	ob_clean();
+	$bufferContent = ob_get_clean();
 
 	return $bufferContent;
 }
@@ -184,8 +183,7 @@ function dew_fullevent_shortcode_handler ($atts, $template = null, $code = "") {
 
 	do_action('dew_render_fullevent', $event);
 
-	$bufferContent = ob_get_contents();
-	ob_clean();
+	$bufferContent = ob_get_clean();
 
 	return $bufferContent;
 }
@@ -220,8 +218,7 @@ function dew_fullfestival_shortcode_handler ($atts, $template = null, $code = ""
 
 	do_action('dew_render_fullfestival', $festival, $events);
 
-	$bufferContent = ob_get_contents();
-	ob_clean();
+	$bufferContent = ob_get_clean();
 
 	return $bufferContent;
 }
@@ -313,8 +310,7 @@ function dew_agenda_menu_shortcode_handler ($atts = array(), $content = null, $c
 
 	do_action('dew_render_agenda_menu', $menuElements);
 
-	$bufferContent = ob_get_contents();
-	ob_clean();
+	$bufferContent = ob_get_clean();
 
 	return $bufferContent;
 }
@@ -339,8 +335,7 @@ function dew_archive_list_shortcode_handler ($atts = array(), $content = null, $
 
 	do_action('dew_render_archive_list', $historyList->data);
 
-	$bufferContent = ob_get_contents();
-	ob_clean();
+	$bufferContent = ob_get_clean();
 
 	return $bufferContent;
 }
