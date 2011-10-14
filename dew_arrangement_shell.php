@@ -124,7 +124,7 @@ class DEW_event extends DEW_arrangement {
 		if ($getInternalUrl) {
 			return DEW_tools::generateLinkToArrangement($this->arr, 'event');
 		} else {
-			$this->arr->url;
+			return $this->arr->url;
 		}
 	}
 
