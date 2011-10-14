@@ -212,7 +212,7 @@ function dew_fullfestival_shortcode_handler ($atts, $template = null, $code = ""
 		'festival_id' => $festival->id,
 		'noCurrentEvents' => true
 	));
-	$dateSortedEvents = DEW_tools::groupEventsByDate($eventResult->data);
+	$dateSortedEvents = DEW_tools::groupEventsByDate($eventResult->data, $options['dayStartHour']);
 
 	ob_start();
 
