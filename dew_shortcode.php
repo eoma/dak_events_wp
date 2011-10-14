@@ -212,11 +212,11 @@ function dew_fullfestival_shortcode_handler ($atts, $template = null, $code = ""
 		'festival_id' => $festival->id,
 		'noCurrentEvents' => true
 	));
-	$events = $eventResult->data;
+	$dateSortedEvents = DEW_tools::groupEventsByDate($eventResult->data);
 
 	ob_start();
 
-	do_action('dew_render_fullfestival', $festival, $events);
+	do_action('dew_render_fullfestival', $festival, $dateSortedEvents);
 
 	$bufferContent = ob_get_clean();
 

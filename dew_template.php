@@ -349,7 +349,7 @@ class DEW_template {
 
 	}
 
-	static public function fullFestival($rawFestival, $rawEvents, array $config = array()) {
+	static public function fullFestival($rawFestival, $dateSortedEvents, array $config = array()) {
 		// All named arguments are required in the format
 
 		/**
@@ -396,7 +396,7 @@ class DEW_template {
   <?php echo $festival->getDescription() ?>
 
   <div id='dew_festivalEvents'>
-   <?php do_action('dew_render_agenda', $rawEvents) ?>
+   <?php do_action('dew_render_agenda', $dateSortedEvents) ?>
   </div>
 
   <p><small><a href="<?php echo $festival->getUrl(false) ?>"><?php _e('Orginal festival', 'dak_events_wp') ?></a></small></p>
