@@ -145,8 +145,12 @@ class DEW_template {
 	static public function agenda (array $dateSortedEvents) {
 		echo "<div class=\"dew_agenda\">\n";
 
-		foreach ($dateSortedEvents as $timestamp => $events) {
-			do_action('dew_render_agenda_date_collection', $events, $timestamp);
+		if (empty($dateSortedEvents)) {
+			echo "<p>" . __('Could not find any events :(', 'dak_events_wp') . "</p>\n";
+		} else {
+			foreach ($dateSortedEvents as $timestamp => $events) {
+				do_action('dew_render_agenda_date_collection', $events, $timestamp);
+			}
 		}
 
 		echo "</div>\n";
