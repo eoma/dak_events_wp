@@ -321,7 +321,8 @@ class DEW_tools {
 		);
 
 		if ( ! file_exists($filePath) ) {
-			$tmpFile = tempnam(sys_get_temp_dir(), rand(1000,9999)) . '.' . $pathdata['extension'];
+			//$tmpFile = tempnam(sys_get_temp_dir(), rand(1000,9999)) . '.' . $pathdata['extension'];
+			$tmpFile = tempnam(null , rand(1000,9999)) . '.' . $pathdata['extension'];
 
 			//echo "Will fetch " . $picObj->url . "\n";
 
