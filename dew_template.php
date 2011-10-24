@@ -425,16 +425,16 @@ class DEW_template {
 
 <div class='dew_eventDetailBox'>
   <div class='dew_eventDate'>
-    <span class='agenda_day_name'><?php echo date_i18n('l', $event->getStartTimestamp) ?></span>
-    <span class='agenda_day_number'><?php echo date('j', $event->getStartTimestamp) ?></span>
-    <span class='agenda_month_name'><?php echo date_i18n('F', $event->getStartTimestamp) ?></span>
+    <span class='agenda_day_name'><?php echo date_i18n('l', $event->getStartTimestamp()) ?></span>
+    <span class='agenda_day_number'><?php echo date('j', $event->getStartTimestamp()) ?></span>
+    <span class='agenda_month_name'><?php echo date_i18n('F', $event->getStartTimestamp()) ?></span>
   </div>
   <div class='dew_eventDetails'>
     <span class='dew_eventTitle'>
-      <a href="<?php echo $event->getUrl() ?>"><?php echo $event->getTitle ?></a>
+      <a href="<?php echo $event->getUrl() ?>"><?php echo $event->getTitle() ?></a>
     </span><br />
 
-    <?php printf(__('%s in %s', 'dak_events_wp'), $event->getCategory, $event->getLocation()) ?><br />
+    <?php printf(__('%s in %s', 'dak_events_wp'), $event->getCategory(), $event->getLocation()) ?><br />
     <?php echo __('Starts', 'dak_events_wp') . " " . $startTime ?><br />
     <?php echo __('Ends', 'dak_events_wp') . " " . $end ?><br />
     <?php echo __('Arranged by', 'dak_events_wp') . " " . $event->getArranger() ?><br />

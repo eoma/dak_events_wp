@@ -203,7 +203,7 @@ class DEW_event extends DEW_arrangement {
 
 	/** Returns associated festival's end timestamp */
 	public function getFestivalEndTimestamp() {
-		return DEW_tools::dateToString($this->arr->festival->endDate, $this->arr->festival->endTime);
+		return DEW_tools::dateStringToTime($this->arr->festival->endDate, $this->arr->festival->endTime);
 	}
 
 	/** Determines whether or not the event contains a primary picture */
