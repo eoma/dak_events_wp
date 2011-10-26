@@ -293,6 +293,20 @@ class eventsCalendarClient {
 	}
 
 	/**
+	 * Returns an arranger with id $id
+	 * @param $id int arranger's id
+	 * @return array
+	 */
+	public function arranger ($id = 0) {
+		$args = array();
+		if ($id > 0) {
+			$args['id'] = $id;
+		}
+
+		return $this->getData('arranger/get', $args);
+	}
+
+	/**
 	 * Returns list of locations
 	 * @return array
 	 */
