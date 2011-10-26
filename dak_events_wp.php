@@ -15,7 +15,7 @@ require_once( DEW_PREFIX . '/dew_management.php' );
 require_once( DEW_PREFIX . '/dew_calendar.php' );
 require_once( DEW_PREFIX . '/dew_shortcode.php' );
 require_once( DEW_PREFIX . '/dew_template.php' );
-require_once( DEW_PREFIX . '/dew_arrangement_shell.php' );
+require_once( DEW_PREFIX . '/dew_shell_classes.php' );
 
 function DakEventsWpInit () {
 	wp_enqueue_script('dew_eventJsStyle', plugins_url('/dew_js.php?eventStylesheet=1', __FILE__), array('jquery'));
