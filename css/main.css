@@ -329,6 +329,10 @@ ul.agenda_menu li.active a {
   font-size: 1.2em;
 }
 
+.agenda_archive > li {
+  margin-top: 0.5em;
+}
+
 .agenda_archive li > ul {
   margin-left: 0.5em;
 }
