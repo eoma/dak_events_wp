@@ -86,6 +86,7 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
 	 *       'end_date' => '2011-05-31',
 	 *       'dayspan' => 7,
 	 *       'title' => 'Events in may',
+	 *       'limit' => 20, // Maximum number of events to fetch
 	 * )
 	 */
 	$options = DEW_Management::getOptions();
@@ -130,7 +131,12 @@ function dew_agenda_shortcode_handler ($atts, $content = null, $code = "") {
     if ( ! empty($atts['dayspan']) )
 		$queryArgs['dayspan'] = intval($atts['dayspan']);
 
-	if ( (isset($queryArgs['startDate']) && isset($queryArgs['endDate'])) || isset($queryArgs['dayspan']) ) {
+	if ( ! empty($atts['limit']) )
+		$queryArgs['limit'] = intval($atts['limit']);
+		
+
+	// Fetch all events if limit is undefined, and start- and endDate are defined or dayspan are defined
+	if ( empty($queryArgs['limit']) && ((isset($queryArgs['startDate']) && isset($queryArgs['endDate'])) || isset($queryArgs['dayspan'])) ) {
 		$results = $client->filteredEventsList($queryArgs, true);
 	} else {
 		$results = $client->filteredEventsList($queryArgs);
