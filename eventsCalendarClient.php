@@ -327,6 +327,14 @@ class eventsCalendarClient {
 	}
 
 	/**
+	 * Returns list of festivals
+	 * @return array
+	 */
+	public function festivalList (array $args = array()) {
+		return $this->getData('festival/list', $args);
+	}
+
+	/**
 	 * Returns list of upcoming events, default maximum 20
 	 * @param integer $limit Maximum number of events to pull
 	 * @return array
