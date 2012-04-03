@@ -108,6 +108,10 @@ class DEW_template {
     <strong><?php _e('Covercharge:', 'dak_events_wp') ?></strong> <?php echo $event->getCoverCharge() ?><br />
 	<?php endif ?>
 
+	<?php if ($event->hasAgeLimit()): ?>
+    <strong><?php _e('Age limit:', 'dak_events_wp') ?></strong> <?php echo $event->getAgeLimit() ?><br />
+	<?php endif ?>
+
 	<?php if ($event->hasFestival()): ?>
     <?php 
       printf(__('Part of festival %s', 'dak_events_wp'), 
@@ -321,6 +325,10 @@ class DEW_template {
 
 	<?php if ($event->hasCoverCharge()): ?>
     <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
+	<?php endif ?>
+
+	<?php if ($event->hasAgeLimit()): ?>
+    <?php echo __('Age limit:', 'dak_events_wp') . ' ' . $event->getAgeLimit()  ?><br />
 	<?php endif ?>
 
 	<?php if ($event->hasFestival()): ?>
