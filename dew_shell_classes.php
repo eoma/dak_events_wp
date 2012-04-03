@@ -221,6 +221,16 @@ class DEW_event extends DEW_arrangement {
 			return $this->arr->primaryPicture;
 		}
 	}
+	
+	/** Determines whether or not age limit has been defined */
+	public function hasAgeLimit () {
+		return !empty($this->arr->age_limit);
+	}
+
+	/** Returns the age limit */
+	public function getAgeLimit () {
+		return $this->arr->age_limit;
+	}
 }
 
 class DEW_festival extends DEW_arrangement {
