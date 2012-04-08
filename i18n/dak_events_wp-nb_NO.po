@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Det Akademiske Kvarter (DAK) Events WordPress plugin 0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/dak_events_wp\n"
-"POT-Creation-Date: 2011-05-16 10:10:49+00:00\n"
-"PO-Revision-Date: 2011-05-16 12:17+0100\n"
+"POT-Creation-Date: 2012-04-08 09:51:14+00:00\n"
+"PO-Revision-Date: 2012-04-08 11:53+0100\n"
 "Last-Translator: Endre Oma <endre.88.oma@gmail.com>\n"
 "Language-Team: Kvarteret <webgruppen@kvarteret.no>\n"
 "Language: \n"
@@ -18,157 +18,226 @@ msgstr ""
 "X-Poedit-Language: Norwegian Bokmal\n"
 "X-Poedit-Country: NORWAY\n"
 
-#: dak_events_wp.php:27
+#: dak_events_wp.php:29
 msgid "DAK Events Calendar"
 msgstr "DAK Event Kalender"
 
-#: dew_format.php:16
-msgid "When:"
-msgstr "Når:"
-
-#: dew_format.php:17
-msgid "Where:"
-msgstr "Hvor:"
-
-#: dew_format.php:18
-#: dew_format.php:35
-#: dew_format.php:103
-#: dew_format.php:138
-msgid "Arranger:"
-msgstr "Arrangør:"
-
-#: dew_format.php:19
-msgid "Type:"
-msgstr "Type:"
-
-#: dew_format.php:33
-#: dew_format.php:101
-#: dew_format.php:171
-msgid "%s in %s"
-msgstr "%s i %s"
-
-#: dew_format.php:34
-#: dew_format.php:102
-#: dew_format.php:137
-msgid "Starts:"
-msgstr "Starter:"
-
-#: dew_format.php:105
-#: dew_format.php:175
-msgid "Add event to your calendar"
-msgstr "Legg eventet til kalenderen din"
-
-#: dew_format.php:106
-#: dew_format.php:141
-#: dew_format.php:176
-#: dew_format.php:200
-msgid "Google calendar"
-msgstr "Google Calendar"
-
-#: dew_format.php:110
-msgid "Orginal event"
-msgstr "Opprinnelig event"
-
-#: dew_format.php:140
-#: dew_format.php:199
-#, fuzzy
-msgid "Add festival to your calendar"
-msgstr "Legg eventet til kalenderen din"
-
-#: dew_format.php:143
-msgid "Jump to the events"
-msgstr "Hopp til eventene"
-
-#: dew_format.php:152
-msgid "Orginal festival"
-msgstr "Opprinnelig fetsival"
-
-#: dew_format.php:172
-#: dew_format.php:195
-msgid "Starts"
-msgstr "Starter"
-
-#: dew_format.php:173
-#: dew_format.php:197
-msgid "Arranged by"
-msgstr "Arrangert av"
-
-#: dew_format.php:196
-msgid "Ends"
-msgstr "Slutter"
-
-#: dew_management.php:94
+#: dew_management.php:131
 msgid "Events Calendar Options"
-msgstr "Eventkalendervalg "
+msgstr "Eventkalenderinnstillinger"
 
-#: dew_management.php:98
+#: dew_management.php:135
 msgid "Clear cache"
-msgstr "Rensk mellomlager"
+msgstr "Tøm mellomlager"
 
-#: dew_management.php:107
+#: dew_management.php:144
 msgid "URL to event server"
 msgstr "URL til eventtjener"
 
-#: dew_management.php:111
+#: dew_management.php:148
 msgid "Date format"
 msgstr "Datoformat"
 
-#: dew_management.php:112
-#: dew_management.php:116
+#: dew_management.php:149
+#: dew_management.php:153
 msgid "(see %s)"
 msgstr "(se %s)"
 
-#: dew_management.php:115
+#: dew_management.php:152
 msgid "Time format"
 msgstr "Tidsformat"
 
-#: dew_management.php:119
+#: dew_management.php:156
+msgid "Day starts at (hour)"
+msgstr "Dagen starter klokken (time)"
+
+#: dew_management.php:160
 msgid "Use cache?"
 msgstr "Bruke cache?"
 
-#: dew_management.php:122
+#: dew_management.php:163
 msgid "None"
 msgstr "Ingen"
 
-#: dew_management.php:123
+#: dew_management.php:164
 msgid "APC (directly)"
 msgstr "APC (direkte)"
 
-#: dew_management.php:124
+#: dew_management.php:165
 msgid "WordPress own cache"
-msgstr "Wirdpress sin egen mellomlagring"
+msgstr "Wordpress sin egen mellomlagring"
 
-#: dew_management.php:129
+#: dew_management.php:170
 msgid "Default cache time (minutes)"
 msgstr "Standard mellomlagringstid (minutter)"
 
-#: dew_management.php:135
+#: dew_management.php:176
 msgid "At which page shall events in lists link to?"
 msgstr "Til hvilken side skal eventer linkes til?"
 
-#: dew_management.php:139
+#: dew_management.php:180
 msgid "Don't link to any internal page"
 msgstr "Ikke link til noen intern side"
 
-#: dew_management.php:158
+#: dew_management.php:211
 msgid "Update Options"
 msgstr "Oppdater instillinger"
 
-#: dew_calendar.php:95
-#: dew_shortcode.php:78
-#: dew_shortcode.php:240
-#: dew_shortcode.php:351
-#: dew_shortcode.php:439
-msgid "CC:"
-msgstr "CC:"
+#: dew_shell_classes.php:96
+msgid "%s from %s to %s"
+msgstr "%s fra %s til %s"
 
-#: dew_calendar.php:103
+#: dew_shell_classes.php:102
+msgid "%s from %s to %s %s"
+msgstr "%s fra %s til %s %s"
+
+#: dew_shortcode.php:45
+msgid "No id specified for detailbox"
+msgstr "Ingen id spesifisert for detaljboks"
+
+#: dew_shortcode.php:255
+msgid "No event_id attribute supplied to shortcode [dew_event]"
+msgstr "Ingen event_id attributt spesifisert for kortkoden (shortcode) [dew_event]"
+
+#: dew_shortcode.php:292
+msgid "No festival_id attribute supplied to shortcode [dew_festival]"
+msgstr "Ingen festival_id attributt spesifisert for kortkoden (shortcode) [dew_festival]"
+
+#: dew_shortcode.php:330
+msgid "Next %d days"
+msgstr "Neste %d dager"
+
+#: dew_shortcode.php:335
+msgid "Archive"
+msgstr "Arkiv"
+
+#: dew_template.php:109
+#: dew_template.php:147
+#: dew_template.php:279
+#: dew_template.php:433
+msgid "When:"
+msgstr "Når:"
+
+#: dew_template.php:110
+#: dew_template.php:148
+#: dew_template.php:432
+msgid "Where:"
+msgstr "Hvor:"
+
+#: dew_template.php:111
+#: dew_template.php:149
+#: dew_template.php:280
+#: dew_template.php:369
+#: dew_template.php:434
+msgid "Arranger:"
+msgstr "Arrangør:"
+
+#: dew_template.php:114
+#: dew_template.php:153
+#: dew_template.php:283
+#: dew_template.php:372
+#: dew_template.php:437
+#: dew_template.php:496
+#: dew_template.php:544
+msgid "Cover Charge:"
+msgstr "Cover Charge:"
+
+#: dew_template.php:117
+#: dew_template.php:167
 msgid "Read more"
 msgstr "Les mer"
 
-#: dew_calendar.php:120
-msgid "No arrangements at the moment."
-msgstr "Ingen arrangementer for øyeblikket"
+#: dew_template.php:150
+msgid "Type:"
+msgstr "Type:"
+
+#: dew_template.php:157
+#: dew_template.php:376
+msgid "Age limit:"
+msgstr "Aldersgrense:"
+
+#: dew_template.php:162
+#: dew_template.php:288
+#: dew_template.php:381
+#: dew_template.php:501
+msgid "Part of festival %s"
+msgstr "Del av festival %s"
+
+#: dew_template.php:203
+msgid "Could not find any events :("
+msgstr "Fant ingen events :("
+
+#: dew_template.php:259
+msgid "happens now"
+msgstr "skjer nå"
+
+#: dew_template.php:278
+#: dew_template.php:366
+#: dew_template.php:490
+msgid "%s in %s"
+msgstr "%s i %s"
+
+#: dew_template.php:367
+msgid "Starts:"
+msgstr "Starter:"
+
+#: dew_template.php:368
+msgid "Ends:"
+msgstr "Slutter:"
+
+#: dew_template.php:386
+#: dew_template.php:506
+msgid "Add event to your calendar"
+msgstr "Legg eventet til kalenderen din"
+
+#: dew_template.php:387
+#: dew_template.php:441
+#: dew_template.php:507
+#: dew_template.php:548
+msgid "Google calendar"
+msgstr "Google Calendar"
+
+#: dew_template.php:399
+msgid "Orginal event"
+msgstr "Opprinnelig event"
+
+#: dew_template.php:440
+#: dew_template.php:547
+msgid "Add festival to your calendar"
+msgstr "Legg festivalen til kalenderen din"
+
+#: dew_template.php:443
+msgid "Jump to the events"
+msgstr "Hopp til eventene"
+
+#: dew_template.php:455
+msgid "Orginal festival"
+msgstr "Opprinnelig fetsival"
+
+#: dew_template.php:470
+#: dew_template.php:521
+msgid "H:i"
+msgstr "H:i"
+
+#: dew_template.php:472
+#: dew_template.php:523
+msgid "F j, Y H:i"
+msgstr "F j, Y H:i"
+
+#: dew_template.php:491
+#: dew_template.php:539
+msgid "Starts"
+msgstr "Starter"
+
+#: dew_template.php:492
+#: dew_template.php:540
+msgid "Ends"
+msgstr "Slutter"
+
+#: dew_template.php:493
+#: dew_template.php:541
+msgid "Arranged by"
+msgstr "Arrangert av"
 
 #: dew_widget.php:97
 msgid "Title:"
@@ -188,7 +257,7 @@ msgstr "Eventliste"
 
 #: dew_widget.php:112
 msgid "Event List options"
-msgstr "Eventslistevalg"
+msgstr "Eventlistevalg"
 
 #: dew_widget.php:116
 msgid "Number of events:"
@@ -227,55 +296,11 @@ msgstr "Legg til sted"
 
 #: dew_widget.php:176
 msgid "categorized as"
-msgstr "kategorisert some"
+msgstr "kategorisert som"
 
 #: dew_widget.php:195
 msgid "Add Category"
 msgstr "Legg til kategori"
-
-#: dew_shortcode.php:39
-msgid "No id specified for detailbox"
-msgstr "Ingen id spesifisert for detaljebox"
-
-#: dew_shortcode.php:49
-msgid "No event found with specified id %d."
-msgstr "Ingen event funnet med id %id."
-
-#: dew_shortcode.php:106
-msgid "F j, Y H:i"
-msgstr ""
-
-#: dew_shortcode.php:163
-msgid "Events in spring %s"
-msgstr "Eventer for vår %s"
-
-#: dew_shortcode.php:167
-msgid "Events in autumn %s"
-msgstr "Eventer for høst %s"
-
-#: dew_shortcode.php:215
-#: dew_shortcode.php:326
-#: dew_shortcode.php:414
-msgid "%s from %s to %s"
-msgstr "%s fra %s til %s"
-
-#: dew_shortcode.php:221
-#: dew_shortcode.php:332
-#: dew_shortcode.php:420
-msgid "%s from %s to %s %s"
-msgstr "%s fra %s til %s %s"
-
-#: dew_shortcode.php:306
-msgid "No event_id attribute supplied to shortcode [dew_event]"
-msgstr "Ingen event_id attributt spesifisert for kortkoden (shortcode) [dew_event]"
-
-#: dew_shortcode.php:355
-msgid "Part of festival"
-msgstr "Del av festival"
-
-#: dew_shortcode.php:394
-msgid "No festival_id attribute supplied to shortcode [dew_festival]"
-msgstr "Ingen festival_id attributt spesifisert for kortkoden (shortcode) [dew_festival]"
 
 #. Plugin Name of the plugin/theme
 msgid "Det Akademiske Kvarter (DAK) Events WordPress plugin"
@@ -284,6 +309,25 @@ msgstr "Det Akademiske Kvarter (DAK) Events WordPress Plugin"
 #. Description of the plugin/theme
 msgid "DAK's plugin for showing evens from DAK's event repository"
 msgstr "DAKs plugginn for å vise events fra DAK's eventkalender"
+
+#, fuzzy
+#~ msgid "Where;"
+#~ msgstr "Hvor:"
+
+#~ msgid "CC:"
+#~ msgstr "CC:"
+
+#~ msgid "No arrangements at the moment."
+#~ msgstr "Ingen arrangementer for øyeblikket"
+
+#~ msgid "No event found with specified id %d."
+#~ msgstr "Ingen event funnet med id %id."
+
+#~ msgid "Events in spring %s"
+#~ msgstr "Eventer for vår %s"
+
+#~ msgid "Events in autumn %s"
+#~ msgstr "Eventer for høst %s"
 
 #~ msgid "%s %s from %s to %s"
 #~ msgstr "%s %s fra %s til %s"

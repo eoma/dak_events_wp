@@ -105,7 +105,7 @@ class DEW_template {
     <strong><?php _e('Type:', 'dak_events_wp') ?></strong> <?php echo $event->getCategory() ?><br />
 
 	<?php if ($event->hasCoverCharge()): ?>
-    <strong><?php _e('Covercharge:', 'dak_events_wp') ?></strong> <?php echo $event->getCoverCharge() ?><br />
+    <strong><?php _e('Cover Charge:', 'dak_events_wp') ?></strong> <?php echo $event->getCoverCharge() ?><br />
 	<?php endif ?>
 
 	<?php if ($event->hasAgeLimit()): ?>
@@ -235,7 +235,7 @@ class DEW_template {
     <?php echo __('Arranger:', 'dak_events_wp') . ' ' . $event->getArranger() ?><br />
 
 	<?php if ($event->hasCoverCharge()): ?>
-    <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
+    <?php echo __('Cover Charge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
 	<?php endif ?>
 
 	<?php if ($event->hasFestival()): ?>
@@ -324,7 +324,7 @@ class DEW_template {
     <?php echo __('Arranger:', 'dak_events_wp') . ' ' . $event->getArranger()  ?><br />
 
 	<?php if ($event->hasCoverCharge()): ?>
-    <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
+    <?php echo __('Cover Charge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
 	<?php endif ?>
 
 	<?php if ($event->hasAgeLimit()): ?>
@@ -384,12 +384,12 @@ class DEW_template {
   <?php if (!isset($config['exclude_metadata']) || !$config['exclude_metadata']): ?>
 
   <p class="agenda_data">
-    <?php echo __('Where;', 'dak_events_wp') . ' ' . $festival->getLocation() ?><br />
+    <?php echo __('Where:', 'dak_events_wp') . ' ' . $festival->getLocation() ?><br />
     <?php echo __('When:', 'dak_events_wp') . ' ' . $festival->getFormattedDuration() ?><br />
     <?php echo __('Arranger:', 'dak_events_wp') . ' ' . $festival->getArranger() ?><br />
 
 	<?php if ($festival->hasCoverCharge()): ?>
-    <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $festival->getCoverCharge()  ?><br />
+    <?php echo __('Cover Charge:', 'dak_events_wp') . ' ' . $festival->getCoverCharge()  ?><br />
 	<?php endif ?>
 
     <a href="<?php echo $festival->getICalUrl() ?>"><?php _e('Add festival to your calendar', 'dak_events_wp') ?></a>
@@ -448,7 +448,7 @@ class DEW_template {
     <?php echo __('Arranged by', 'dak_events_wp') . " " . $event->getArranger() ?><br />
 
 	<?php if ($event->hasCoverCharge()): ?>
-    <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
+    <?php echo __('Cover Charge:', 'dak_events_wp') . ' ' . $event->getCoverCharge()  ?><br />
 	<?php endif ?>
 
 	<?php if ($event->hasFestival()): ?>
@@ -496,7 +496,7 @@ class DEW_template {
     <?php echo __('Arranged by', 'dak_events_wp') . " " . $festival->getArranger() ?><br />
 
 	<?php if ($festival->hasCoverCharge()): ?>
-    <?php echo __('Covercharge:', 'dak_events_wp') . ' ' . $festival->getCoverCharge()  ?><br />
+    <?php echo __('Cover Charge:', 'dak_events_wp') . ' ' . $festival->getCoverCharge()  ?><br />
 	<?php endif ?>
 
     <a href="<?php echo $festival->getICalUrl() ?>"><?php _e('Add festival to your calendar', 'dak_events_wp') ?></a>
